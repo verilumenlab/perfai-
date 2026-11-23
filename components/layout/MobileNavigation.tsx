@@ -149,7 +149,7 @@ export function MobileNavigation({
         {/* Bottom CTA */}
         <div className="pt-6 border-t border-border-dark flex flex-col gap-3">
           <Link
-            href="/partner"
+            href="/#demo"
             onClick={onClose}
             className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl bg-green-primary text-bg-deep font-semibold text-center hover:bg-mint-accent transition-all shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-mint-accent"
           >

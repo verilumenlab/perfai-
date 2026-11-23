@@ -1,18 +1,23 @@
 # Image & Media Asset Credits (IMAGE_CREDITS.md)
 
-This log documents all visual assets and representations used across the PerfAI × Senatria website.
+This log documents all visual assets, poster fallbacks, and placeholders used across the PerfAI × Senatria website.
 
 ---
 
-### 1. Architectural & Hero Graphics
-- **Hero Physical AI Environment Blueprint:** Custom procedural SVG / CSS canvas with Future Green grid lines and data conduits. Author: PerfAI Engineering.
-- **Continuous Loop Diagram:** Original diagrammatic representation of Senatria's 6-step loop (*Perceive, Analyse, Optimise, Control, Verify, Learn*).
+### 1. 3D Scene Poster Fallback (`components/three/BuildingPoster.tsx`)
+- **Asset Type:** Procedural SVG/CSS architectural blueprint with status telemetry indicators.
+- **Purpose:** Static LCP placeholder before interactive 3D WebGL scene loading (Phase 4).
+- **Status:** Active placeholder. Real `.glb` Draco/meshopt morning building model pending in Phase 4.
 
-### 2. Industry Sectors
-- **Commercial Buildings:** Architectural rendering / geometric abstract silhouette.
-- **Hospitality:** High-efficiency hospitality environmental control representation.
-- **Data Centres:** Precision cooling corridors and thermal rack telemetry visualization.
-- **Industrial Infrastructure:** Electrical substation and heavy industrial facility monitoring.
-- **Energy & Grid:** Smart grid transmission and demand flexibility illustration.
-
-*Note: All photography placeholders are stored in `/public/images/industries/` and should be swapped with licensed high-resolution photography before enterprise public release.*
+### 2. Industry Sectors (`components/sections/IndustryCard.tsx`)
+The following 5 sector cards currently utilize clean neutral vector grid placeholders:
+1. **Commercial Buildings:** Neutral architectural grid asset placeholder.
+   - *Status:* Pending licensed high-resolution photography (`/public/images/industries/commercial-buildings.webp`).
+2. **Hospitality:** Neutral guest facility environmental grid placeholder.
+   - *Status:* Pending licensed high-resolution photography (`/public/images/industries/hospitality.webp`).
+3. **Data Centres:** Precision cooling & server corridor neutral placeholder.
+   - *Status:* Pending licensed high-resolution photography (`/public/images/industries/data-centres.webp`).
+4. **Industrial Infrastructure:** Industrial heavy process & substation neutral placeholder.
+   - *Status:* Pending licensed high-resolution photography (`/public/images/industries/industrial.webp`).
+5. **Energy & Grid:** Transmission & demand response neutral placeholder.
+   - *Status:* Pending licensed high-resolution photography (`/public/images/industries/energy-grid.webp`).

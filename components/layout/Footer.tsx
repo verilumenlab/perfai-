@@ -49,6 +49,11 @@ export function Footer() {
                   Partner
                 </Link>
               </li>
+              <li>
+                <Link href="/#demo" className="text-mint-accent hover:underline transition-colors">
+                  Request a Demo
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -108,10 +113,20 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Copyright */}
+        {/* Legal links & Copyright */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-text-muted">
           <p>© 2026 PerfAI. All rights reserved.</p>
-          <p>{siteConfig.resellerBadge}</p>
+          <div className="flex items-center gap-5">
+            <Link href="/privacy" className="hover:text-white transition-colors">
+              Privacy Policy
+            </Link>
+            <Link href="/terms" className="hover:text-white transition-colors">
+              Terms & Conditions
+            </Link>
+            <Link href="/cookies" className="hover:text-white transition-colors">
+              Cookie Policy
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

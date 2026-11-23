@@ -80,7 +80,7 @@ export function Navbar() {
           {/* Right CTA & Mobile hamburger */}
           <div className="flex items-center gap-3">
             <Link
-              href="/#contact"
+              href="/#demo"
               className="hidden sm:inline-flex items-center gap-2 text-sm font-semibold bg-green-primary text-bg-deep px-4 py-2 rounded-xl hover:bg-mint-accent active:scale-[0.98] transition-all shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-mint-accent"
             >
               <span>Request a Demo</span>
