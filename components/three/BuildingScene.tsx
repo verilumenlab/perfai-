@@ -10,6 +10,7 @@ import { BuildingEnvironment } from "./BuildingEnvironment";
 import { ScrollCamera } from "./ScrollCamera";
 import { BuildingLabels } from "./BuildingLabels";
 import { BuildingPoster } from "./BuildingPoster";
+import { Badge } from "@/components/ui/Badge";
 
 function checkWebGLSupport(): boolean {
   if (typeof window === "undefined") return false;
@@ -42,15 +43,59 @@ function checkLowPowerDevice(): boolean {
   return false;
 }
 
-export function BuildingScene() {
+function getZoneProgress(zoneId?: string): number {
+  switch (zoneId) {
+    case "overview":
+      return 0.1;
+    case "hvac":
+      return 0.35;
+    case "energy":
+      return 0.55;
+    case "compute":
+      return 0.75;
+    case "verification":
+      return 0.9;
+    default:
+      return 0.2;
+  }
+}
+
+interface BuildingSceneProps {
+  mode?: "scroll" | "walkthrough";
+  activeZoneId?: string;
+  className?: string;
+}
+
+export function BuildingScene({
+  mode = "scroll",
+  activeZoneId,
+  className = "",
+}: BuildingSceneProps) {
   const [hasWebGL] = useState(() => checkWebGLSupport());
   const [isLowPower] = useState(() => checkLowPowerDevice());
+  const [isMobile, setIsMobile] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isIntersecting, setIsIntersecting] = useState(true);
   const [canvasReady, setCanvasReady] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const reducedMotion = useReducedMotion();
+
+  // Purely computed progress: for walkthrough mode, map active zone directly without setState in effect
+  const effectiveProgress =
+    mode === "walkthrough" && activeZoneId
+      ? getZoneProgress(activeZoneId)
+      : scrollProgress;
+
+  // Mobile viewport detection
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   // 1. IntersectionObserver to pause rendering when offscreen
   useEffect(() => {
@@ -67,9 +112,9 @@ export function BuildingScene() {
     return () => observer.disconnect();
   }, []);
 
-  // 2. Lenis Smooth Scroll & ScrollProgress tracking
+  // 2. Lenis Smooth Scroll tracking (strictly disabled when reducedMotion or isLowPower)
   useEffect(() => {
-    if (reducedMotion || isLowPower) return;
+    if (reducedMotion || isLowPower || mode !== "scroll") return;
 
     const lenis = new Lenis({
       duration: 1.2,
@@ -80,11 +125,22 @@ export function BuildingScene() {
     });
 
     const onScroll = () => {
-      const maxScroll =
-        document.documentElement.scrollHeight - window.innerHeight;
-      if (maxScroll > 0) {
-        const progress = Math.min(1, Math.max(0, window.scrollY / maxScroll));
-        setScrollProgress(progress);
+      // Calculate scroll progress over the pinned hero and technology sections
+      const heroSection = document.getElementById("hero-pin-container");
+      if (heroSection) {
+        const rect = heroSection.getBoundingClientRect();
+        const totalHeight = heroSection.offsetHeight - window.innerHeight;
+        if (totalHeight > 0) {
+          const progress = Math.min(1, Math.max(0, -rect.top / totalHeight));
+          setScrollProgress(progress);
+        }
+      } else {
+        const maxScroll =
+          document.documentElement.scrollHeight - window.innerHeight;
+        if (maxScroll > 0) {
+          const progress = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+          setScrollProgress(progress);
+        }
       }
     };
 
@@ -103,7 +159,7 @@ export function BuildingScene() {
       window.removeEventListener("scroll", onScroll);
       lenis.destroy();
     };
-  }, [reducedMotion, isLowPower]);
+  }, [reducedMotion, isLowPower, mode]);
 
   // If WebGL is completely unsupported, fallback cleanly to the static poster
   if (!hasWebGL) {
@@ -113,8 +169,15 @@ export function BuildingScene() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full aspect-[16/10] sm:aspect-[16/9] max-h-[500px] rounded-2xl sm:rounded-3xl overflow-hidden border border-border-dark bg-bg-surface"
+      className={`relative w-full aspect-[16/10] sm:aspect-[16/9] max-h-[520px] rounded-2xl sm:rounded-3xl overflow-hidden border border-border-dark bg-bg-surface ${className}`}
     >
+      {/* Illustrative Concept Badge */}
+      <div className="absolute top-4 left-4 z-20 pointer-events-none">
+        <Badge variant="outline" className="text-mint-accent bg-bg-deep/90 border-border-dark text-[10px]">
+          Illustrative 3D Concept
+        </Badge>
+      </div>
+
       {/* Static Poster remains visible as LCP until Canvas is ready */}
       <div
         className={`absolute inset-0 transition-opacity duration-700 pointer-events-none z-10 ${
@@ -128,16 +191,16 @@ export function BuildingScene() {
       {!isLowPower && (
         <div
           className="absolute inset-0 z-0 pointer-events-none"
-          aria-label="Interactive 3D building simulation showing commercial facility architecture"
+          aria-label="Interactive 3D building simulation showing commercial facility architecture (Illustrative)"
           role="img"
         >
           <Canvas
-            shadows
-            dpr={[1, 1.5]} // Limit mobile DPR to 1.5 for performance
+            shadows={!isMobile}
+            dpr={isMobile ? 1.0 : [1, 1.5]} // Limit mobile DPR to 1.0, desktop to 1.5
             frameloop={isIntersecting ? "always" : "never"} // Pause rendering when offscreen
             camera={{ position: [22, 14, 26], fov: 38, near: 0.5, far: 180 }}
             gl={{
-              antialias: true,
+              antialias: !isMobile,
               powerPreference: "high-performance",
               alpha: true,
             }}
@@ -148,12 +211,12 @@ export function BuildingScene() {
             <color attach="background" args={["#0A241E"]} />
             <fogExp2 attach="fog" args={["#0A241E", 0.014]} />
 
-            <BuildingLighting />
+            <BuildingLighting isMobile={isMobile} />
             <BuildingEnvironment />
-            <BuildingModel scrollProgress={scrollProgress} />
-            <BuildingLabels scrollProgress={scrollProgress} />
+            <BuildingModel scrollProgress={effectiveProgress} />
+            <BuildingLabels scrollProgress={effectiveProgress} />
             <ScrollCamera
-              scrollProgress={scrollProgress}
+              scrollProgress={effectiveProgress}
               reducedMotion={Boolean(reducedMotion)}
             />
           </Canvas>

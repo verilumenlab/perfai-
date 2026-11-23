@@ -137,3 +137,4 @@ export function BuildingModel({ scrollProgress }: BuildingModelProps) {
     </group>
   );
 }
+

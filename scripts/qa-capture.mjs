@@ -15,10 +15,6 @@ async function run() {
     shell: true,
   });
 
-  server.stdout.on("data", (d) => {
-    // console.log(`[server] ${d}`);
-  });
-
   // Wait for server to become responsive
   const url = "http://localhost:3000";
   let connected = false;
@@ -40,61 +36,76 @@ async function run() {
     process.exit(1);
   }
 
-  console.log("Server is ready. Launching Playwright Chromium...");
-  const browser = await chromium.launch();
+  console.log("Server ready. Launching Playwright Chromium with WebGL enabled...");
+  const browser = await chromium.launch({
+    args: ["--use-gl=swiftshader", "--enable-webgl", "--no-sandbox"],
+  });
 
-  const viewports = [
-    { name: "mobile_360", width: 360, height: 740 },
-    { name: "tablet_768", width: 768, height: 1024 },
-    { name: "desktop_1280", width: 1280, height: 800 },
-    { name: "desktop_1920", width: 1920, height: 1080 },
+  const routes = [
+    { path: "/", name: "home" },
+    { path: "/application", name: "application" },
+    { path: "/partner", name: "partner" },
   ];
 
-  for (const vp of viewports) {
-    const page = await browser.newPage({ viewport: { width: vp.width, height: vp.height } });
-    await page.goto(url, { waitUntil: "networkidle" });
+  const viewports = [
+    { name: "360", width: 360, height: 740 },
+    { name: "1280", width: 1280, height: 800 },
+  ];
 
-    // Check horizontal scroll / overflow
-    const hasHorizontalOverflow = await page.evaluate(() => {
-      return document.documentElement.scrollWidth > window.innerWidth;
-    });
+  for (const route of routes) {
+    for (const vp of viewports) {
+      const page = await browser.newPage({
+        viewport: { width: vp.width, height: vp.height },
+      });
+      await page.goto(`${url}${route.path}`, { waitUntil: "networkidle" });
 
-    console.log(
-      `Viewport ${vp.name} (${vp.width}x${vp.height}): Horizontal Overflow = ${hasHorizontalOverflow ? "FAIL" : "PASSED (0 overflow)"}`
-    );
+      // Verify horizontal overflow
+      const hasHorizontalOverflow = await page.evaluate(() => {
+        return document.documentElement.scrollWidth > window.innerWidth;
+      });
 
-    if (vp.name === "mobile_360" || vp.name === "desktop_1280") {
-      // 1. Start of scroll (Top)
+      console.log(
+        `Route ${route.path} @ ${vp.name}px: Overflow = ${hasHorizontalOverflow ? "FAIL" : "PASSED (0 overflow)"}`
+      );
+
+      // On Homepage and Application, check for Canvas existence
+      if (route.name === "home" || route.name === "application") {
+        const canvasCount = await page.locator("canvas").count();
+        console.log(`Route ${route.path} @ ${vp.name}px: Detected <canvas> count = ${canvasCount}`);
+      }
+
+      // Capture Start (Top)
       await page.evaluate(() => window.scrollTo(0, 0));
-      await page.waitForTimeout(500);
-      await page.screenshot({ path: path.join(QA_DIR, `${vp.name}_start.png`) });
-
-      // 2. Middle of scroll (Technology / Building Scene in progress)
-      await page.evaluate(() => {
-        const el = document.getElementById("technology");
-        if (el) el.scrollIntoView({ behavior: "instant" });
+      await page.waitForTimeout(600);
+      await page.screenshot({
+        path: path.join(QA_DIR, `${route.name}_${vp.name}_start.png`),
       });
-      await page.waitForTimeout(500);
-      await page.screenshot({ path: path.join(QA_DIR, `${vp.name}_middle.png`) });
 
-      // 3. End of scroll (CTA demo block)
+      // Capture Middle
       await page.evaluate(() => {
-        const el = document.getElementById("demo");
-        if (el) el.scrollIntoView({ behavior: "instant" });
+        window.scrollTo(0, document.body.scrollHeight * 0.45);
       });
-      await page.waitForTimeout(500);
-      await page.screenshot({ path: path.join(QA_DIR, `${vp.name}_end.png`) });
-    } else {
-      // Full overview screenshot for 768 and 1920
-      await page.screenshot({ path: path.join(QA_DIR, `${vp.name}_overview.png`) });
+      await page.waitForTimeout(600);
+      await page.screenshot({
+        path: path.join(QA_DIR, `${route.name}_${vp.name}_middle.png`),
+      });
+
+      // Capture End
+      await page.evaluate(() => {
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+      await page.waitForTimeout(600);
+      await page.screenshot({
+        path: path.join(QA_DIR, `${route.name}_${vp.name}_end.png`),
+      });
+
+      await page.close();
     }
-
-    await page.close();
   }
 
   await browser.close();
   server.kill();
-  console.log("QA screenshot capture completed successfully. Output in /qa/screens/");
+  console.log("QA screenshot capture completed successfully for all routes.");
   process.exit(0);
 }
 
