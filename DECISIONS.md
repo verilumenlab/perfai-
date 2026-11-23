@@ -123,6 +123,11 @@
   - Admin Security Matrix: 4/4 passing (unauthenticated redirect, authenticated status/notes mutation, CSV formula injection escaping, account lockout).
   - Responsive Viewports: 0 horizontal overflow across 6 viewports (360px to 1920px), WebGL fallback poster, SkipLink keyboard navigation.
   - Mobile Lighthouse Audit: SEO 100, Accessibility 98-100, Best Practices 96-100, CLS 0 across core routes.
+- **Navbar & Hero Section Typography Redesign:**
+  - Streamlined navbar brand logo to display strictly `[P] PerfAI` without redundant partner badges or provider suffixes.
+  - Redesigned navigation into a glassmorphic floating pill container with centered links and a pill CTA button.
+  - Enhanced hero headline typography across `/`, `/application`, and `/partner` with crisp white headers and radiant gradient highlights (`bg-gradient-to-r from-mint-accent via-emerald-300 to-green-primary bg-clip-text text-transparent`) for key value statements.
+
 
 
 

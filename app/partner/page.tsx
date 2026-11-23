@@ -63,11 +63,15 @@ export default function PartnerPage() {
         <Container className="relative z-10">
           <FadeIn>
             <div className="max-w-3xl">
-              <Badge variant="default" className="mb-4">
-                {hero.badge}
+              <Badge variant="default" className="mb-4 px-4 py-1.5 shadow-sm border-green-primary/40 bg-bg-surface/80 backdrop-blur-sm">
+                <span className="h-2 w-2 rounded-full bg-mint-accent animate-pulse" />
+                <span>{hero.badge}</span>
               </Badge>
-              <h1 className="font-heading font-extrabold text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight leading-[1.12]">
-                {hero.headline}
+              <h1 className="font-heading font-extrabold text-4xl sm:text-6xl lg:text-7xl text-white tracking-tight leading-[1.08]">
+                Bringing Physical AI to{" "}
+                <span className="bg-gradient-to-r from-mint-accent via-emerald-300 to-green-primary bg-clip-text text-transparent drop-shadow-[0_0_35px_rgba(117,230,174,0.35)]">
+                  Businesses. Together.
+                </span>
               </h1>
               <p className="mt-6 text-base sm:text-lg text-text-muted max-w-2xl leading-relaxed">
                 {hero.subheading}

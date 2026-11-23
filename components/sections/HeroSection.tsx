@@ -37,15 +37,17 @@ export function HeroSection() {
         <FadeIn direction="up">
           <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
             {/* Reseller / Partner Badge */}
-            <Badge variant="default" className="mb-6">
-              <span className="h-2 w-2 rounded-full bg-green-primary" />
+            <Badge variant="default" className="mb-6 px-4 py-1.5 shadow-sm border-green-primary/40 bg-bg-surface/80 backdrop-blur-sm">
+              <span className="h-2 w-2 rounded-full bg-mint-accent animate-pulse" />
               <span>{siteConfig.resellerBadge}</span>
             </Badge>
 
             {/* H1 Headline */}
-            <h1 className="font-heading font-extrabold text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight leading-[1.12]">
+            <h1 className="font-heading font-extrabold text-4xl sm:text-6xl lg:text-7xl text-white tracking-tight leading-[1.08] max-w-4xl">
               Make Your Infrastructure Smarter.{" "}
-              <span className="text-mint-accent">More Efficient. More Valuable.</span>
+              <span className="bg-gradient-to-r from-mint-accent via-emerald-300 to-green-primary bg-clip-text text-transparent drop-shadow-[0_0_35px_rgba(117,230,174,0.35)]">
+                More Efficient. More Valuable.
+              </span>
             </h1>
 
             {/* Subtitle */}

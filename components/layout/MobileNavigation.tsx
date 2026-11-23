@@ -99,15 +99,19 @@ export function MobileNavigation({
         <div>
           {/* Header */}
           <div className="flex items-center justify-between pb-6 border-b border-border-dark">
-            <div className="flex flex-col">
+            <Link
+              href="/"
+              onClick={onClose}
+              className="flex items-center gap-2.5"
+              aria-label="PerfAI Homepage"
+            >
+              <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-green-primary to-mint-accent text-bg-deep flex items-center justify-center font-heading font-extrabold text-base shadow-sm">
+                P
+              </div>
               <span className="font-heading font-extrabold text-xl text-white">
-                PerfAI <span className="text-white/40 font-normal">|</span>{" "}
-                <span className="text-mint-accent">SENATRIA</span>
+                PerfAI
               </span>
-              <span className="text-[10px] text-mint-accent uppercase font-semibold tracking-wider mt-0.5">
-                {siteConfig.resellerBadge}
-              </span>
-            </div>
+            </Link>
 
             <button
               ref={closeButtonRef}
