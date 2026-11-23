@@ -9,30 +9,38 @@ if (!fs.existsSync(QA_DIR)) {
 }
 
 async function run() {
-  console.log("Starting Next.js production server for QA capture...");
-  const server = spawn("npm.cmd", ["run", "start", "--", "-p", "3000"], {
-    stdio: "pipe",
-    shell: true,
-  });
-
-  // Wait for server to become responsive
   const url = "http://localhost:3000";
+  let server = null;
   let connected = false;
-  for (let i = 0; i < 30; i++) {
-    try {
-      const res = await fetch(url);
-      if (res.ok) {
-        connected = true;
-        break;
+
+  try {
+    const res = await fetch(url);
+    if (res.ok) connected = true;
+  } catch {}
+
+  if (!connected) {
+    console.log("Starting Next.js server for QA capture...");
+    server = spawn("npm.cmd", ["run", "start", "--", "-p", "3000"], {
+      stdio: "pipe",
+      shell: true,
+    });
+
+    for (let i = 0; i < 30; i++) {
+      try {
+        const res = await fetch(url);
+        if (res.ok) {
+          connected = true;
+          break;
+        }
+      } catch {
+        await new Promise((r) => setTimeout(r, 1000));
       }
-    } catch {
-      await new Promise((r) => setTimeout(r, 1000));
     }
   }
 
   if (!connected) {
     console.error("Failed to connect to local server on port 3000");
-    server.kill();
+    if (server) server.kill();
     process.exit(1);
   }
 
@@ -68,10 +76,27 @@ async function run() {
         `Route ${route.path} @ ${vp.name}px: Overflow = ${hasHorizontalOverflow ? "FAIL" : "PASSED (0 overflow)"}`
       );
 
-      // On Homepage and Application, check for Canvas existence
+      // On Homepage and Application, check for Canvas existence and pixel rendering
       if (route.name === "home" || route.name === "application") {
         const canvasCount = await page.locator("canvas").count();
         console.log(`Route ${route.path} @ ${vp.name}px: Detected <canvas> count = ${canvasCount}`);
+        
+        if (canvasCount > 0) {
+          const canvasDetails = await page.evaluate(() => {
+            const canvas = document.querySelector("canvas");
+            if (!canvas) return null;
+            const gl = canvas.getContext("webgl2") || canvas.getContext("webgl");
+            const renderer = gl ? gl.getParameter(gl.RENDERER) : "Unknown";
+            const rect = canvas.getBoundingClientRect();
+            return {
+              width: rect.width,
+              height: rect.height,
+              renderer: renderer,
+              hasContext: !!gl,
+            };
+          });
+          console.log(`Route ${route.path} @ ${vp.name}px: Canvas info:`, JSON.stringify(canvasDetails));
+        }
       }
 
       // Capture Start (Top)
@@ -104,7 +129,7 @@ async function run() {
   }
 
   await browser.close();
-  server.kill();
+  if (server) server.kill();
   console.log("QA screenshot capture completed successfully for all routes.");
   process.exit(0);
 }

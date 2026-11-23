@@ -1,0 +1,96 @@
+// Prisma Schema for PerfAI Enterprise Lead Management & Admin Console
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Lead {
+  id               String         @id @default(cuid())
+  leadNumber       String         @unique
+  enquiryType      String         // "DEMO" | "PARTNER"
+  fullName         String
+  businessEmail    String
+  companyName      String
+  jobTitle         String
+  phoneNumber      String?
+  country          String
+  industry         String
+  facilityType     String?
+  areaOfInterest   String?
+  facilitySize     String?
+  partnershipType  String?
+  message          String
+  privacyConsent   Boolean        @default(true)
+  consentTimestamp DateTime       @default(now())
+  sourcePage       String         @default("/")
+  utmSource        String?
+  utmMedium        String?
+  utmCampaign      String?
+  status           String         @default("NEW")      // "NEW" | "CONTACTED" | "QUALIFIED" | "IN_PROGRESS" | "CLOSED" | "ARCHIVED"
+  priority         String         @default("NORMAL")   // "LOW" | "NORMAL" | "HIGH" | "URGENT"
+  notes            LeadNote[]
+  activities       LeadActivity[]
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  @@index([status])
+  @@index([enquiryType])
+  @@index([businessEmail])
+  @@index([createdAt])
+}
+
+model LeadNote {
+  id          String   @id @default(cuid())
+  leadId      String
+  lead        Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  adminUserId String?
+  authorName  String
+  note        String
+  createdAt   DateTime @default(now())
+
+  @@index([leadId])
+}
+
+model LeadActivity {
+  id            String   @id @default(cuid())
+  leadId        String
+  lead          Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  adminUserId   String?
+  action        String   // "CREATED" | "STATUS_CHANGE" | "PRIORITY_CHANGE" | "NOTE_ADDED"
+  previousValue String?
+  newValue      String?
+  note          String?
+  createdAt     DateTime @default(now())
+
+  @@index([leadId])
+}
+
+model AdminUser {
+  id           String         @id @default(cuid())
+  name         String
+  email        String         @unique
+  passwordHash String
+  role         String         @default("ADMIN") // "ADMIN" | "SUPERADMIN"
+  isActive     Boolean        @default(true)
+  lastLoginAt  DateTime?
+  sessions     AdminSession[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+}
+
+model AdminSession {
+  id           String    @id @default(cuid())
+  sessionToken String    @unique
+  adminUserId  String
+  adminUser    AdminUser @relation(fields: [adminUserId], references: [id], onDelete: Cascade)
+  expiresAt    DateTime
+  createdAt    DateTime  @default(now())
+
+  @@index([sessionToken])
+  @@index([adminUserId])
+}

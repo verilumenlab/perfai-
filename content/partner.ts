@@ -94,7 +94,7 @@ export const partnerPageContent = {
         step: "04",
         name: "Support",
         title: "Ongoing Engagement",
-        desc: "We coordinate regular performance reviews, verify operational outcomes, and maintain ongoing executive communication as your infrastructure scales.",
+        desc: "We facilitate regular check-ins, coordinate technical support inquiries with Senatria engineering, and maintain ongoing commercial alignment as your facility operations evolve.",
       },
     ],
   },

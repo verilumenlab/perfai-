@@ -66,14 +66,23 @@
 
 ---
 
-### 5. Phases Plan
-1. **Audit & Decisions (Current Phase)**
-2. **Foundation:** Setup Next.js, Tailwind tokens, fonts, site-config, layouts, Navbar, Footer.
-3. **Home Page (Static & Responsive)**
-4. **3D Signature Experience:** BuildingScene, Orbit/Scroll camera, fallback posters.
-5. **Application & Partner Pages**
-6. **Forms, API, Database, and Admin Portal**
-7. **SEO, Performance & Accessibility Audit**
-8. **QA & Build Verification**
-9. **Deployment Preparation for perfai.in**
+### 6. Phase 6 Decisions: Enquiry System, Lead Management & Admin Console
+- **ORM & Database:**
+  - Prisma 6.4.1 selected with SQLite (`prisma/dev.db`) for zero-dependency local development, written with strict Postgres-compatible types and indexes for instant production cutover.
+  - Entities implemented: `Lead` (comprehensive metadata, status, priority, human reference number `PF-YYYY-XXXX`), `LeadNote` (audit internal notes), `LeadActivity` (immutable event audit ledger), `AdminUser` (staff authentication), and `AdminSession` (secure session tokens).
+- **Anti-Spam & Submission Protection:**
+  - In-memory sliding window rate limiter (`lib/rate-limit.ts`) enforcing max 5 submissions/min per IP.
+  - Honeypot field (`hp_website`) silently discarding automated bot submissions with fake 200 responses without database writes.
+  - Form load timestamp token enforcing a minimum 1.5s time-to-submit check.
+- **Admin Authentication & Access Control:**
+  - Session-based authentication via HTTP-only, SameSite=Lax, Secure cookies (`perfai_admin_session`).
+  - Passwords hashed using `bcryptjs` with salt rounds = 12.
+  - Dedicated CLI provisioning script `scripts/create-admin.mjs` (`npm run admin:create`).
+  - Next.js edge middleware routing unauthenticated traffic on `/admin/*` to `/admin/login`, with double verification in the Server Component layout.
+- **Data Export Security:**
+  - CSV export endpoint (`/api/admin/leads/export`) neutralizes spreadsheet formula injection (CSV injection) by prefixing leading characters `=`, `+`, `-`, `@`, `\t`, and `\r` with single quotes `'`.
+- **Pluggable Architecture:**
+  - `CrmAdapter` interface (`lib/crm.ts`) supporting optional webhook sync.
+  - `EmailProvider` interface (`lib/email.ts`) with development console mock and production Resend dispatch. Failure never blocks lead storage.
+
 

@@ -173,9 +173,9 @@ export const applicationContent = {
         system: "Chillers, Boilers & Air Handling Units",
         product: "BuildingShield",
         description:
-          "Monitors thermodynamic heat exchange and refrigerant pressures. Automatically tunes supply air and chilled water setpoints in response to live thermal demand.",
+          "Monitors thermodynamic heat exchange and equipment telemetry. Adjusts supply air and chilled water setpoints in accordance with facility control policies.",
         buildingImpact:
-          "Eliminates equipment over-cycling, prevents component drift, and reduces HVAC energy expenditure.",
+          "Assists facility engineers in coordinating equipment runtime cycles and maintaining stable environmental conditions.",
         highlightCoordinates: [0, 12, 0],
       },
       {
@@ -185,9 +185,9 @@ export const applicationContent = {
         system: "Switchgear, Sub-Meters & Solar Feeds",
         product: "GridShield",
         description:
-          "Ingests sub-minute power metering data from main switchboards and utility interconnects. Evaluates facility load shed capacity for grid demand response events.",
+          "Ingests sub-minute power metering data from main switchboards and utility interconnects to monitor facility electrical loads.",
         buildingImpact:
-          "Mitigates costly peak demand charges and unlocks demand-side flexibility revenue.",
+          "Enables monitoring of peak load distribution and automated participation in grid demand management programs.",
         highlightCoordinates: [-3, 1, 0],
       },
       {
@@ -197,9 +197,9 @@ export const applicationContent = {
         system: "High-Density Server Racks & UPS",
         product: "ComputeShield",
         description:
-          "Evaluates thermal dissipation and qualified electrical capacity to house local micro-colocation and low-latency AI inference nodes.",
+          "Monitors thermal conditions and electrical distribution supporting on-premise compute infrastructure and inference nodes.",
         buildingImpact:
-          "Enables new computational density inside existing commercial real estate without grid capacity upgrades.",
+          "Supports integration of edge computational infrastructure within existing facility electrical envelopes.",
         highlightCoordinates: [2, 5.8, 0],
       },
       {
@@ -209,9 +209,9 @@ export const applicationContent = {
         system: "VERITAS Verification Ledger",
         product: "VERITAS Platform Capability",
         description:
-          "Compares live operational energy consumption with pre-deployment baseline physics models, continuously logging verifiable efficiency gains.",
+          "Compares live operational energy consumption with pre-deployment baseline models for transparent auditing.",
         buildingImpact:
-          "Provides finance and sustainability executives with immutable proof of operational cost savings and carbon abatement.",
+          "Provides facility managers and operations teams with verifiable records of system actions and measured telemetry.",
         highlightCoordinates: [0, 3, 0],
       },
     ] as WalkthroughZone[],

@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { FadeIn } from "@/components/ui/FadeIn";
+import { PartnerForm } from "@/components/forms/PartnerForm";
 import {
   ArrowRight,
   CheckCircle,
@@ -289,55 +290,76 @@ export default function PartnerPage() {
         </Container>
       </Section>
 
-      {/* Section 5 — Partnership CTA */}
-      <Section className="py-20 md:py-28 bg-bg-deep text-white">
+      {/* Section 5 — Partnership Enquiry & Form */}
+      <Section id="partner-form" className="py-20 md:py-28 bg-bg-deep text-white border-t border-border-dark scroll-mt-20">
         <Container>
           <FadeIn>
             <div className="bg-bg-surface border border-border-dark rounded-3xl p-8 sm:p-14 lg:p-16">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                <div className="lg:col-span-7">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+                {/* Left Column: Context & Overview */}
+                <div className="lg:col-span-5">
                   <Badge variant="default" className="mb-4">
                     {cta.badge}
                   </Badge>
-                  <h2 className="font-heading font-extrabold text-2xl sm:text-4xl text-white tracking-tight">
+                  <h2 className="font-heading font-extrabold text-2xl sm:text-4xl text-white tracking-tight leading-tight">
                     {cta.heading}
                   </h2>
-                  <p className="mt-4 text-base text-text-muted leading-relaxed max-w-xl">
+                  <p className="mt-4 text-base text-text-muted leading-relaxed">
                     {cta.subheading}
                   </p>
 
-                  <div className="mt-8 flex flex-wrap gap-4">
-                    <Link href="/#demo">
-                      <Button variant="primary" size="lg">
-                        <span>{cta.primaryButtonText}</span>
-                        <ArrowRight className="w-4 h-4 ml-1.5" />
-                      </Button>
-                    </Link>
+                  <div className="mt-8 space-y-4">
+                    <div className="flex items-start gap-3 text-xs sm:text-sm text-white/90">
+                      <CheckCircle className="w-4 h-4 text-green-primary shrink-0 mt-0.5" />
+                      <span>
+                        Enterprise reseller partnerships for commercial real estate portfolios and facility managers.
+                      </span>
+                    </div>
+                    <div className="flex items-start gap-3 text-xs sm:text-sm text-white/90">
+                      <CheckCircle className="w-4 h-4 text-green-primary shrink-0 mt-0.5" />
+                      <span>
+                        Technical onboarding coordination for BMS integrators, engineers, and energy consultants.
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="mt-8 p-4 rounded-2xl bg-bg-deep border border-border-dark">
+                    <span className="text-xs font-mono text-mint-accent uppercase tracking-wider block mb-1">
+                      Direct Inquiries
+                    </span>
+                    <p className="text-xs text-text-muted leading-relaxed">
+                      For corporate procurement and official business correspondence:
+                    </p>
+                    <div className="mt-3 flex items-center gap-2.5 text-xs font-mono text-white">
+                      <Mail className="w-3.5 h-3.5 text-green-primary" />
+                      <span>{siteConfig.contact.salesEmail}</span>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 flex flex-wrap gap-4">
                     <a
                       href={siteConfig.partnerUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-6 py-3.5 rounded-xl bg-bg-deep border border-border-dark text-white text-sm font-semibold hover:border-green-primary transition-colors"
+                      className="inline-flex items-center gap-1.5 px-5 py-3 rounded-xl bg-bg-deep border border-border-dark text-white text-xs font-semibold hover:border-green-primary transition-colors"
                     >
                       <span>{cta.secondaryButtonText}</span>
-                      <ExternalLink className="w-4 h-4" />
+                      <ExternalLink className="w-3.5 h-3.5" />
                     </a>
                   </div>
                 </div>
 
-                <div className="lg:col-span-5 bg-bg-deep border border-border-dark rounded-2xl p-6 sm:p-8">
-                  <span className="text-xs font-mono text-mint-accent uppercase tracking-wider block mb-2">
-                    Commercial Desk
-                  </span>
-                  <p className="text-xs text-text-muted leading-relaxed">
-                    Dedicated account representatives coordinate solution scoping and partner discovery.
-                  </p>
-                  <div className="mt-4 p-3.5 rounded-xl bg-bg-surface border border-border-dark flex items-center gap-3">
-                    <Mail className="w-4 h-4 text-green-primary shrink-0" />
-                    <span className="font-mono text-xs text-white">
-                      {siteConfig.contact.salesEmail}
+                {/* Right Column: Interactive Partner Enquiry Form */}
+                <div className="lg:col-span-7 bg-bg-deep border border-border-dark rounded-2xl p-6 sm:p-8">
+                  <div className="mb-6">
+                    <span className="text-xs font-mono text-mint-accent uppercase tracking-wider block">
+                      Commercial Coordination
                     </span>
+                    <h3 className="font-heading font-bold text-xl text-white mt-1">
+                      Submit a Partnership Enquiry
+                    </h3>
                   </div>
+                  <PartnerForm />
                 </div>
               </div>
             </div>

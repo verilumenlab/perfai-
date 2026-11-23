@@ -31,3 +31,4 @@ This document tracks all unverified claims, placeholders, contact information, c
 ### 5. Forms & Backend (Phase 6)
 - [ ] **Database Connection:** Configure production Postgres connection string.
 - [ ] **Notification Dispatch:** Configure email dispatch API keys (e.g. Resend).
+- [ ] **Partner Scope Verification:** Confirm boundary between PerfAI commercial coordination vs Senatria/VERITAS autonomous performance verification and certified audit delivery.
