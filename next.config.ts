@@ -26,6 +26,8 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Allow LAN devices to load Next.js dev assets (share with friends on same Wi‑Fi)
+  allowedDevOrigins: ["192.168.1.34"],
   turbopack: {
     rules: {
       "*.css": {
