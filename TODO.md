@@ -39,3 +39,7 @@ This document tracks all unverified claims, placeholders, contact information, c
 - [ ] **Session & CSRF Secrets:** Generate 64-character random cryptographic keys for `ADMIN_SESSION_SECRET` and `CSRF_SECRET`.
 - [ ] **Distributed Rate Limiting:** If deploying to a multi-instance autoscaling cluster or serverless edge, supply a managed Redis backend implementing the `RateLimiter` interface (`lib/rate-limit.ts`).
 
+### 7. Visual Design & Theme Standardization (Phase 8)
+- [x] **Future Green Dark Theme Unified:** Realigned all pages (`/`, `/application`, `/partner`) to consistent dark aesthetic (`#071B17` background, `#102C25` cards, `#23A875` primary green, `#75E6AE` mint accents, white headings, and muted sage body text).
+
+

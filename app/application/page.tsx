@@ -238,14 +238,14 @@ export default function ApplicationPage() {
       </Section>
 
       {/* Section 4 — Technology Architecture (The 6 Pillars) */}
-      <Section className="py-20 md:py-28 bg-bg-light text-text-main border-b border-border-subtle">
+      <Section className="py-20 md:py-28 bg-bg-surface/30 border-b border-border-dark">
         <Container>
           <FadeIn>
             <div className="max-w-3xl">
-              <Badge variant="outline" className="mb-3 text-text-main border-text-main/20 bg-white">
+              <Badge variant="default" className="mb-3">
                 Technical Foundation
               </Badge>
-              <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-text-main tracking-tight">
+              <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-white tracking-tight">
                 {architecture.heading}
               </h2>
               <p className="mt-4 text-base text-text-muted leading-relaxed">
@@ -259,16 +259,16 @@ export default function ApplicationPage() {
               {architecture.pillars.map((pil) => (
                 <div
                   key={pil.id}
-                  className="bg-white border border-border-subtle rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col justify-between"
+                  className="bg-bg-deep border border-border-dark rounded-2xl p-6 sm:p-8 flex flex-col justify-between hover:border-green-primary/50 transition-colors"
                 >
                   <div>
-                    <div className="h-10 w-10 rounded-xl bg-bg-light border border-border-subtle flex items-center justify-center mb-4">
+                    <div className="h-10 w-10 rounded-xl bg-bg-surface border border-border-dark flex items-center justify-center mb-4">
                       {pillarIcons[pil.id]}
                     </div>
                     <span className="text-[11px] font-mono uppercase text-green-primary font-bold">
                       {pil.tagline}
                     </span>
-                    <h3 className="font-heading font-bold text-lg text-text-main mt-1">
+                    <h3 className="font-heading font-bold text-lg text-white mt-1">
                       {pil.title}
                     </h3>
                     <p className="text-xs sm:text-sm text-text-muted mt-3 leading-relaxed">

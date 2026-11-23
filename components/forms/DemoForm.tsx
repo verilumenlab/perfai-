@@ -47,11 +47,24 @@ export function DemoForm() {
     setErrorMessage(null);
 
     try {
+      let utmSource: string | undefined;
+      let utmMedium: string | undefined;
+      let utmCampaign: string | undefined;
+      if (typeof window !== "undefined") {
+        const params = new URLSearchParams(window.location.search);
+        utmSource = params.get("utm_source") || undefined;
+        utmMedium = params.get("utm_medium") || undefined;
+        utmCampaign = params.get("utm_campaign") || undefined;
+      }
+
       const payload = {
         ...data,
         enquiryType: "DEMO",
         formLoadTime,
         sourcePage: typeof window !== "undefined" ? window.location.pathname : "/",
+        utmSource,
+        utmMedium,
+        utmCampaign,
       };
 
       const res = await fetch("/api/leads", {
@@ -128,7 +141,7 @@ export function DemoForm() {
       aria-label="Request a demonstration form"
     >
       {/* Hidden Honeypot */}
-      <div className="hidden" aria-hidden="true">
+      <div className="absolute opacity-0 -z-50 pointer-events-none h-0 w-0 overflow-hidden" aria-hidden="true">
         <label htmlFor="hp_website_demo">Leave this field blank</label>
         <input
           id="hp_website_demo"

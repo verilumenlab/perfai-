@@ -191,14 +191,14 @@ export default function PartnerPage() {
       </Section>
 
       {/* Section 3 — How We Work: 4 Steps */}
-      <Section className="py-20 md:py-28 bg-bg-light text-text-main border-b border-border-subtle">
+      <Section className="py-20 md:py-28 bg-bg-surface/40 border-b border-border-dark">
         <Container>
           <FadeIn>
             <div className="max-w-3xl">
-              <Badge variant="outline" className="mb-3 text-text-main border-text-main/20 bg-white">
+              <Badge variant="mint" className="mb-3">
                 {howWeWork.badge}
               </Badge>
-              <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-text-main tracking-tight">
+              <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-white tracking-tight">
                 {howWeWork.title}
               </h2>
               <p className="mt-4 text-base text-text-muted leading-relaxed">
@@ -212,14 +212,14 @@ export default function PartnerPage() {
               {howWeWork.steps.map((st, idx) => (
                 <div
                   key={idx}
-                  className="bg-white border border-border-subtle rounded-2xl p-6 sm:p-7 shadow-sm flex flex-col justify-between"
+                  className="bg-bg-deep border border-border-dark rounded-2xl p-6 sm:p-7 flex flex-col justify-between hover:border-green-primary/50 transition-colors"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-4">
                       <span className="text-xs font-mono text-green-primary font-bold">
                         {st.step}
                       </span>
-                      <div className="h-9 w-9 rounded-lg bg-bg-light border border-border-subtle flex items-center justify-center">
+                      <div className="h-9 w-9 rounded-lg bg-bg-surface border border-border-dark flex items-center justify-center">
                         {stepIcons[idx]}
                       </div>
                     </div>
@@ -227,7 +227,7 @@ export default function PartnerPage() {
                     <span className="text-[11px] font-mono uppercase text-green-primary font-semibold block">
                       {st.name}
                     </span>
-                    <h3 className="font-heading font-bold text-base text-text-main mt-0.5">
+                    <h3 className="font-heading font-bold text-base text-white mt-0.5">
                       {st.title}
                     </h3>
                     <p className="text-xs text-text-muted mt-2.5 leading-relaxed">

@@ -154,6 +154,7 @@ export function LeadDetailModal({ lead, onClose, onLeadUpdated }: LeadDetailModa
             <div className="flex items-center gap-2">
               <span className="text-xs text-text-muted">Status:</span>
               <select
+                id="status_select"
                 value={status}
                 disabled={isUpdating}
                 onChange={(e) => handleStatusChange(e.target.value)}
@@ -170,6 +171,7 @@ export function LeadDetailModal({ lead, onClose, onLeadUpdated }: LeadDetailModa
             <div className="flex items-center gap-2">
               <span className="text-xs text-text-muted">Priority:</span>
               <select
+                id="priority_select"
                 value={priority}
                 disabled={isUpdating}
                 onChange={(e) => handlePriorityChange(e.target.value)}

@@ -7,9 +7,9 @@
   --mint-accent: #75E6AE;
   --bg-light: #F5FAF7;
   --white: #FFFFFF;
-  --text-main: #14251F;
+  --text-main: #FFFFFF;
   --text-muted: #9EB1A9;
-  --border-subtle: #DCE8E0;
+  --border-subtle: rgba(220, 232, 224, 0.12);
   --border-dark: rgba(220, 232, 224, 0.15);
 }
 

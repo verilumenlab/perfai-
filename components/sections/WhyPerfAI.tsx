@@ -29,14 +29,14 @@ export function WhyPerfAI() {
   ];
 
   return (
-    <section id="about" className="w-full py-20 md:py-28 bg-bg-light text-text-main border-t border-border-subtle">
+    <section id="about" className="w-full py-20 md:py-28 bg-bg-deep text-white border-t border-border-dark">
       <Container>
         <FadeIn>
           <div className="max-w-3xl">
-            <Badge variant="outline" className="mb-3 text-text-main border-text-main/20 bg-white">
+            <Badge variant="default" className="mb-4">
               Reseller Partnership Value
             </Badge>
-            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl text-text-main tracking-tight">
+            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight">
               Why Partner with PerfAI?
             </h2>
             <p className="mt-4 text-base sm:text-lg text-text-muted leading-relaxed">
@@ -51,13 +51,13 @@ export function WhyPerfAI() {
             {points.map((p, idx) => (
               <div
                 key={idx}
-                className="bg-white border border-border-subtle rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col justify-between"
+                className="bg-bg-surface border border-border-dark rounded-2xl p-6 sm:p-8 flex flex-col justify-between hover:border-green-primary/50 transition-colors"
               >
                 <div>
-                  <div className="h-12 w-12 rounded-xl bg-bg-light border border-border-subtle flex items-center justify-center mb-5">
+                  <div className="h-12 w-12 rounded-xl bg-bg-deep border border-border-dark flex items-center justify-center mb-5">
                     {p.icon}
                   </div>
-                  <h3 className="font-heading font-bold text-lg sm:text-xl text-text-main">
+                  <h3 className="font-heading font-bold text-lg sm:text-xl text-white">
                     {p.title}
                   </h3>
                   <p className="text-sm text-text-muted mt-2.5 leading-relaxed">
@@ -65,7 +65,7 @@ export function WhyPerfAI() {
                   </p>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-border-subtle">
+                <div className="mt-6 pt-4 border-t border-border-dark">
                   <span className="text-[11px] font-mono text-green-primary font-semibold">
                     Substantiated Reseller Capability
                   </span>

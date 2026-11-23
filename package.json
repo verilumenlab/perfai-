@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "test": "node --experimental-strip-types --test tests/unit/*.test.mjs",
+    "qa": "node --experimental-strip-types tests/e2e/run-all-qa.mjs",
     "admin:create": "node scripts/create-admin.mjs"
   },
   "dependencies": {

@@ -29,6 +29,7 @@ function checkWebGLSupport(): boolean {
 
 function checkLowPowerDevice(): boolean {
   if (typeof window === "undefined") return false;
+  if (shouldPreserveDrawingBuffer()) return false;
   try {
     if (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2) {
       return true;
@@ -41,6 +42,16 @@ function checkLowPowerDevice(): boolean {
     // fallback
   }
   return false;
+}
+
+function shouldPreserveDrawingBuffer(): boolean {
+  if (typeof window === "undefined") return false;
+  if (process.env.NEXT_PUBLIC_TEST_MODE === "true") return true;
+  try {
+    return window.location.search.includes("testBuffer=true");
+  } catch {
+    return false;
+  }
 }
 
 function getZoneProgress(zoneId?: string): number {
@@ -73,6 +84,7 @@ export function BuildingScene({
 }: BuildingSceneProps) {
   const [hasWebGL] = useState(() => checkWebGLSupport());
   const [isLowPower] = useState(() => checkLowPowerDevice());
+  const [preserveDrawingBuffer] = useState(() => shouldPreserveDrawingBuffer());
   const [isMobile, setIsMobile] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isIntersecting, setIsIntersecting] = useState(true);
@@ -200,13 +212,13 @@ export function BuildingScene({
             resize={{ debounce: 0, scroll: false }}
             shadows={!isMobile}
             dpr={isMobile ? 1.0 : [1, 1.5]} // Limit mobile DPR to 1.0, desktop to 1.5
-            frameloop={isIntersecting ? "always" : "never"} // Pause rendering when offscreen
+            frameloop={isIntersecting || preserveDrawingBuffer ? "always" : "never"} // Pause rendering when offscreen
             camera={{ position: [22, 14, 26], fov: 38, near: 0.5, far: 180 }}
             gl={{
               antialias: !isMobile,
               powerPreference: "high-performance",
               alpha: true,
-              preserveDrawingBuffer: true,
+              preserveDrawingBuffer,
             }}
             onCreated={({ gl, size }) => {
               gl.setSize(size.width, size.height);

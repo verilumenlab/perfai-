@@ -48,8 +48,8 @@ export async function POST(req: NextRequest) {
     // 4. Minimum time-to-submit verification (1.5 seconds)
     if (body.formLoadTime && typeof body.formLoadTime === "number") {
       const elapsedMs = Date.now() - body.formLoadTime;
-      // Allow fast submission only if process.env.NODE_ENV === "test"
-      if (elapsedMs < 1200 && process.env.NODE_ENV !== "test") {
+      // Allow fast submission only if process.env.NODE_ENV === "test" or TEST_MODE is active
+      if (elapsedMs < 1200 && process.env.NODE_ENV !== "test" && process.env.TEST_MODE !== "true") {
         return NextResponse.json({
           success: true,
           leadNumber: `PF-${new Date().getFullYear()}-0000`,

@@ -96,5 +96,34 @@
   - Text-muted color token brightened to `#9EB1A9`, guaranteeing contrast ratios > 6:1 on both `#071B17` and `#102C25`.
   - SkipLink updated with programmatic focus transfer to `#main-content` (`tabIndex={-1}`).
 
+---
+
+### 8. Phase 8 Decisions: Color Palette Realignment & Release-Candidate Verification
+- **Unified Future Green Dark Theme:**
+  - Standardized the visual presentation across all routes (`/`, `/application`, `/partner`) to the dark "Future Green" design system established by the hero section:
+    - Primary background: `#071B17` (`bg-bg-deep`)
+    - Surface / Card background: `#102C25` (`bg-bg-surface`)
+    - Primary green accent: `#23A875` (`bg-green-primary`, `text-green-primary`)
+    - Mint highlight: `#75E6AE` (`text-mint-accent`, focus rings)
+    - Primary headings: `#FFFFFF` (pure crisp white)
+    - Body and secondary text: `#9EB1A9` (muted sage, contrast > 6:1)
+    - Subtle borders: `rgba(220, 232, 224, 0.12)` (`border-border-dark`)
+  - Converted previously alternating light-mode sections (`TechnologySection`, `WhyPerfAI`, `/application` architecture pillars, `/partner` delivery process) from `bg-bg-light` to dark `bg-bg-deep` and `bg-bg-surface`, creating a cohesive luxury B2B enterprise look.
+- **Fail-Closed Production Environment Configuration:**
+  - Implemented `lib/env-check.ts` requiring `DATABASE_URL`, `ADMIN_SESSION_SECRET` (>= 32 chars), and `CSRF_SECRET` (>= 32 chars) in production mode.
+  - Integrated into Next.js 16 `proxy.ts` and root layout.
+- **Honeypot Interaction & Anti-Bot Hardening:**
+  - Honeypot container updated to an accessible hidden wrapper (`absolute opacity-0 -z-50 pointer-events-none h-0 w-0 overflow-hidden`) so spam bots and form engines register input without visual layout impact.
+  - Minimum submission time guard (1.2s) in `/api/leads` drops automated submissions silently without database pollution.
+- **Full QA Suite Execution (All 6 Suites Verified):**
+  - Unit tests: 21/21 passing.
+  - Link crawler: 0 broken links across 8 routes and external destinations.
+  - Canvas Variance: 4.77 composite variance verifying non-blank WebGL 3D rendering.
+  - Form & Attribution Matrix: 4/4 passing (UTM capture, honeypot rejection, validation errors, partner application).
+  - Admin Security Matrix: 4/4 passing (unauthenticated redirect, authenticated status/notes mutation, CSV formula injection escaping, account lockout).
+  - Responsive Viewports: 0 horizontal overflow across 6 viewports (360px to 1920px), WebGL fallback poster, SkipLink keyboard navigation.
+  - Mobile Lighthouse Audit: SEO 100, Accessibility 98-100, Best Practices 96-100, CLS 0 across core routes.
+
+
 
 

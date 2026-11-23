@@ -15,7 +15,7 @@ export function Section({
     <section
       className={cn(
         "w-full py-16 md:py-24",
-        dark ? "bg-bg-deep text-white" : "bg-bg-light text-text-main",
+        dark ? "bg-bg-deep text-white" : "bg-bg-surface text-white",
         className
       )}
       {...props}
