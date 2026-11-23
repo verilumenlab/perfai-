@@ -28,11 +28,11 @@ export const siteConfig = {
   },
 
   contact: {
-    salesEmail: "sales@perfai.in", // TODO(contact): Confirm operational mailbox
-    supportEmail: "support@perfai.in", // TODO(contact): Confirm operational mailbox
-    phone: "+91 (0) 0000 000 000", // TODO(contact): Replace placeholder business phone
+    salesEmail: "Business email (to be confirmed)", // TODO(contact): Confirm operational mailbox
+    supportEmail: "Business support (to be confirmed)", // TODO(contact): Confirm operational mailbox
+    phone: "Business phone (to be confirmed)", // TODO(contact): Replace placeholder business phone
     address: {
-      line1: "Business Tower, Tech Corridor", // TODO(contact): Add registered office address
+      line1: "Business address (to be confirmed)", // TODO(contact): Add registered office address
       city: "Bengaluru",
       region: "Karnataka",
       country: "India",

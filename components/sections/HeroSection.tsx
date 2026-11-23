@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { siteConfig } from "@/lib/site-config";
 import { homeContent } from "@/content/home";
 import { Container } from "@/components/ui/Container";
@@ -9,6 +12,15 @@ import { Card } from "@/components/ui/Card";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { BuildingPoster } from "@/components/three/BuildingPoster";
 import { ArrowRight } from "lucide-react";
+
+// Lazy-load the client-only 3D Building Scene behind the static LCP poster
+const BuildingScene = dynamic(
+  () => import("@/components/three/BuildingScene").then((m) => m.BuildingScene),
+  {
+    ssr: false,
+    loading: () => <BuildingPoster />,
+  }
+);
 
 export function HeroSection() {
   const { hero, products } = homeContent;
@@ -58,9 +70,9 @@ export function HeroSection() {
           </div>
         </FadeIn>
 
-        {/* 3D Scene Poster Fallback Area */}
+        {/* 3D Scene with Static Poster LCP Fallback */}
         <FadeIn delay={0.2} className="mt-12 sm:mt-16">
-          <BuildingPoster />
+          <BuildingScene />
         </FadeIn>
 
         {/* Four Product Labels */}
@@ -91,4 +103,3 @@ export function HeroSection() {
     </section>
   );
 }
-

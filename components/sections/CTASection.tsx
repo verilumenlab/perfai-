@@ -20,7 +20,7 @@ export function CTASection() {
             />
 
             <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-              {/* Left Column: Context & Reassurance */}
+              {/* Left Column: Context & Verified Reassurance Points */}
               <div className="lg:col-span-7">
                 <Badge variant="default" className="mb-4">
                   Request a Demonstration
@@ -33,13 +33,25 @@ export function CTASection() {
                 </p>
 
                 <div className="mt-6 space-y-3">
+                  {/* Verified point 1: Source senatria.ai/solutions/buildingshield */}
                   <div className="flex items-start gap-3 text-xs sm:text-sm text-white/90">
                     <CheckCircle2 className="w-4 h-4 text-green-primary shrink-0 mt-0.5" />
-                    <span>Evaluation of existing BMS and metering protocols</span>
+                    <span>
+                      Connects directly with existing Building Management Systems (BMS), HVAC, and sub-metering feeds.
+                      <span className="block text-[10px] text-text-muted mt-0.5 font-mono">
+                        (Source: senatria.ai — BuildingShield architecture)
+                      </span>
+                    </span>
                   </div>
+                  {/* Verified point 2: Source senatria.ai/platform/atria */}
                   <div className="flex items-start gap-3 text-xs sm:text-sm text-white/90">
                     <Shield className="w-4 h-4 text-green-primary shrink-0 mt-0.5" />
-                    <span>Governed autonomy operating within pre-approved safety limits</span>
+                    <span>
+                      Autonomous operations execute strictly within pre-approved, site-defined safety boundaries.
+                      <span className="block text-[10px] text-text-muted mt-0.5 font-mono">
+                        (Source: senatria.ai — ATRIA Governance Engine)
+                      </span>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -81,4 +93,3 @@ export function CTASection() {
     </section>
   );
 }
-
