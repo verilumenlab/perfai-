@@ -54,7 +54,7 @@ export default function ApplicationPage() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <Section className="pt-16 pb-20 md:pt-24 md:pb-28 bg-bg-deep border-b border-border-dark relative overflow-hidden">
+      <Section className="pt-28 pb-20 sm:pt-36 sm:pb-28 md:pt-40 md:pb-32 bg-bg-deep border-b border-border-dark relative overflow-hidden">
         <div
           className="absolute top-0 right-1/4 w-96 h-96 bg-green-primary/10 rounded-full blur-[130px] pointer-events-none"
           aria-hidden="true"

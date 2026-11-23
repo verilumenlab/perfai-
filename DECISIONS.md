@@ -125,8 +125,10 @@
   - Mobile Lighthouse Audit: SEO 100, Accessibility 98-100, Best Practices 96-100, CLS 0 across core routes.
 - **Navbar & Hero Section Typography Redesign:**
   - Streamlined navbar brand logo to display strictly `[P] PerfAI` without redundant partner badges or provider suffixes.
-  - Redesigned navigation into a glassmorphic floating pill container with centered links and a pill CTA button.
+  - Implemented a Modern Floating Capsule / Island navbar (`fixed top-3 sm:top-5 inset-x-0`) with rounded-full pill container (`max-w-[1100px] rounded-full bg-bg-surface/80 backdrop-blur-lg border border-border-dark/80 shadow-xl`), centered navigation, and glowing pill CTA.
+  - Adjusted top spacing across all pages (`pt-28 pb-20 sm:pt-36 sm:pb-28 md:pt-40 md:pb-32`) to accommodate the floating capsule geometry with 0 content overlap.
   - Enhanced hero headline typography across `/`, `/application`, and `/partner` with crisp white headers and radiant gradient highlights (`bg-gradient-to-r from-mint-accent via-emerald-300 to-green-primary bg-clip-text text-transparent`) for key value statements.
+
 
 
 

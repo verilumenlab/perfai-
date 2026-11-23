@@ -26,7 +26,7 @@ export function HeroSection() {
   const { hero, products } = homeContent;
 
   return (
-    <section className="relative w-full pt-12 pb-20 md:pt-20 md:pb-28 bg-bg-deep overflow-hidden">
+    <section className="relative w-full pt-28 pb-20 sm:pt-36 sm:pb-28 md:pt-40 md:pb-32 bg-bg-deep overflow-hidden">
       {/* Soft gradient illumination */}
       <div
         className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[400px] bg-green-primary/10 rounded-full blur-[140px] pointer-events-none"

@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 export default function CookiesPage() {
   return (
-    <Section className="py-20 md:py-28 bg-bg-deep text-white">
+    <Section className="pt-28 pb-20 sm:pt-36 sm:pb-28 md:pt-40 md:pb-32 bg-bg-deep text-white">
       <Container>
         <div className="max-w-3xl mx-auto">
           <Badge variant="outline" className="mb-4 text-mint-accent">
