@@ -14,7 +14,7 @@ export function IndustrySolutions() {
         <FadeIn>
           <div className="max-w-3xl">
             <Badge variant="default" className="mb-4">
-              Infrastructure Sectors
+              Where it applies
             </Badge>
             <h2 className="font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight">
               {heading}
@@ -25,16 +25,10 @@ export function IndustrySolutions() {
           </div>
         </FadeIn>
 
-        {/* 5 Industry Cards (Asymmetric responsive grid: 2 on tablet, 3 on desktop, 2 below) */}
-        <FadeIn delay={0.2} className="mt-14">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {sectors.slice(0, 3).map((item, index) => (
+        <FadeIn delay={0.12} className="mt-14">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-12">
+            {sectors.map((item, index) => (
               <IndustryCard key={item.id} item={item} index={index} />
-            ))}
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 max-w-4xl mx-auto">
-            {sectors.slice(3).map((item, index) => (
-              <IndustryCard key={item.id} item={item} index={index + 3} />
             ))}
           </div>
         </FadeIn>
@@ -42,4 +36,3 @@ export function IndustrySolutions() {
     </section>
   );
 }
-

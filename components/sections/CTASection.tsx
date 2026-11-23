@@ -11,78 +11,68 @@ export function CTASection() {
     <section id="demo" className="w-full py-20 md:py-28 bg-bg-deep text-white border-t border-border-dark scroll-mt-20">
       <Container>
         <FadeIn>
-          <div className="bg-bg-surface border border-border-dark rounded-3xl p-8 sm:p-12 lg:p-16 relative overflow-hidden">
-            {/* Ambient accent */}
-            <div
-              className="absolute top-0 right-0 w-96 h-96 bg-green-primary/10 rounded-full blur-3xl pointer-events-none"
-              aria-hidden="true"
-            />
+          <div className="mb-12 md:mb-14 max-w-2xl">
+            <Badge variant="default" className="mb-4">
+              Request a demonstration
+            </Badge>
+            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight leading-tight">
+              See Physical AI on your infrastructure terms.
+            </h2>
+            <p className="mt-4 text-base sm:text-lg text-text-muted leading-relaxed">
+              Schedule a technical demonstration of Senatria&apos;s ATRIA platform and Shield solutions. Our team will review your facility parameters and deployment path.
+            </p>
+          </div>
+        </FadeIn>
 
-            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-              {/* Left Column: Context & Verified Reassurance Points */}
-              <div className="lg:col-span-5">
-                <Badge variant="default" className="mb-4">
-                  Request a Demonstration
-                </Badge>
-                <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-white tracking-tight leading-tight">
-                  Ready to See Physical AI in Action?
-                </h2>
-                <p className="mt-4 text-base text-text-muted leading-relaxed">
-                  Schedule a technical demonstration of Senatria&apos;s ATRIA platform and Shield solutions. Our engineering team will review your infrastructure parameters and explain the deployment process.
+        <FadeIn delay={0.1}>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+            <div className="lg:col-span-4 space-y-6">
+              <div className="flex items-start gap-3 text-sm text-white/90">
+                <CheckCircle2 className="w-4 h-4 text-green-primary shrink-0 mt-0.5" />
+                <span>
+                  Connects with existing BMS, HVAC, and sub-metering feeds.
+                  <span className="block text-[11px] text-text-muted mt-1 font-mono">
+                    Source: senatria.ai — BuildingShield
+                  </span>
+                </span>
+              </div>
+              <div className="flex items-start gap-3 text-sm text-white/90">
+                <Shield className="w-4 h-4 text-green-primary shrink-0 mt-0.5" />
+                <span>
+                  Actions stay inside site-defined safety boundaries.
+                  <span className="block text-[11px] text-text-muted mt-1 font-mono">
+                    Source: senatria.ai — ATRIA Governance
+                  </span>
+                </span>
+              </div>
+
+              <div className="pt-6 border-t border-border-dark">
+                <span className="text-xs font-mono text-mint-accent uppercase tracking-wider block mb-1">
+                  Partner inquiries
+                </span>
+                <p className="text-sm text-text-muted leading-relaxed">
+                  Systems integration, commercial partnership, or distribution?
                 </p>
-
-                <div className="mt-8 space-y-4">
-                  {/* Verified point 1: Source senatria.ai/solutions/buildingshield */}
-                  <div className="flex items-start gap-3 text-xs sm:text-sm text-white/90">
-                    <CheckCircle2 className="w-4 h-4 text-green-primary shrink-0 mt-0.5" />
-                    <span>
-                      Connects directly with existing Building Management Systems (BMS), HVAC, and sub-metering feeds.
-                      <span className="block text-[10px] text-text-muted mt-0.5 font-mono">
-                        (Source: senatria.ai — BuildingShield architecture)
-                      </span>
-                    </span>
-                  </div>
-                  {/* Verified point 2: Source senatria.ai/platform/atria */}
-                  <div className="flex items-start gap-3 text-xs sm:text-sm text-white/90">
-                    <Shield className="w-4 h-4 text-green-primary shrink-0 mt-0.5" />
-                    <span>
-                      Autonomous operations execute strictly within pre-approved, site-defined safety boundaries.
-                      <span className="block text-[10px] text-text-muted mt-0.5 font-mono">
-                        (Source: senatria.ai — ATRIA Governance Engine)
-                      </span>
-                    </span>
-                  </div>
-                </div>
-
-                <div className="mt-8 p-4 rounded-xl bg-bg-deep border border-border-dark">
-                  <span className="text-xs font-mono text-mint-accent uppercase tracking-wider block mb-1">
-                    Partner Inquiries
-                  </span>
-                  <p className="text-xs text-text-muted leading-relaxed">
-                    Interested in systems integration, commercial partnership, or distributor relationships?
-                  </p>
-                  <Link
-                    href="/partner#partner-form"
-                    className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-white hover:text-mint-accent transition-colors"
-                  >
-                    <span>Explore partnership engagement</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
-                </div>
+                <Link
+                  href="/partner#partner-form"
+                  className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-mint-accent hover:text-white transition-colors"
+                >
+                  <span>Explore partnership engagement</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
               </div>
+            </div>
 
-              {/* Right Column: Interactive Demo Form */}
-              <div className="lg:col-span-7 bg-bg-deep border border-border-dark rounded-2xl p-6 sm:p-8">
-                <div className="mb-6">
-                  <span className="text-xs font-mono text-mint-accent uppercase tracking-wider block">
-                    Enterprise Request Form
-                  </span>
-                  <h3 className="font-heading font-bold text-xl text-white mt-1">
-                    Book an Architectural Demonstration
-                  </h3>
-                </div>
-                <DemoForm />
+            <div className="lg:col-span-8 bg-bg-surface border border-border-dark rounded-2xl p-6 sm:p-8 md:p-10">
+              <div className="mb-6 pb-5 border-b border-border-dark">
+                <span className="text-xs font-mono text-mint-accent uppercase tracking-wider block">
+                  Enterprise request
+                </span>
+                <h3 className="font-heading font-bold text-xl sm:text-2xl text-white mt-1">
+                  Book an architectural demonstration
+                </h3>
               </div>
+              <DemoForm />
             </div>
           </div>
         </FadeIn>

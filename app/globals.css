@@ -1,16 +1,28 @@
 @import "tailwindcss";
 
 :root {
-  --bg-deep: #071B17;
-  --bg-surface: #102C25;
-  --green-primary: #23A875;
-  --mint-accent: #75E6AE;
-  --bg-light: #F5FAF7;
-  --white: #FFFFFF;
-  --text-main: #FFFFFF;
-  --text-muted: #9EB1A9;
+  /* Future Green */
+  --bg-deep: #071b17;
+  --bg-surface: #102c25;
+  --green-primary: #23a875;
+  --mint-accent: #75e6ae;
+  --bg-light: #f5faf7;
+  --white: #ffffff;
+  --text-main: #ffffff;
+  --text-muted: #9eb1a9;
   --border-subtle: rgba(220, 232, 224, 0.12);
   --border-dark: rgba(220, 232, 224, 0.15);
+  --ink-dark: #14251f;
+
+  /* Daylit aliases (kept for pages still using light surfaces) */
+  --bg-canvas: #f0f4f2;
+  --bg-panel: #ffffff;
+  --ink: #0c1612;
+  --ink-muted: #5a6b64;
+  --forest: #0f5c45;
+  --signal: #1fa971;
+  --line: rgba(12, 22, 18, 0.1);
+  --stone: #e4ebe7;
 }
 
 @theme {
@@ -24,6 +36,16 @@
   --color-text-muted: var(--text-muted);
   --color-border-subtle: var(--border-subtle);
   --color-border-dark: var(--border-dark);
+  --color-ink-dark: var(--ink-dark);
+
+  --color-bg-canvas: var(--bg-canvas);
+  --color-bg-panel: var(--bg-panel);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-forest: var(--forest);
+  --color-signal: var(--signal);
+  --color-line: var(--line);
+  --color-stone: var(--stone);
 
   --font-heading: var(--font-manrope), sans-serif;
   --font-body: var(--font-inter), sans-serif;
@@ -44,4 +66,9 @@ body {
 :focus-visible {
   outline: 2px solid var(--mint-accent);
   outline-offset: 3px;
+}
+
+::selection {
+  background-color: color-mix(in srgb, var(--green-primary) 35%, transparent);
+  color: var(--white);
 }

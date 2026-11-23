@@ -3,105 +3,112 @@
 import React from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import { motion, useReducedMotion } from "framer-motion";
 import { siteConfig } from "@/lib/site-config";
-import { homeContent } from "@/content/home";
-import { Container } from "@/components/ui/Container";
-import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
-import { FadeIn } from "@/components/ui/FadeIn";
 import { BuildingPoster } from "@/components/three/BuildingPoster";
 import { ArrowRight } from "lucide-react";
 
-// Lazy-load the client-only 3D Building Scene behind the static LCP poster
 const BuildingScene = dynamic(
   () => import("@/components/three/BuildingScene").then((m) => m.BuildingScene),
   {
     ssr: false,
-    loading: () => <BuildingPoster />,
+    loading: () => <BuildingPoster variant="hero" />,
   }
 );
 
 export function HeroSection() {
-  const { hero, products } = homeContent;
+  const reduceMotion = useReducedMotion();
+
+  const rise = (delay: number) =>
+    reduceMotion
+      ? undefined
+      : {
+          initial: { opacity: 0, y: 24 },
+          animate: { opacity: 1, y: 0 },
+          transition: {
+            duration: 0.65,
+            delay,
+            ease: [0.21, 0.47, 0.32, 0.98] as const,
+          },
+        };
 
   return (
-    <section className="relative w-full pt-28 pb-20 sm:pt-36 sm:pb-28 md:pt-40 md:pb-32 bg-bg-deep overflow-hidden">
-      {/* Soft gradient illumination */}
+    <section className="relative w-full h-[calc(100svh-4rem)] md:h-[calc(100svh-5rem)] min-h-[560px] flex flex-col overflow-hidden bg-bg-deep">
+      {/* Full-bleed layered scene (single canvas, lazy) */}
+      <div className="absolute inset-0 z-0">
+        <BuildingScene
+          mode="scroll"
+          variant="hero"
+          className="!h-full !max-h-none !min-h-full !aspect-auto !rounded-none !border-0"
+        />
+      </div>
+
+      {/* Left readable gradient (~48%) */}
       <div
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[400px] bg-green-primary/10 rounded-full blur-[140px] pointer-events-none"
+        className="absolute inset-y-0 left-0 z-10 w-full md:w-[52%] pointer-events-none bg-gradient-to-r from-bg-deep via-bg-deep/85 to-transparent"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute inset-x-0 bottom-0 z-10 h-32 pointer-events-none bg-gradient-to-t from-bg-deep/80 to-transparent"
         aria-hidden="true"
       />
 
-      <Container className="relative z-10">
-        <FadeIn direction="up">
-          <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
-            {/* Reseller / Partner Badge */}
-            <Badge variant="default" className="mb-6 px-4 py-1.5 shadow-sm border-green-primary/40 bg-bg-surface/80 backdrop-blur-sm">
-              <span className="h-2 w-2 rounded-full bg-mint-accent animate-pulse" />
-              <span>{siteConfig.resellerBadge}</span>
-            </Badge>
-
-            {/* H1 Headline */}
-            <h1 className="font-heading font-extrabold text-4xl sm:text-6xl lg:text-7xl text-white tracking-tight leading-[1.08] max-w-4xl">
-              Make Your Infrastructure Smarter.{" "}
-              <span className="bg-gradient-to-r from-mint-accent via-emerald-300 to-green-primary bg-clip-text text-transparent drop-shadow-[0_0_35px_rgba(117,230,174,0.35)]">
-                More Efficient. More Valuable.
+      <div className="relative z-20 flex-1 flex flex-col justify-center">
+        <div className="w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[48%] min-w-[min(100%,20rem)]">
+            <motion.div {...rise(0.05)}>
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold tracking-wide bg-bg-surface/80 border border-green-primary/30 text-mint-accent backdrop-blur-sm">
+                <span className="h-1.5 w-1.5 rounded-full bg-mint-accent" aria-hidden="true" />
+                {siteConfig.resellerBadge}
               </span>
-            </h1>
+            </motion.div>
 
-            {/* Subtitle */}
-            <p className="mt-6 text-base sm:text-lg text-text-muted max-w-2xl leading-relaxed">
-              {hero.supportingText}
-            </p>
+            <motion.h1
+              className="mt-6 font-heading font-extrabold text-[clamp(1.85rem,4.2vw,3.35rem)] text-white tracking-tight leading-[1.12]"
+              {...rise(0.15)}
+            >
+              Make Your Infrastructure
+              <br />
+              Smarter. More Efficient.
+              <br />
+              <span className="text-mint-accent">More Valuable.</span>
+            </motion.h1>
 
-            {/* CTA Buttons */}
-            <div className="mt-8 flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-              <Link href="/application" className="w-full sm:w-auto">
-                <Button variant="primary" size="lg" className="w-full sm:w-auto">
+            <motion.p
+              className="mt-5 text-base sm:text-lg text-text-muted max-w-md leading-relaxed"
+              {...rise(0.28)}
+            >
+              Discover Senatria&apos;s Physical AI platform and solutions, brought to you by PerfAI, your technology partner.
+            </motion.p>
+
+            <motion.div
+              className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3"
+              {...rise(0.4)}
+            >
+              <Link href="/application">
+                <Button
+                  variant="primary"
+                  size="lg"
+                  className="w-full sm:w-auto bg-green-primary text-bg-deep hover:bg-mint-accent focus-visible:ring-mint-accent focus-visible:ring-offset-bg-deep"
+                >
                   <span>Explore the Application</span>
                   <ArrowRight className="w-4 h-4 ml-1" />
                 </Button>
               </Link>
-              <Link href="/#demo" className="w-full sm:w-auto">
-                <Button variant="secondary" size="lg" className="w-full sm:w-auto">
+              <Link href="/#demo">
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  className="w-full sm:w-auto bg-bg-surface/80 text-white border-border-dark hover:border-green-primary focus-visible:ring-mint-accent focus-visible:ring-offset-bg-deep"
+                >
                   <span>Request a Demo</span>
                 </Button>
               </Link>
-            </div>
+            </motion.div>
           </div>
-        </FadeIn>
-
-        {/* 3D Scene with Static Poster LCP Fallback */}
-        <FadeIn delay={0.2} className="mt-12 sm:mt-16">
-          <BuildingScene />
-        </FadeIn>
-
-        {/* Four Product Labels */}
-        <FadeIn delay={0.3} className="mt-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {products.map((p, idx) => (
-              <Card
-                key={idx}
-                className="group transition-all duration-200 hover:border-green-primary/50"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-mono text-mint-accent uppercase tracking-wider">
-                    {p.name}
-                  </span>
-                  <span className="text-[10px] text-text-muted font-mono">0{idx + 1}</span>
-                </div>
-                <h3 className="font-heading font-bold text-sm text-white mt-2 group-hover:text-mint-accent transition-colors">
-                  {p.role}
-                </h3>
-                <p className="text-xs text-text-muted mt-1 leading-relaxed">
-                  {p.description}
-                </p>
-              </Card>
-            ))}
-          </div>
-        </FadeIn>
-      </Container>
+        </div>
+      </div>
     </section>
   );
 }

@@ -1,0 +1,146 @@
+[
+  {
+    "width": 360,
+    "label": "scroll0",
+    "file": "C:\\pfai\\qa\\hero-beachfront\\360-scroll0.png"
+  },
+  {
+    "width": 360,
+    "label": "scrollMid",
+    "file": "C:\\pfai\\qa\\hero-beachfront\\360-scrollMid.png"
+  },
+  {
+    "width": 360,
+    "label": "scrollEnd",
+    "file": "C:\\pfai\\qa\\hero-beachfront\\360-scrollEnd.png"
+  },
+  {
+    "width": 360,
+    "variance": {
+      "ok": true,
+      "width": 360,
+      "height": 560,
+      "type": "canvas"
+    }
+  },
+  {
+    "width": 390,
+    "label": "scroll0",
+    "file": "C:\\pfai\\qa\\hero-beachfront\\390-scroll0.png"
+  },
+  {
+    "width": 390,
+    "label": "scrollMid",
+    "file": "C:\\pfai\\qa\\hero-beachfront\\390-scrollMid.png"
+  },
+  {
+    "width": 390,
+    "label": "scrollEnd",
+    "file": "C:\\pfai\\qa\\hero-beachfront\\390-scrollEnd.png"
+  },
+  {
+    "width": 390,
+    "variance": {
+      "ok": true,
+      "width": 390,
+      "height": 560,
+      "type": "canvas"
+    }
+  },
+  {
+    "width": 768,
+    "label": "scroll0",
+    "file": "C:\\pfai\\qa\\hero-beachfront\\768-scroll0.png"
+  },
+  {
+    "width": 768,
+    "label": "scrollMid",
+    "file": "C:\\pfai\\qa\\hero-beachfront\\768-scrollMid.png"
+  },
+  {
+    "width": 768,
+    "label": "scrollEnd",
+    "file": "C:\\pfai\\qa\\hero-beachfront\\768-scrollEnd.png"
+  },
+  {
+    "width": 768,
+    "variance": {
+      "ok": true,
+      "width": 768,
+      "height": 560,
+      "type": "canvas"
+    }
+  },
+  {
+    "width": 1280,
+    "label": "scroll0",
+    "file": "C:\\pfai\\qa\\hero-beachfront\\1280-scroll0.png"
+  },
+  {
+    "width": 1280,
+    "label": "scrollMid",
+    "file": "C:\\pfai\\qa\\hero-beachfront\\1280-scrollMid.png"
+  },
+  {
+    "width": 1280,
+    "label": "scrollEnd",
+    "file": "C:\\pfai\\qa\\hero-beachfront\\1280-scrollEnd.png"
+  },
+  {
+    "width": 1280,
+    "variance": {
+      "ok": true,
+      "width": 1280,
+      "height": 816,
+      "type": "canvas"
+    }
+  },
+  {
+    "width": 1440,
+    "label": "scroll0",
+    "file": "C:\\pfai\\qa\\hero-beachfront\\1440-scroll0.png"
+  },
+  {
+    "width": 1440,
+    "label": "scrollMid",
+    "file": "C:\\pfai\\qa\\hero-beachfront\\1440-scrollMid.png"
+  },
+  {
+    "width": 1440,
+    "label": "scrollEnd",
+    "file": "C:\\pfai\\qa\\hero-beachfront\\1440-scrollEnd.png"
+  },
+  {
+    "width": 1440,
+    "variance": {
+      "ok": true,
+      "width": 1440,
+      "height": 928,
+      "type": "canvas"
+    }
+  },
+  {
+    "width": 1920,
+    "label": "scroll0",
+    "file": "C:\\pfai\\qa\\hero-beachfront\\1920-scroll0.png"
+  },
+  {
+    "width": 1920,
+    "label": "scrollMid",
+    "file": "C:\\pfai\\qa\\hero-beachfront\\1920-scrollMid.png"
+  },
+  {
+    "width": 1920,
+    "label": "scrollEnd",
+    "file": "C:\\pfai\\qa\\hero-beachfront\\1920-scrollEnd.png"
+  },
+  {
+    "width": 1920,
+    "variance": {
+      "ok": true,
+      "width": 1920,
+      "height": 1264,
+      "type": "canvas"
+    }
+  }
+]

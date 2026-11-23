@@ -164,7 +164,7 @@ export function PartnerForm() {
       {/* Name and Email */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="p_fullName" className="block text-xs font-medium text-white/90 mb-1.5">
+          <label htmlFor="p_fullName" className="block text-xs font-medium text-white mb-1.5">
             Full Name <span className="text-mint-accent">*</span>
           </label>
           <input
@@ -185,7 +185,7 @@ export function PartnerForm() {
         </div>
 
         <div>
-          <label htmlFor="p_businessEmail" className="block text-xs font-medium text-white/90 mb-1.5">
+          <label htmlFor="p_businessEmail" className="block text-xs font-medium text-white mb-1.5">
             Business Email <span className="text-mint-accent">*</span>
           </label>
           <input
@@ -209,7 +209,7 @@ export function PartnerForm() {
       {/* Company and Job Title */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="p_companyName" className="block text-xs font-medium text-white/90 mb-1.5">
+          <label htmlFor="p_companyName" className="block text-xs font-medium text-white mb-1.5">
             Company / Organisation <span className="text-mint-accent">*</span>
           </label>
           <input
@@ -230,7 +230,7 @@ export function PartnerForm() {
         </div>
 
         <div>
-          <label htmlFor="p_jobTitle" className="block text-xs font-medium text-white/90 mb-1.5">
+          <label htmlFor="p_jobTitle" className="block text-xs font-medium text-white mb-1.5">
             Job Title / Role <span className="text-mint-accent">*</span>
           </label>
           <input
@@ -254,7 +254,7 @@ export function PartnerForm() {
       {/* Country and Phone */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="p_country" className="block text-xs font-medium text-white/90 mb-1.5">
+          <label htmlFor="p_country" className="block text-xs font-medium text-white mb-1.5">
             Country / Region <span className="text-mint-accent">*</span>
           </label>
           <input
@@ -275,7 +275,7 @@ export function PartnerForm() {
         </div>
 
         <div>
-          <label htmlFor="p_phoneNumber" className="block text-xs font-medium text-white/90 mb-1.5">
+          <label htmlFor="p_phoneNumber" className="block text-xs font-medium text-white mb-1.5">
             Phone Number <span className="text-text-muted text-[10px]">(optional)</span>
           </label>
           <input
@@ -299,7 +299,7 @@ export function PartnerForm() {
       {/* Industry and Partnership Type */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="p_industry" className="block text-xs font-medium text-white/90 mb-1.5">
+          <label htmlFor="p_industry" className="block text-xs font-medium text-white mb-1.5">
             Primary Industry <span className="text-mint-accent">*</span>
           </label>
           <select
@@ -323,7 +323,7 @@ export function PartnerForm() {
         </div>
 
         <div>
-          <label htmlFor="p_partnershipType" className="block text-xs font-medium text-white/90 mb-1.5">
+          <label htmlFor="p_partnershipType" className="block text-xs font-medium text-white mb-1.5">
             Partnership Profile <span className="text-mint-accent">*</span>
           </label>
           <select
@@ -349,7 +349,7 @@ export function PartnerForm() {
 
       {/* Collaboration Message */}
       <div>
-        <label htmlFor="p_message" className="block text-xs font-medium text-white/90 mb-1.5">
+        <label htmlFor="p_message" className="block text-xs font-medium text-white mb-1.5">
           Partnership Overview or Collaboration Scope <span className="text-mint-accent">*</span>
         </label>
         <textarea
@@ -376,12 +376,12 @@ export function PartnerForm() {
             id="p_privacyConsent"
             aria-invalid={!!errors.privacyConsent}
             aria-describedby={errors.privacyConsent ? "p_privacyConsent-error" : undefined}
-            className="mt-1 w-4 h-4 rounded border-border-dark text-green-primary focus:ring-green-primary bg-bg-deep accent-[#23A875]"
+            className="mt-1 w-4 h-4 rounded border-border-dark text-mint-accent focus:ring-green-primary bg-bg-deep accent-[#23A875]"
             {...register("privacyConsent")}
           />
           <span className="text-xs text-text-muted leading-relaxed">
             I consent to PerfAI storing and processing my professional contact information in accordance with the{" "}
-            <Link href="/privacy" target="_blank" className="text-mint-accent underline hover:text-white">
+            <Link href="/privacy" target="_blank" className="text-mint-accent underline hover:text-mint-accent">
               Privacy Policy
             </Link>.
           </span>
@@ -398,7 +398,7 @@ export function PartnerForm() {
         <button
           type="submit"
           disabled={submitStatus === "submitting"}
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-green-primary text-bg-deep text-sm font-semibold hover:bg-mint-accent focus:outline-none focus:ring-2 focus:ring-green-primary focus:ring-offset-2 focus:ring-offset-bg-deep transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-green-primary/10 cursor-pointer"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-green-primary text-bg-deep text-sm font-semibold hover:bg-mint-accent focus:outline-none focus:ring-2 focus:ring-green-primary focus:ring-offset-2 focus:ring-offset-bg-deep transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
         >
           {submitStatus === "submitting" ? (
             <>

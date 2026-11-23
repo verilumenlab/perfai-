@@ -10,7 +10,9 @@ import { BuildingEnvironment } from "./BuildingEnvironment";
 import { ScrollCamera } from "./ScrollCamera";
 import { BuildingLabels } from "./BuildingLabels";
 import { BuildingPoster } from "./BuildingPoster";
+import { HeroDepthScene } from "./hero/HeroDepthScene";
 import { Badge } from "@/components/ui/Badge";
+import { cn } from "@/lib/utils";
 
 function checkWebGLSupport(): boolean {
   if (typeof window === "undefined") return false;
@@ -75,12 +77,15 @@ interface BuildingSceneProps {
   mode?: "scroll" | "walkthrough";
   activeZoneId?: string;
   className?: string;
+  /** Hero uses full-bleed quiet frame */
+  variant?: "default" | "hero";
 }
 
 export function BuildingScene({
   mode = "scroll",
   activeZoneId,
   className = "",
+  variant = "default",
 }: BuildingSceneProps) {
   const [hasWebGL] = useState(() => checkWebGLSupport());
   const [isLowPower] = useState(() => checkLowPowerDevice());
@@ -92,128 +97,146 @@ export function BuildingScene({
   const containerRef = useRef<HTMLDivElement>(null);
 
   const reducedMotion = useReducedMotion();
+  const useBeachfront = mode === "scroll";
+  const lite = isLowPower || isMobile;
 
-  // Purely computed progress: for walkthrough mode, map active zone directly without setState in effect
   const effectiveProgress =
     mode === "walkthrough" && activeZoneId
       ? getZoneProgress(activeZoneId)
       : scrollProgress;
 
-  // Mobile viewport detection
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // 1. IntersectionObserver to pause rendering when offscreen
   useEffect(() => {
     if (!containerRef.current) return;
-
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsIntersecting(entry.isIntersecting);
-      },
+      ([entry]) => setIsIntersecting(entry.isIntersecting),
       { threshold: 0.05 }
     );
-
     observer.observe(containerRef.current);
     return () => observer.disconnect();
   }, []);
 
-  // 2. Lenis Smooth Scroll tracking (strictly disabled when reducedMotion or isLowPower)
   useEffect(() => {
-    if (reducedMotion || isLowPower || mode !== "scroll") return;
-
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: "vertical",
-      gestureOrientation: "vertical",
-      smoothWheel: true,
-    });
+    if (reducedMotion || mode !== "scroll") return;
 
     const onScroll = () => {
-      // Calculate scroll progress over the pinned hero and technology sections
       const heroSection = document.getElementById("hero-pin-container");
       if (heroSection) {
         const rect = heroSection.getBoundingClientRect();
         const totalHeight = heroSection.offsetHeight - window.innerHeight;
         if (totalHeight > 0) {
-          const progress = Math.min(1, Math.max(0, -rect.top / totalHeight));
-          setScrollProgress(progress);
-        }
-      } else {
-        const maxScroll =
-          document.documentElement.scrollHeight - window.innerHeight;
-        if (maxScroll > 0) {
-          const progress = Math.min(1, Math.max(0, window.scrollY / maxScroll));
-          setScrollProgress(progress);
+          setScrollProgress(Math.min(1, Math.max(0, -rect.top / totalHeight)));
         }
       }
     };
 
-    lenis.on("scroll", onScroll);
+    let lenis: Lenis | null = null;
+    let rafId = 0;
 
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
+    if (!isLowPower) {
+      lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: "vertical",
+        gestureOrientation: "vertical",
+        smoothWheel: true,
+      });
+      lenis.on("scroll", onScroll);
+      function raf(time: number) {
+        lenis?.raf(time);
+        rafId = requestAnimationFrame(raf);
+      }
+      rafId = requestAnimationFrame(raf);
     }
-    const rafId = requestAnimationFrame(raf);
 
     window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
 
     return () => {
-      cancelAnimationFrame(rafId);
+      if (rafId) cancelAnimationFrame(rafId);
       window.removeEventListener("scroll", onScroll);
-      lenis.destroy();
+      lenis?.destroy();
     };
   }, [reducedMotion, isLowPower, mode]);
 
-  // If WebGL is completely unsupported, fallback cleanly to the static poster
-  if (!hasWebGL) {
-    return <BuildingPoster />;
+  // Reduced motion / no WebGL / low-power: static composite poster only
+  if (!hasWebGL || reducedMotion || (isLowPower && useBeachfront)) {
+    return (
+      <div
+        ref={containerRef}
+        className={cn(
+          "relative w-full overflow-hidden",
+          variant === "hero"
+            ? "h-full min-h-0 rounded-none border-0"
+            : "aspect-[16/10] sm:aspect-[16/9] min-h-[240px] max-h-[520px] rounded-xl border border-border-dark",
+          className
+        )}
+      >
+        <BuildingPoster variant={variant === "hero" || useBeachfront ? "hero" : "default"} />
+      </div>
+    );
   }
+
+  const showCanvas = !isLowPower;
 
   return (
     <div
       ref={containerRef}
-      className={`relative w-full aspect-[16/10] sm:aspect-[16/9] min-h-[240px] max-h-[520px] rounded-2xl sm:rounded-3xl overflow-hidden border border-border-dark bg-bg-surface ${className}`}
+      className={cn(
+        "relative w-full overflow-hidden bg-bg-deep",
+        variant === "hero"
+          ? "h-full min-h-0 max-h-none aspect-auto rounded-none border-0"
+          : "aspect-[16/10] sm:aspect-[16/9] min-h-[240px] max-h-[520px] rounded-xl border border-border-dark",
+        className
+      )}
     >
-      {/* Illustrative Concept Badge */}
-      <div className="absolute top-4 left-4 z-20 pointer-events-none">
-        <Badge variant="outline" className="text-mint-accent bg-bg-deep/90 border-border-dark text-[10px]">
-          Illustrative 3D Concept
-        </Badge>
-      </div>
+      {variant !== "hero" && mode === "walkthrough" && (
+        <div className="absolute top-4 left-4 z-20 pointer-events-none">
+          <Badge variant="outline" className="text-mint-accent bg-bg-deep/90 border-border-dark text-[10px]">
+            Illustrative 3D Concept
+          </Badge>
+        </div>
+      )}
 
-      {/* Static Poster remains visible as LCP until Canvas is ready */}
       <div
         className={`absolute inset-0 transition-opacity duration-700 pointer-events-none z-10 ${
-          canvasReady && !reducedMotion ? "opacity-0" : "opacity-100"
+          canvasReady ? "opacity-0" : "opacity-100"
         }`}
       >
-        <BuildingPoster />
+        <BuildingPoster variant={useBeachfront ? "hero" : variant} />
       </div>
 
-      {/* 3D WebGL Canvas Layer */}
-      {!isLowPower && (
+      {showCanvas && (
         <div
           className="absolute inset-0 w-full h-full z-0 pointer-events-none"
-          aria-label="Interactive 3D building simulation showing commercial facility architecture (Illustrative)"
+          aria-label="Interactive beachfront building visualization (Illustrative)"
           role="img"
         >
           <Canvas
             className="w-full h-full block"
-            style={{ width: "100%", height: "100%", display: "block", position: "absolute", inset: 0 }}
+            style={{
+              width: "100%",
+              height: "100%",
+              display: "block",
+              position: "absolute",
+              inset: 0,
+            }}
             resize={{ debounce: 0, scroll: false }}
-            shadows={!isMobile}
-            dpr={isMobile ? 1.0 : [1, 1.5]} // Limit mobile DPR to 1.0, desktop to 1.5
-            frameloop={isIntersecting || preserveDrawingBuffer ? "always" : "never"} // Pause rendering when offscreen
-            camera={{ position: [22, 14, 26], fov: 38, near: 0.5, far: 180 }}
+            shadows={!isMobile && !useBeachfront}
+            dpr={isMobile ? 1.0 : [1, 1.5]}
+            frameloop={isIntersecting || preserveDrawingBuffer ? "always" : "never"}
+            camera={{
+              position: useBeachfront ? [4, 3.5, 16] : [22, 14, 26],
+              fov: useBeachfront ? 42 : 38,
+              near: 0.5,
+              far: 180,
+            }}
             gl={{
               antialias: !isMobile,
               powerPreference: "high-performance",
@@ -225,16 +248,35 @@ export function BuildingScene({
               setCanvasReady(true);
             }}
           >
-            <color attach="background" args={["#0A241E"]} />
-            <fogExp2 attach="fog" args={["#0A241E", 0.014]} />
+            <color attach="background" args={[useBeachfront ? "#1A0F0C" : "#0A241E"]} />
+            <fogExp2
+              attach="fog"
+              args={[useBeachfront ? "#2A1810" : "#0A241E", useBeachfront ? 0.012 : 0.014]}
+            />
 
             <BuildingLighting isMobile={isMobile} />
-            <BuildingEnvironment />
-            <BuildingModel scrollProgress={effectiveProgress} />
-            <BuildingLabels scrollProgress={effectiveProgress} />
+
+            {useBeachfront ? (
+              <HeroDepthScene
+                scrollProgress={effectiveProgress}
+                reducedMotion={Boolean(reducedMotion)}
+                lite={lite}
+              />
+            ) : (
+              <>
+                <BuildingEnvironment />
+                <BuildingModel scrollProgress={effectiveProgress} />
+              </>
+            )}
+
+            <BuildingLabels
+              scrollProgress={effectiveProgress}
+              layout={useBeachfront ? "beachfront" : "procedural"}
+            />
             <ScrollCamera
               scrollProgress={effectiveProgress}
               reducedMotion={Boolean(reducedMotion)}
+              framing={useBeachfront ? "beachfront" : "procedural"}
             />
           </Canvas>
         </div>

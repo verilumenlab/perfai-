@@ -21,14 +21,12 @@ export function MobileNavigation({
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
 
-  // Close when pathname changes
   useEffect(() => {
     if (isOpen) {
       onClose();
     }
   }, [pathname]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Focus trap, Escape key handling, and restoring focus to triggerRef
   useEffect(() => {
     if (!isOpen) return;
 
@@ -40,7 +38,6 @@ export function MobileNavigation({
         return;
       }
 
-      // Simple focus trap
       if (e.key === "Tab" && drawerRef.current) {
         const focusableElements = drawerRef.current.querySelectorAll<HTMLElement>(
           'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
@@ -84,28 +81,23 @@ export function MobileNavigation({
       aria-label="Mobile Navigation Menu"
       className="fixed inset-0 z-50 md:hidden"
     >
-      {/* Backdrop */}
       <div
         className="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity"
         onClick={onClose}
         aria-hidden="true"
       />
 
-      {/* Drawer */}
       <div
         ref={drawerRef}
         className="fixed top-0 right-0 bottom-0 w-full max-w-sm bg-bg-deep border-l border-border-dark p-6 shadow-2xl flex flex-col justify-between overflow-y-auto"
       >
         <div>
-          {/* Header */}
           <div className="flex items-center justify-between pb-6 border-b border-border-dark">
-            <Link
-              href="/"
-              onClick={onClose}
-              className="flex items-center gap-2.5"
-              aria-label="PerfAI Homepage"
-            >
-              <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-green-primary to-mint-accent text-bg-deep flex items-center justify-center font-heading font-extrabold text-base shadow-sm">
+            <Link href="/" onClick={onClose} className="flex items-center gap-2.5">
+              <div
+                aria-hidden="true"
+                className="h-8 w-8 rounded-xl bg-gradient-to-br from-green-primary to-mint-accent text-bg-deep flex items-center justify-center font-heading font-extrabold text-base"
+              >
                 P
               </div>
               <span className="font-heading font-extrabold text-xl text-white">
@@ -124,38 +116,37 @@ export function MobileNavigation({
             </button>
           </div>
 
-          {/* Links */}
           <nav className="flex flex-col gap-2 mt-6" aria-label="Mobile Navigation Links">
-            <Link
-              href="/"
-              onClick={onClose}
-              className="px-4 py-3 text-base font-medium text-white/90 hover:text-white rounded-xl hover:bg-bg-surface transition-colors"
-            >
-              Home
-            </Link>
-            <Link
-              href="/application"
-              onClick={onClose}
-              className="px-4 py-3 text-base font-medium text-white/90 hover:text-white rounded-xl hover:bg-bg-surface transition-colors"
-            >
-              Application
-            </Link>
-            <Link
-              href="/partner"
-              onClick={onClose}
-              className="px-4 py-3 text-base font-medium text-white/90 hover:text-white rounded-xl hover:bg-bg-surface transition-colors"
-            >
-              Partner
-            </Link>
+            {[
+              { label: "Home", href: "/" },
+              { label: "Application", href: "/application" },
+              { label: "Partner", href: "/partner" },
+            ].map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={onClose}
+                  aria-current={isActive ? "page" : undefined}
+                  className={`px-4 py-3 text-base font-medium rounded-xl transition-colors ${
+                    isActive
+                      ? "text-mint-accent bg-bg-surface border border-green-primary/30 font-semibold"
+                      : "text-white/90 hover:text-white hover:bg-bg-surface"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </nav>
         </div>
 
-        {/* Bottom CTA */}
         <div className="pt-6 border-t border-border-dark flex flex-col gap-3">
           <Link
             href="/#demo"
             onClick={onClose}
-            className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl bg-green-primary text-bg-deep font-semibold text-center hover:bg-mint-accent transition-all shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-mint-accent"
+            className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl bg-green-primary text-bg-deep font-semibold text-center hover:bg-mint-accent transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-mint-accent"
           >
             <span>Request a Demo</span>
             <ArrowRight className="w-4 h-4" />

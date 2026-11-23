@@ -8,15 +8,13 @@ export function Footer() {
     <footer className="w-full bg-bg-deep border-t border-border-dark text-white/70 pt-16 pb-12">
       <div className="w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-border-dark">
-          {/* Brand & Reseller Statement */}
           <div className="flex flex-col gap-4">
             <Link href="/" className="flex items-center gap-2">
               <div className="h-8 w-8 rounded-lg bg-green-primary text-bg-deep flex items-center justify-center font-bold text-sm">
                 P
               </div>
               <span className="font-heading font-extrabold text-xl text-white">
-                PerfAI <span className="text-white/40 font-normal">|</span>{" "}
-                <span className="text-mint-accent">SENATRIA</span>
+                PerfAI
               </span>
             </Link>
             <p className="text-sm text-text-muted max-w-sm leading-relaxed">
@@ -28,7 +26,6 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Navigation */}
           <div className="flex flex-col gap-3">
             <h4 className="font-heading font-semibold text-sm text-white uppercase tracking-wider">
               Navigation
@@ -57,7 +54,6 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Technology Partner */}
           <div className="flex flex-col gap-3">
             <h4 className="font-heading font-semibold text-sm text-white uppercase tracking-wider">
               Technology Partner
@@ -89,7 +85,6 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Contact Placeholders */}
           <div className="flex flex-col gap-3">
             <h4 className="font-heading font-semibold text-sm text-white uppercase tracking-wider">
               Business Contact
@@ -113,7 +108,6 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Legal links & Copyright */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-text-muted">
           <p>© 2026 PerfAI. All rights reserved.</p>
           <div className="flex items-center gap-5">

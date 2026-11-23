@@ -2,6 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import { siteConfig } from "@/lib/site-config";
 import { HeroSection } from "@/components/sections/HeroSection";
+import { ProductStrip } from "@/components/sections/ProductStrip";
 import { TechnologySection } from "@/components/sections/TechnologySection";
 import { IndustrySolutions } from "@/components/sections/IndustrySolutions";
 import { WhyPerfAI } from "@/components/sections/WhyPerfAI";
@@ -27,19 +28,17 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-      {/* 1. Hero Section */}
-      <HeroSection />
+      {/* Pin while 6-stage scroll story plays, then unpin into content */}
+      <div id="hero-pin-container" className="relative" style={{ height: "280vh" }}>
+        <div className="sticky top-16 md:top-20 h-[calc(100svh-4rem)] md:h-[calc(100svh-5rem)] min-h-[560px]">
+          <HeroSection />
+        </div>
+      </div>
 
-      {/* 2. Senatria Technology (ATRIA loop, 6 concepts, Shield suite) */}
+      <ProductStrip />
       <TechnologySection />
-
-      {/* 3. Industry Solutions (5 sectors) */}
       <IndustrySolutions />
-
-      {/* 4. Why PerfAI (4 value points) */}
       <WhyPerfAI />
-
-      {/* 5. Request a Demo CTA band (id="demo") */}
       <CTASection />
     </>
   );

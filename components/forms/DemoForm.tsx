@@ -166,7 +166,7 @@ export function DemoForm() {
       {/* Name and Email */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="fullName" className="block text-xs font-medium text-white/90 mb-1.5">
+          <label htmlFor="fullName" className="block text-xs font-medium text-white mb-1.5">
             Full Name <span className="text-mint-accent">*</span>
           </label>
           <input
@@ -187,7 +187,7 @@ export function DemoForm() {
         </div>
 
         <div>
-          <label htmlFor="businessEmail" className="block text-xs font-medium text-white/90 mb-1.5">
+          <label htmlFor="businessEmail" className="block text-xs font-medium text-white mb-1.5">
             Business Email <span className="text-mint-accent">*</span>
           </label>
           <input
@@ -211,7 +211,7 @@ export function DemoForm() {
       {/* Company and Job Title */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="companyName" className="block text-xs font-medium text-white/90 mb-1.5">
+          <label htmlFor="companyName" className="block text-xs font-medium text-white mb-1.5">
             Company / Organisation <span className="text-mint-accent">*</span>
           </label>
           <input
@@ -232,7 +232,7 @@ export function DemoForm() {
         </div>
 
         <div>
-          <label htmlFor="jobTitle" className="block text-xs font-medium text-white/90 mb-1.5">
+          <label htmlFor="jobTitle" className="block text-xs font-medium text-white mb-1.5">
             Job Title / Role <span className="text-mint-accent">*</span>
           </label>
           <input
@@ -256,7 +256,7 @@ export function DemoForm() {
       {/* Country and Phone */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="country" className="block text-xs font-medium text-white/90 mb-1.5">
+          <label htmlFor="country" className="block text-xs font-medium text-white mb-1.5">
             Country / Region <span className="text-mint-accent">*</span>
           </label>
           <input
@@ -277,7 +277,7 @@ export function DemoForm() {
         </div>
 
         <div>
-          <label htmlFor="phoneNumber" className="block text-xs font-medium text-white/90 mb-1.5">
+          <label htmlFor="phoneNumber" className="block text-xs font-medium text-white mb-1.5">
             Phone Number <span className="text-text-muted text-[10px]">(optional)</span>
           </label>
           <input
@@ -301,7 +301,7 @@ export function DemoForm() {
       {/* Industry and Area of Interest */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="industry" className="block text-xs font-medium text-white/90 mb-1.5">
+          <label htmlFor="industry" className="block text-xs font-medium text-white mb-1.5">
             Primary Industry <span className="text-mint-accent">*</span>
           </label>
           <select
@@ -325,7 +325,7 @@ export function DemoForm() {
         </div>
 
         <div>
-          <label htmlFor="areaOfInterest" className="block text-xs font-medium text-white/90 mb-1.5">
+          <label htmlFor="areaOfInterest" className="block text-xs font-medium text-white mb-1.5">
             Area of Interest <span className="text-mint-accent">*</span>
           </label>
           <select
@@ -352,7 +352,7 @@ export function DemoForm() {
       {/* Facility Type & Estimated Size */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="facilityType" className="block text-xs font-medium text-white/90 mb-1.5">
+          <label htmlFor="facilityType" className="block text-xs font-medium text-white mb-1.5">
             Facility Type <span className="text-text-muted text-[10px]">(e.g. Grade-A Office, Hotel, Hyperscale DC)</span>
           </label>
           <input
@@ -365,7 +365,7 @@ export function DemoForm() {
         </div>
 
         <div>
-          <label htmlFor="facilitySize" className="block text-xs font-medium text-white/90 mb-1.5">
+          <label htmlFor="facilitySize" className="block text-xs font-medium text-white mb-1.5">
             Estimated Facility Size <span className="text-text-muted text-[10px]">(e.g. 500,000 sq ft / 50 MW)</span>
           </label>
           <input
@@ -380,7 +380,7 @@ export function DemoForm() {
 
       {/* Requirements / Message */}
       <div>
-        <label htmlFor="message" className="block text-xs font-medium text-white/90 mb-1.5">
+        <label htmlFor="message" className="block text-xs font-medium text-white mb-1.5">
           Operational Requirements or Message <span className="text-mint-accent">*</span>
         </label>
         <textarea
@@ -407,12 +407,12 @@ export function DemoForm() {
             id="privacyConsent"
             aria-invalid={!!errors.privacyConsent}
             aria-describedby={errors.privacyConsent ? "privacyConsent-error" : undefined}
-            className="mt-1 w-4 h-4 rounded border-border-dark text-green-primary focus:ring-green-primary bg-bg-deep accent-[#23A875]"
+            className="mt-1 w-4 h-4 rounded border-border-dark text-mint-accent focus:ring-green-primary bg-bg-deep accent-[#23A875]"
             {...register("privacyConsent")}
           />
           <span className="text-xs text-text-muted leading-relaxed">
             I consent to PerfAI processing my contact and facility details to coordinate this demonstration in accordance with the{" "}
-            <Link href="/privacy" target="_blank" className="text-mint-accent underline hover:text-white">
+            <Link href="/privacy" target="_blank" className="text-mint-accent underline hover:text-mint-accent">
               Privacy Policy
             </Link>.
           </span>
@@ -429,7 +429,7 @@ export function DemoForm() {
         <button
           type="submit"
           disabled={submitStatus === "submitting"}
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-green-primary text-bg-deep text-sm font-semibold hover:bg-mint-accent focus:outline-none focus:ring-2 focus:ring-green-primary focus:ring-offset-2 focus:ring-offset-bg-deep transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-green-primary/10 cursor-pointer"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-green-primary text-bg-deep text-sm font-semibold hover:bg-mint-accent focus:outline-none focus:ring-2 focus:ring-green-primary focus:ring-offset-2 focus:ring-offset-bg-deep transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
         >
           {submitStatus === "submitting" ? (
             <>

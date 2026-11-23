@@ -19,69 +19,33 @@ export default async function Image() {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: "60px 80px",
-          backgroundColor: "#071B17",
-          color: "#FFFFFF",
+          backgroundColor: "#F0F4F2",
+          color: "#0C1612",
           fontFamily: "sans-serif",
           position: "relative",
         }}
       >
-        {/* Soft background glow */}
-        <div
-          style={{
-            position: "absolute",
-            top: "-100px",
-            right: "-100px",
-            width: "500px",
-            height: "500px",
-            borderRadius: "50%",
-            backgroundColor: "rgba(35, 168, 117, 0.15)",
-            filter: "blur(90px)",
-          }}
-        />
-
-        {/* Top Header / Badges */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            <div
-              style={{
-                width: "48px",
-                height: "48px",
-                borderRadius: "14px",
-                backgroundColor: "#102C25",
-                border: "1px solid #23A875",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#75E6AE",
-                fontSize: "24px",
-                fontWeight: "bold",
-              }}
-            >
-              P
-            </div>
-            <span style={{ fontSize: "28px", fontWeight: 800, letterSpacing: "1px" }}>
-              Perf<span style={{ color: "#75E6AE" }}>AI</span>
-            </span>
-          </div>
+          <span style={{ fontSize: "32px", fontWeight: 800, letterSpacing: "-0.5px", color: "#0C1612" }}>
+            PerfAI
+          </span>
 
           <div
             style={{
               padding: "8px 20px",
-              borderRadius: "9999px",
-              backgroundColor: "#102C25",
-              border: "1px solid rgba(117, 230, 174, 0.3)",
-              color: "#75E6AE",
+              borderRadius: "8px",
+              backgroundColor: "#E4EBE7",
+              border: "1px solid rgba(12, 22, 18, 0.1)",
+              color: "#0F5C45",
               fontSize: "14px",
               fontWeight: 600,
-              textTransform: "uppercase",
-              letterSpacing: "1px",
+              letterSpacing: "0.5px",
             }}
           >
             Authorised Partner of SENATRIA
           </div>
         </div>
 
-        {/* Main Center Message */}
         <div style={{ display: "flex", flexDirection: "column", gap: "16px", maxWidth: "900px" }}>
           <div
             style={{
@@ -90,28 +54,26 @@ export default async function Image() {
               fontSize: "48px",
               fontWeight: 800,
               lineHeight: 1.15,
-              color: "#FFFFFF",
+              color: "#0C1612",
               letterSpacing: "-0.5px",
             }}
           >
-            <span>Make Your Infrastructure Smarter. </span>
-            <span style={{ color: "#75E6AE" }}>More Efficient. More Valuable.</span>
+            <span>Make Your Infrastructure Smarter. More Efficient. More Valuable.</span>
           </div>
-          <div style={{ display: "flex", fontSize: "20px", color: "#A3B8B0", lineHeight: 1.5 }}>
+          <div style={{ display: "flex", fontSize: "20px", color: "#5A6B64", lineHeight: 1.5 }}>
             <span>Enterprise deployments of Senatria Physical AI platform: ATRIA, BuildingShield, GridShield & ComputeShield.</span>
           </div>
         </div>
 
-        {/* Bottom Footer Details */}
         <div
           style={{
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            borderTop: "1px solid #102C25",
+            borderTop: "1px solid rgba(12, 22, 18, 0.1)",
             paddingTop: "24px",
             fontSize: "16px",
-            color: "#75857D",
+            color: "#5A6B64",
           }}
         >
           <span>https://perfai.in</span>
