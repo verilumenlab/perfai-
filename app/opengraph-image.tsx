@@ -1,7 +1,9 @@
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { ImageResponse } from "next/og";
 
 export const runtime = "nodejs";
-export const alt = "PerfAI — Authorised Partner & Reseller of Senatria Physical AI";
+export const alt = "PerfAI — Channel Partner for Building Management Services";
 export const size = {
   width: 1200,
   height: 630,
@@ -9,6 +11,11 @@ export const size = {
 export const contentType = "image/png";
 
 export default async function Image() {
+  const logoBytes = await readFile(
+    join(process.cwd(), "public/images/brand/perfai-logo-light.jpg")
+  );
+  const logoSrc = `data:image/jpeg;base64,${logoBytes.toString("base64")}`;
+
   return new ImageResponse(
     (
       <div
@@ -18,50 +25,64 @@ export default async function Image() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          padding: "60px 80px",
-          backgroundColor: "#F0F4F2",
+          padding: "56px 72px",
+          backgroundColor: "#F1FAF6",
           color: "#0C1612",
           fontFamily: "sans-serif",
           position: "relative",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <span style={{ fontSize: "32px", fontWeight: 800, letterSpacing: "-0.5px", color: "#0C1612" }}>
-            PerfAI
-          </span>
-
-          <div
-            style={{
-              padding: "8px 20px",
-              borderRadius: "8px",
-              backgroundColor: "#E4EBE7",
-              border: "1px solid rgba(12, 22, 18, 0.1)",
-              color: "#0F5C45",
-              fontSize: "14px",
-              fontWeight: 600,
-              letterSpacing: "0.5px",
-            }}
-          >
-            Authorised Partner of SENATRIA
-          </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <img
+            src={logoSrc}
+            alt="perfai"
+            width={360}
+            height={90}
+            style={{ objectFit: "contain", objectPosition: "left center" }}
+          />
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px", maxWidth: "900px" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "16px",
+            maxWidth: "900px",
+          }}
+        >
           <div
             style={{
               display: "flex",
               flexWrap: "wrap",
-              fontSize: "48px",
+              fontSize: "46px",
               fontWeight: 800,
               lineHeight: 1.15,
-              color: "#0C1612",
+              color: "#14251F",
               letterSpacing: "-0.5px",
             }}
           >
-            <span>Make Your Infrastructure Smarter. More Efficient. More Valuable.</span>
+            <span>
+              Make Your Buildings Smarter. More Efficient. Better Managed.
+            </span>
           </div>
-          <div style={{ display: "flex", fontSize: "20px", color: "#5A6B64", lineHeight: 1.5 }}>
-            <span>Enterprise deployments of Senatria Physical AI platform: ATRIA, BuildingShield, GridShield & ComputeShield.</span>
+          <div
+            style={{
+              display: "flex",
+              fontSize: "20px",
+              color: "#62766E",
+              lineHeight: 1.5,
+            }}
+          >
+            <span>
+              Channel partner for building management services: HVAC, energy
+              monitoring, BMS integration and facility operations.
+            </span>
           </div>
         </div>
 
@@ -73,11 +94,11 @@ export default async function Image() {
             borderTop: "1px solid rgba(12, 22, 18, 0.1)",
             paddingTop: "24px",
             fontSize: "16px",
-            color: "#5A6B64",
+            color: "#62766E",
           }}
         >
           <span>https://perfai.in</span>
-          <span>Commercial Buildings · Data Centres · Infrastructure</span>
+          <span>Commercial Buildings · Facilities · BMS</span>
         </div>
       </div>
     ),

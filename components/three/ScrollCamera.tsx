@@ -5,13 +5,12 @@ import { useFrame, useThree } from "@react-three/fiber";
 interface ScrollCameraProps {
   scrollProgress: number;
   reducedMotion?: boolean;
-  /** Beachfront home framing vs legacy procedural walkthrough framing */
   framing?: "beachfront" | "procedural";
 }
 
 /**
- * Controls camera across the 6-stage scroll story.
- * Beachfront: slow push-in + slight orbit over ocean/building composition.
+ * Beachfront: slow push-in toward the composite plate.
+ * Procedural: legacy 6-stage orbit for walkthrough model.
  */
 export function ScrollCamera({
   scrollProgress,
@@ -21,20 +20,20 @@ export function ScrollCamera({
   const { camera } = useThree();
   const currentPos = useRef(
     new THREE.Vector3(
-      framing === "beachfront" ? 4 : 22,
-      framing === "beachfront" ? 3.5 : 14,
-      framing === "beachfront" ? 16 : 26
+      framing === "beachfront" ? 0 : 22,
+      framing === "beachfront" ? 0 : 14,
+      framing === "beachfront" ? 0.01 : 26
     )
   );
   const currentLookAt = useRef(
-    new THREE.Vector3(framing === "beachfront" ? 4 : 0, framing === "beachfront" ? 2.5 : 5, 0)
+    new THREE.Vector3(framing === "beachfront" ? 1.5 : 0, framing === "beachfront" ? 0 : 5, framing === "beachfront" ? -12 : 0)
   );
 
   useFrame(() => {
     if (reducedMotion) {
       if (framing === "beachfront") {
-        camera.position.set(3.5, 3.2, 14);
-        camera.lookAt(5, 2.5, -2);
+        camera.position.set(0, 0, 0.01);
+        camera.lookAt(1.5, 0, -12);
       } else {
         camera.position.set(20, 12, 22);
         camera.lookAt(0, 5, 0);
@@ -47,57 +46,17 @@ export function ScrollCamera({
     const p = Math.max(0, Math.min(1, scrollProgress));
 
     if (framing === "beachfront") {
-      if (p < 0.15) {
-        const t = p / 0.15;
-        targetPos.set(
-          THREE.MathUtils.lerp(5, 4, t),
-          THREE.MathUtils.lerp(4.2, 3.6, t),
-          THREE.MathUtils.lerp(18, 15, t)
-        );
-        targetLookAt.set(5.5, 2.8, -2);
-      } else if (p < 0.35) {
-        const t = (p - 0.15) / 0.2;
-        targetPos.set(
-          THREE.MathUtils.lerp(4, 2.5, t),
-          THREE.MathUtils.lerp(3.6, 3.0, t),
-          THREE.MathUtils.lerp(15, 12, t)
-        );
-        targetLookAt.set(6, 3, -2);
-      } else if (p < 0.55) {
-        const t = (p - 0.35) / 0.2;
-        const angle = t * Math.PI * 0.22;
-        const radius = 12;
-        targetPos.set(
-          Math.cos(angle) * radius * 0.35 + 1.5,
-          THREE.MathUtils.lerp(3.0, 2.8, t),
-          Math.sin(angle) * radius + 8
-        );
-        targetLookAt.set(6.5, 3.2, -1);
-      } else if (p < 0.75) {
-        const t = (p - 0.55) / 0.2;
-        targetPos.set(
-          THREE.MathUtils.lerp(2.2, 1.5, t),
-          THREE.MathUtils.lerp(2.8, 2.6, t),
-          THREE.MathUtils.lerp(11, 9.5, t)
-        );
-        targetLookAt.set(7, 3.4, -1);
-      } else if (p < 0.9) {
-        const t = (p - 0.75) / 0.15;
-        targetPos.set(
-          THREE.MathUtils.lerp(1.5, 0.8, t),
-          THREE.MathUtils.lerp(2.6, 2.4, t),
-          THREE.MathUtils.lerp(9.5, 8, t)
-        );
-        targetLookAt.set(7.2, 3.5, 0);
-      } else {
-        const t = (p - 0.9) / 0.1;
-        targetPos.set(
-          THREE.MathUtils.lerp(0.8, 0.4, t),
-          THREE.MathUtils.lerp(2.4, 2.3, t),
-          THREE.MathUtils.lerp(8, 7.2, t)
-        );
-        targetLookAt.set(7, 3.2, 0);
-      }
+      // Subtle push-in + slight right bias toward the building side of the plate
+      targetPos.set(
+        THREE.MathUtils.lerp(0, 0.35, p),
+        THREE.MathUtils.lerp(0, -0.15, p),
+        THREE.MathUtils.lerp(0.01, -1.8, p)
+      );
+      targetLookAt.set(
+        THREE.MathUtils.lerp(1.2, 2.2, p),
+        THREE.MathUtils.lerp(0.1, -0.1, p),
+        -12
+      );
     } else {
       targetLookAt.set(0, 5, 0);
       if (p < 0.15) {

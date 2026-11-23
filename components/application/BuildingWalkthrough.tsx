@@ -5,7 +5,6 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { applicationContent, type WalkthroughZone } from "@/content/application";
 import { Card } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { BuildingPoster } from "@/components/three/BuildingPoster";
 import {
@@ -106,7 +105,9 @@ export function BuildingWalkthrough() {
             className="mt-2"
           >
             <div className="flex items-center justify-between pb-3 border-b border-line">
-              <Badge variant="mint">{activeZone.product}</Badge>
+              <span className="text-xs font-semibold uppercase tracking-wider text-forest">
+                {activeZone.product}
+              </span>
               <span className="text-[11px] font-mono text-ink-muted">
                 {activeZone.system}
               </span>
@@ -146,14 +147,11 @@ export function BuildingWalkthrough() {
 
       <div className="mt-20 pt-16 border-t border-line">
         <div className="max-w-2xl mb-8">
-          <Badge variant="outline" className="mb-2">
-            Accessible Zone Overview
-          </Badge>
           <h3 className="font-heading font-bold text-xl sm:text-2xl text-ink">
             Facility Zone Impact Summary
           </h3>
           <p className="text-sm text-ink-muted mt-1">
-            Plain stacked reference of Senatria application capabilities across all building zones.
+            Plain stacked reference of building management capabilities across all facility zones.
           </p>
         </div>
 
@@ -165,7 +163,9 @@ export function BuildingWalkthrough() {
                   <span className="text-[11px] font-mono text-forest font-bold">
                     {zone.floorLabel}
                   </span>
-                  <Badge variant="mint">{zone.product}</Badge>
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-forest">
+                    {zone.product}
+                  </span>
                 </div>
                 <h4 className="font-heading font-bold text-base text-ink">
                   {zone.name}

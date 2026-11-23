@@ -66,6 +66,7 @@ async function main() {
     { name: "Enquiry Form & Attribution Matrix", cmd: "node", args: ["--experimental-strip-types", "--test", "tests/e2e/form-matrix.test.mjs"] },
     { name: "Admin Security & Audit Trail Matrix", cmd: "node", args: ["--experimental-strip-types", "--test", "tests/e2e/admin-matrix.test.mjs"] },
     { name: "Responsive Viewports & Accessibility Fallbacks", cmd: "node", args: ["--experimental-strip-types", "--test", "tests/e2e/browser-matrix.test.mjs"] },
+    { name: "Navbar Scroll Animation & Responsive Screenshots", cmd: "node", args: ["--experimental-strip-types", "--test", "tests/e2e/navbar-scroll.test.mjs"] },
   ];
 
   let failedSuites = 0;

@@ -14,13 +14,13 @@ export function Badge({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider",
+        "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider",
         variant === "default" &&
-          "bg-bg-surface text-mint-accent border border-green-primary/30",
+          "border border-green-primary/30 bg-bg-surface text-mint-accent",
         variant === "mint" &&
-          "bg-mint-accent/15 text-mint-accent border border-mint-accent/30",
+          "border border-forest/20 bg-green-primary/10 text-forest",
         variant === "outline" &&
-          "bg-transparent text-white/80 border border-border-dark",
+          "border border-line bg-transparent text-ink/70",
         className
       )}
       {...props}

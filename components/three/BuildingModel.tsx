@@ -118,7 +118,7 @@ export function BuildingModel({ scrollProgress }: BuildingModelProps) {
         );
       })}
 
-      {/* 4. Roof Mechanical Plant Enclosure (BuildingShield Central HVAC) */}
+      {/* 4. Roof Mechanical Plant Enclosure (Central HVAC) */}
       <group position={[0, 0.2 + floorCount * floorHeight, 0]}>
         <mesh position={[0, 0.5, 0]} castShadow>
           <boxGeometry args={[4.5, 1.0, 3.5]} />

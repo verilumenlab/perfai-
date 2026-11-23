@@ -2,7 +2,6 @@ import React from "react";
 import type { Metadata } from "next";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
-import { Badge } from "@/components/ui/Badge";
 
 export const metadata: Metadata = {
   title: "Cookie Policy",
@@ -15,12 +14,9 @@ export const metadata: Metadata = {
 
 export default function CookiesPage() {
   return (
-    <Section className="pt-10 pb-20 sm:pt-14 sm:pb-28 md:pt-16 md:pb-32 bg-bg-canvas text-ink">
+    <Section className="pt-24 pb-20 sm:pt-28 sm:pb-28 md:pt-32 md:pb-32 bg-bg-canvas text-ink">
       <Container>
         <div className="max-w-3xl mx-auto">
-          <Badge variant="outline" className="mb-4">
-            Legal Disclosure — Pending Review
-          </Badge>
           <h1 className="font-heading font-extrabold text-3xl sm:text-4xl text-ink tracking-tight">
             Cookie Policy
           </h1>

@@ -25,7 +25,7 @@ export function IndustryCard({ item, index }: IndustryCardProps) {
 
       <div className="mt-6">
         <Link
-          href="/application"
+          href="/#demo"
           className="inline-flex items-center gap-1.5 text-sm font-semibold text-mint-accent hover:text-white transition-colors"
         >
           <span>Explore Application</span>

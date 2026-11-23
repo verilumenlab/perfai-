@@ -1,82 +1,64 @@
-import React from "react";
-import Link from "next/link";
-import { Container } from "@/components/ui/Container";
-import { Badge } from "@/components/ui/Badge";
+import { CheckCircle, Mail } from "lucide-react";
 import { FadeIn } from "@/components/ui/FadeIn";
-import { CheckCircle2, Shield, ArrowRight } from "lucide-react";
 import { DemoForm } from "@/components/forms/DemoForm";
+import { cta } from "@/content/home";
+import { siteConfig } from "@/lib/site-config";
 
 export function CTASection() {
   return (
-    <section id="demo" className="w-full py-20 md:py-28 bg-bg-deep text-white border-t border-border-dark scroll-mt-20">
-      <Container>
+    <section
+      id="demo"
+      className="section-shell scroll-mt-24 border-t border-line/70 bg-stone text-ink"
+    >
+      <div id="partner" className="sr-only" aria-hidden="true" />
+      <div id="contact" className="sr-only" aria-hidden="true" />
+
+      <div className="section-inner grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
         <FadeIn>
-          <div className="mb-12 md:mb-14 max-w-2xl">
-            <Badge variant="default" className="mb-4">
-              Request a demonstration
-            </Badge>
-            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight leading-tight">
-              See Physical AI on your infrastructure terms.
-            </h2>
-            <p className="mt-4 text-base sm:text-lg text-text-muted leading-relaxed">
-              Schedule a technical demonstration of Senatria&apos;s ATRIA platform and Shield solutions. Our team will review your facility parameters and deployment path.
+          <h2 className="font-heading text-[clamp(1.85rem,3.8vw,3rem)] font-extrabold leading-[1.08] tracking-[-0.02em]">
+            {cta.heading}
+          </h2>
+          <p className="mt-5 max-w-md text-base leading-relaxed text-ink/70 sm:text-lg">
+            {cta.text}
+          </p>
+
+          <ul className="mt-7 max-w-md space-y-2.5">
+            {cta.bullets.map((item) => (
+              <li key={item} className="flex items-start gap-2.5 text-sm text-ink/85">
+                <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-forest" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-8 border-t border-line/80 pt-5">
+            <span className="mb-1 block font-mono text-[10px] uppercase tracking-[0.16em] text-forest">
+              Direct Inquiries
+            </span>
+            <p className="text-sm leading-relaxed text-ink-muted">
+              For corporate procurement and official business correspondence:
             </p>
-          </div>
-        </FadeIn>
-
-        <FadeIn delay={0.1}>
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
-            <div className="lg:col-span-4 space-y-6">
-              <div className="flex items-start gap-3 text-sm text-white/90">
-                <CheckCircle2 className="w-4 h-4 text-green-primary shrink-0 mt-0.5" />
-                <span>
-                  Connects with existing BMS, HVAC, and sub-metering feeds.
-                  <span className="block text-[11px] text-text-muted mt-1 font-mono">
-                    Source: senatria.ai — BuildingShield
-                  </span>
-                </span>
-              </div>
-              <div className="flex items-start gap-3 text-sm text-white/90">
-                <Shield className="w-4 h-4 text-green-primary shrink-0 mt-0.5" />
-                <span>
-                  Actions stay inside site-defined safety boundaries.
-                  <span className="block text-[11px] text-text-muted mt-1 font-mono">
-                    Source: senatria.ai — ATRIA Governance
-                  </span>
-                </span>
-              </div>
-
-              <div className="pt-6 border-t border-border-dark">
-                <span className="text-xs font-mono text-mint-accent uppercase tracking-wider block mb-1">
-                  Partner inquiries
-                </span>
-                <p className="text-sm text-text-muted leading-relaxed">
-                  Systems integration, commercial partnership, or distribution?
-                </p>
-                <Link
-                  href="/partner#partner-form"
-                  className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-mint-accent hover:text-white transition-colors"
-                >
-                  <span>Explore partnership engagement</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-              </div>
-            </div>
-
-            <div className="lg:col-span-8 bg-bg-surface border border-border-dark rounded-2xl p-6 sm:p-8 md:p-10">
-              <div className="mb-6 pb-5 border-b border-border-dark">
-                <span className="text-xs font-mono text-mint-accent uppercase tracking-wider block">
-                  Enterprise request
-                </span>
-                <h3 className="font-heading font-bold text-xl sm:text-2xl text-white mt-1">
-                  Book an architectural demonstration
-                </h3>
-              </div>
-              <DemoForm />
+            <div className="mt-2.5 flex items-center gap-2 font-mono text-sm text-ink">
+              <Mail className="h-3.5 w-3.5 text-forest" />
+              <span>{siteConfig.contact.salesEmail}</span>
             </div>
           </div>
         </FadeIn>
-      </Container>
+
+        <FadeIn delay={0.08}>
+          <div className="surface-card p-5 shadow-[0_18px_48px_-36px_rgba(12,22,18,0.4)] sm:p-7">
+            <div className="mb-5">
+              <span className="block font-mono text-[10px] uppercase tracking-[0.16em] text-forest">
+                Get in Touch
+              </span>
+              <h3 className="font-heading mt-1 text-lg font-bold text-ink sm:text-xl">
+                Request a Demo or Partnership Chat
+              </h3>
+            </div>
+            <DemoForm />
+          </div>
+        </FadeIn>
+      </div>
     </section>
   );
 }

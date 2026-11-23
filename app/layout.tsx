@@ -23,11 +23,11 @@ const manrope = Manrope({
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.domain),
   title: {
-    default: "PerfAI | SENATRIA — Authorised Partner",
+    default: "PerfAI | Building Management Channel Partner",
     template: "%s | PerfAI",
   },
   description:
-    "PerfAI is an authorised reseller and business partner bringing Senatria's Physical AI platform to commercial enterprises and infrastructure operators.",
+    "PerfAI is a channel partner for building management services — helping commercial facilities adopt BMS, HVAC and energy solutions that fit real operations.",
   alternates: {
     canonical: siteConfig.domain,
   },
@@ -36,15 +36,15 @@ export const metadata: Metadata = {
     locale: "en_IE",
     url: siteConfig.domain,
     siteName: "PerfAI",
-    title: "PerfAI | SENATRIA — Authorised Partner",
+    title: "PerfAI | Building Management Channel Partner",
     description:
-      "Enterprise deployment partner for Senatria Physical AI infrastructure solutions: ATRIA, BuildingShield, GridShield, ComputeShield.",
+      "Channel partner for building management services: HVAC, energy monitoring, BMS integration and facility operations.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "PerfAI | SENATRIA — Authorised Partner",
+    title: "PerfAI | Building Management Channel Partner",
     description:
-      "Enterprise deployment partner for Senatria Physical AI infrastructure solutions.",
+      "Channel partner for building management services for commercial facilities.",
   },
 };
 
@@ -53,15 +53,15 @@ const organizationJsonLd = {
   "@type": "Organization",
   name: "PerfAI",
   url: siteConfig.domain,
+  logo: `${siteConfig.domain}${siteConfig.logo.light}`,
   description:
-    "Authorised commercial partner and reseller of Senatria Physical AI infrastructure solutions.",
+    "Channel partner for building management services for commercial buildings and facilities.",
   knowsAbout: [
-    "Physical AI",
-    "BuildingShield",
-    "GridShield",
-    "ComputeShield",
-    "HVAC Optimization",
     "Building Management Systems",
+    "HVAC Optimization",
+    "Energy Monitoring",
+    "Facility Operations",
+    "BMS Integration",
   ],
 };
 

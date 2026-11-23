@@ -1,13 +1,12 @@
 /**
- * Factual application tour and product architecture content.
- * Sourced directly from senatria.ai.
+ * Application / BMS tour content for PerfAI.
  */
 
 export interface ProductEcosystemItem {
   id: string;
   name: string;
   role: string;
-  category: "Platform" | "Shield Solution" | "Platform Capability";
+  category: "Core" | "Service" | "Capability";
   headline: string;
   description: string;
   capabilities: string[];
@@ -26,125 +25,111 @@ export interface WalkthroughZone {
 
 export const applicationContent = {
   hero: {
-    badge: "Senatria Technology Architecture",
-    headline: "Intelligence That Understands Your Infrastructure.",
+    badge: "Building Management",
+    headline: "Intelligence That Understands Your Building.",
     subheading:
-      "Explore how Senatria's Physical AI platform connects infrastructure intelligence with real-world operational systems.",
-    ctaPrimary: "Explore the Technology",
+      "Explore how PerfAI helps facilities apply building management services across HVAC, energy and day-to-day operations.",
+    ctaPrimary: "Explore the Services",
     ctaSecondary: "Request a Demo",
   },
 
   atria: {
-    badge: "Core Operating Platform",
-    title: "The Physical AI Operating Platform",
+    badge: "Operating Approach",
+    title: "A Practical Building Management Approach",
     description:
-      "ATRIA is Senatria's central platform for infrastructure intelligence and governed action. It connects real physical assets—including central plants, power feeds, and edge networks—with predictive models and coordinated AI agent swarms.",
-    loopHeading: "The Continuous Autonomous Loop",
+      "PerfAI helps organisations introduce building management services that connect plant, meters and facility workflows — so teams can see what is happening and act with clearer control.",
+    loopHeading: "The Building Management Cycle",
     loopDescription:
-      "ATRIA executes a closed-loop governance cycle to understand, simulate, and optimize real-world operations safely.",
+      "A closed operating cycle to understand, configure and improve building performance.",
     steps: [
       {
         step: "01",
-        name: "Perceive",
-        desc: "Ingests live operational telemetry from BMS, power meters, environmental sensors, and equipment controllers.",
+        name: "Assess",
+        desc: "Review existing BMS, HVAC plant, meters and operational priorities on site.",
       },
       {
         step: "02",
-        name: "Analyse",
-        desc: "Builds physics-grounded digital twins and world models to establish actual operational truth.",
+        name: "Specify",
+        desc: "Define the building management services and control scope that fit the facility.",
       },
       {
         step: "03",
-        name: "Optimise",
-        desc: "AI agent swarms simulate cause-and-effect paths to discover efficiency and capacity headroom.",
+        name: "Integrate",
+        desc: "Connect controllers, meters and related systems into a workable management layer.",
       },
       {
         step: "04",
-        name: "Control",
-        desc: "Dispatches bounded setpoint adjustments to edge controllers within strict, pre-approved safety limits.",
+        name: "Operate",
+        desc: "Run day-to-day control for comfort, plant schedules and energy-aware setpoints.",
       },
       {
         step: "05",
-        name: "Verify",
-        desc: "Logs measurable performance outcomes into the VERITAS ledger, separating real evidence from theoretical models.",
+        name: "Monitor",
+        desc: "Track performance, alarms and energy use so issues surface early.",
       },
       {
         step: "06",
-        name: "Learn",
-        desc: "Continuously updates operational models so the infrastructure adapts to seasonal and occupancy shifts.",
+        name: "Improve",
+        desc: "Refine schedules, setpoints and procedures based on measured building behaviour.",
       },
     ],
   },
 
   ecosystem: [
     {
-      id: "atria",
-      name: "ATRIA",
-      role: "Physical AI Platform",
-      category: "Platform",
-      headline: "Governed Infrastructure Operating System",
+      id: "hvac",
+      name: "HVAC Management",
+      role: "Plant & comfort",
+      category: "Core" as const,
+      headline: "Heating, cooling and air handling under coordinated control",
       description:
-        "The foundational platform that transforms connected facilities into sentient infrastructure. ATRIA provides the operational data mesh, agent coordination framework, and safety boundary enforcement required for autonomous facility decisions.",
+        "Support for chillers, AHUs, VAVs and related plant so comfort targets and equipment efficiency stay aligned with how the building is occupied.",
       capabilities: [
-        "Continuous closed-loop physical governance",
-        "Deterministic bounds for safe setpoint execution",
-        "Seamless telemetry ingestion from BMS and IoT gateways",
+        "Central plant coordination",
+        "Zone comfort setpoints",
+        "Schedule and runtime visibility",
       ],
     },
     {
-      id: "buildingshield",
-      name: "BuildingShield",
-      role: "Building Asset Optimization",
-      category: "Shield Solution",
-      headline: "HVAC, BMS & Facility Asset Performance",
+      id: "energy",
+      name: "Energy Monitoring",
+      role: "Meters & demand",
+      category: "Service" as const,
+      headline: "Visibility into consumption, peaks and tariffs",
       description:
-        "Directly integrates with existing Building Management Systems (BMS), chillers, air handlers, and metering. It evaluates optimal operating states, detects subtle equipment drift, and unlocks operational headroom without compromising occupant comfort.",
+        "Metering and demand visibility that helps facility teams understand where energy goes and where peak charges or inefficient plant cycles appear.",
       capabilities: [
-        "Dynamic chilled water and airflow setpoint optimization",
-        "Predictive fault detection across dampers, valves, and compressors",
-        "Significant peak demand charge reduction",
+        "Sub-meter and main-feed views",
+        "Peak demand awareness",
+        "Operational energy reporting",
       ],
     },
     {
-      id: "gridshield",
-      name: "GridShield",
-      role: "Grid Flexibility & Demand Response",
-      category: "Shield Solution",
-      headline: "Coordinated Building Flexibility for the Grid",
+      id: "integration",
+      name: "BMS Integration",
+      role: "Systems layer",
+      category: "Capability" as const,
+      headline: "Connect what you already have",
       description:
-        "Aggregates the usable electrical capacity and thermal inertia within building portfolios. GridShield coordinates automated demand response events, curtailing peak loads to support utility grid stability and capture energy market incentives.",
+        "Integration approaches that respect existing controllers and protocols, reducing the need for a full rip-and-replace of working equipment.",
       capabilities: [
-        "Automated demand-response load shifting",
-        "Real-time grid constraint telemetry integration",
-        "Portfolio-wide demand peak shaving",
+        "Legacy controller connectivity",
+        "Unified operational views",
+        "Phased rollout support",
       ],
     },
     {
-      id: "computeshield",
-      name: "ComputeShield",
-      role: "Distributed Edge Computing",
-      category: "Shield Solution",
-      headline: "Micro-Colocation & Power-Constrained Growth",
+      id: "operations",
+      name: "Facility Operations",
+      role: "Day-to-day BMS",
+      category: "Service" as const,
+      headline: "Keep buildings running with clearer control",
       description:
-        "Identifies and qualifies unused electrical and thermal headroom within existing commercial structures, enabling operators to deploy distributed edge compute and micro-colocation where grid interconnection delays previously stalled expansion.",
+        "Operational practices and tooling support so facility engineers can manage alarms, setpoints and routines with less guesswork.",
       capabilities: [
-        "Dynamic electrical and thermal headroom qualification",
-        "Micro-colocation deployment feasibility modeling",
-        "Synchronized power and cooling envelope monitoring",
-      ],
-    },
-    {
-      id: "veritas",
-      name: "VERITAS",
-      role: "Measurement & Verification Ledger",
-      category: "Platform Capability",
-      headline: "Evidence-Based Triple Net Value Verification",
-      description:
-        "Senatria's embedded measurement and verification ledger. VERITAS measures actual physical telemetry outcomes against baseline models, delivering auditable proof across Triple Net Value metrics: Net Profit, Net Zero carbon accounting, and Net Positive asset performance.",
-      capabilities: [
-        "Auditable baseline outcome attribution",
-        "Triple Net Value (Net Profit, Net Zero, Net Positive) tracking",
-        "Elimination of theoretical or unmeasured claims",
+        "Alarm and exception handling",
+        "Operator workflows",
+        "Continuous improvement loops",
       ],
     },
   ] as ProductEcosystemItem[],
@@ -152,111 +137,111 @@ export const applicationContent = {
   walkthrough: {
     heading: "Interactive Building Walkthrough",
     subheading:
-      "Explore how Physical AI maps directly to physical building assets across five critical operational zones.",
+      "See how building management services map to physical building assets across key operational zones.",
     zones: [
       {
         id: "overview",
         name: "Building Overview & Envelope",
         floorLabel: "Facility Envelope",
-        system: "Unified Telemetry & Structural Core",
-        product: "ATRIA Platform Core",
+        system: "Unified Building View",
+        product: "BMS Core",
         description:
-          "The building envelope serves as a living physical twin. Environmental sensors and architectural telemetry continuously model ambient heat load and external weather conditions.",
+          "A whole-building view that ties occupancy, weather load and major systems into one operational picture.",
         buildingImpact:
-          "Establishes a single source of operational truth across all mechanical and electrical subsystems.",
+          "Gives facility teams a single place to understand how the building is behaving.",
         highlightCoordinates: [0, 6, 0],
       },
       {
         id: "hvac",
         name: "HVAC & Mechanical Central Plant",
         floorLabel: "Roof & Central Plant",
-        system: "Chillers, Boilers & Air Handling Units",
-        product: "BuildingShield",
+        system: "Chillers, AHUs & Distribution",
+        product: "HVAC Management",
         description:
-          "Monitors thermodynamic heat exchange and equipment telemetry. Adjusts supply air and chilled water setpoints in accordance with facility control policies.",
+          "Monitors plant telemetry and supports coordinated setpoints for supply air and chilled water within site policies.",
         buildingImpact:
-          "Assists facility engineers in coordinating equipment runtime cycles and maintaining stable environmental conditions.",
-        highlightCoordinates: [0, 12, 0],
+          "Helps engineers stabilise comfort while managing equipment runtime.",
+        highlightCoordinates: [0, 10, -2],
       },
       {
         id: "energy",
         name: "Energy Infrastructure & Substation",
         floorLabel: "Base & Utility Connection",
-        system: "Switchgear, Sub-Meters & Solar Feeds",
-        product: "GridShield",
+        system: "Power Metering & Distribution",
+        product: "Energy Monitoring",
         description:
-          "Ingests sub-minute power metering data from main switchboards and utility interconnects to monitor facility electrical loads.",
+          "Ingests metering from main feeds and distribution so peak load and consumption patterns are visible.",
         buildingImpact:
-          "Enables monitoring of peak load distribution and automated participation in grid demand management programs.",
-        highlightCoordinates: [-3, 1, 0],
+          "Supports demand awareness and clearer conversations about energy cost drivers.",
+        highlightCoordinates: [2, 1, 3],
       },
       {
         id: "compute",
-        name: "Edge Compute & Telemetry Hub",
+        name: "Edge & Telemetry Hub",
         floorLabel: "Floor 04 — Edge Node",
-        system: "High-Density Server Racks & UPS",
-        product: "ComputeShield",
+        system: "On-site Controllers & Gateways",
+        product: "BMS Integration",
         description:
-          "Monitors thermal conditions and electrical distribution supporting on-premise compute infrastructure and inference nodes.",
+          "On-site controllers and gateways that keep local building systems connected to the management layer.",
         buildingImpact:
-          "Supports integration of edge computational infrastructure within existing facility electrical envelopes.",
-        highlightCoordinates: [2, 5.8, 0],
+          "Keeps critical control close to the equipment while feeding a shared operational view.",
+        highlightCoordinates: [-2, 5, 1],
       },
       {
         id: "verification",
-        name: "Operations & Verification Ledger",
+        name: "Operations & Performance Review",
         floorLabel: "Command Center",
-        system: "VERITAS Verification Ledger",
-        product: "VERITAS Platform Capability",
+        system: "Operations Desk",
+        product: "Facility Operations",
         description:
-          "Compares live operational energy consumption with pre-deployment baseline models for transparent auditing.",
+          "Compares live operation with expected baselines so teams can verify what changed and why.",
         buildingImpact:
-          "Provides facility managers and operations teams with verifiable records of system actions and measured telemetry.",
-        highlightCoordinates: [0, 3, 0],
+          "Provides facility managers with clearer records of actions and measured outcomes.",
+        highlightCoordinates: [0, 3, -3],
       },
     ] as WalkthroughZone[],
   },
 
   architecture: {
-    heading: "The Six Pillars of Physical AI",
+    heading: "Foundations of Building Management",
     subheading:
-      "Senatria combines advanced computing paradigms to connect digital intelligence directly with physical machines.",
+      "The capabilities PerfAI emphasises when helping customers adopt BMS services.",
     pillars: [
       {
-        id: "physical-ai",
-        title: "Physical AI",
-        tagline: "Intelligence that acts in the physical world",
-        desc: "Unlike digital-only generative AI, Physical AI understands thermodynamics, mechanical constraints, and fluid dynamics, executing bounded setpoint commands safely.",
+        id: "bms",
+        title: "Building Management Systems",
+        tagline: "Control layer",
+        desc: "Coordinated control of HVAC, metering and related plant through a BMS-centric approach.",
       },
       {
-        id: "digital-twins",
-        title: "Digital Twins & World Models",
-        tagline: "Physics-grounded simulation",
-        desc: "Continuously calibrated operational models of building physics that simulate the causal impact of temperature, weather, and occupancy before actions are taken.",
+        id: "hvac",
+        title: "HVAC & Plant",
+        tagline: "Mechanical systems",
+        desc: "Focus on chillers, air handlers and distribution that drive comfort and energy use.",
       },
       {
-        id: "ai-agents",
-        title: "AI Agent Swarms",
-        tagline: "Specialised, coordinated decision-making",
-        desc: "Domain-specific agents (e.g. Chiller Agent, Comfort Agent, Demand Agent) collaborate to solve competing operational priorities within strict governance rules.",
+        id: "energy",
+        title: "Energy Visibility",
+        tagline: "Meters & demand",
+        desc: "Clearer insight into consumption and peaks so teams can manage cost and capacity.",
       },
       {
-        id: "infrastructure-intelligence",
-        title: "Infrastructure Intelligence",
-        tagline: "Unified decision-grade operational truth",
-        desc: "Connects legacy, siloed Building Management Systems (BACnet, Modbus, MQTT) into a standardized real-time data layer.",
+        id: "integration",
+        title: "Integration",
+        tagline: "Connect existing assets",
+        desc: "Work with installed controllers and site systems instead of discarding them.",
       },
       {
-        id: "edge-intelligence",
-        title: "Edge Intelligence",
-        tagline: "Low-latency on-premise execution",
-        desc: "Deploys inference engines directly onto on-site hardware gateways, ensuring continuous autonomy even during cloud network interruptions.",
+        id: "operations",
+        title: "Facility Operations",
+        tagline: "People & process",
+        desc: "Support for the operators who run buildings every day.",
       },
       {
-        id: "performance-verification",
-        title: "Performance Verification",
-        tagline: "VERITAS measurable evidence",
-        desc: "Attributes actual measured kilowatt-hours and financial performance directly to autonomous setpoint interventions.",
+        id: "channel",
+        title: "Channel Partnership",
+        tagline: "PerfAI role",
+        desc: "Commercial engagement and deployment coordination as your BMS channel partner.",
       },
     ],
   },

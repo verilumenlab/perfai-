@@ -1,6 +1,5 @@
 /**
- * Industry sector content.
- * Factual applications across target enterprise sectors.
+ * Industry sector content for building management services.
  */
 
 export interface IndustrySector {
@@ -10,15 +9,15 @@ export interface IndustrySector {
 }
 
 export const industriesContent = {
-  heading: "Intelligence Across Every Infrastructure",
+  heading: "Building Management Across Sectors",
   subheading:
-    "Applying Physical AI to infrastructure sectors where efficiency and resilience are critical.",
+    "Applying BMS services where comfort, energy and reliability matter most.",
   sectors: [
     {
       id: "commercial-buildings",
       title: "Commercial Buildings",
       description:
-        "Optimizing central plant HVAC, tenant comfort, and peak demand charges.",
+        "Optimising central plant HVAC, tenant comfort and peak demand charges.",
     },
     {
       id: "hospitality",
@@ -30,20 +29,19 @@ export const industriesContent = {
       id: "data-centres",
       title: "Data Centres",
       description:
-        "Managing high-density thermal loads and optimizing Power Usage Effectiveness (PUE).",
+        "Managing high-density thermal loads and cooling plant performance.",
     },
     {
       id: "industrial-infrastructure",
       title: "Industrial Infrastructure",
       description:
-        "Coordinating industrial cooling, compressed air, and electrical load balancing.",
+        "Coordinating industrial cooling, compressed air and electrical load visibility.",
     },
     {
       id: "energy-grid",
-      title: "Energy & Grid",
+      title: "Energy & Utilities",
       description:
-        "Aggregating building capacity to provide grid demand response and flexibility services.",
+        "Improving visibility of building demand and operational energy use.",
     },
   ] as IndustrySector[],
 };
-

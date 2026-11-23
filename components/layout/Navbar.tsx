@@ -1,174 +1,262 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, useReducedMotion, type Transition } from "framer-motion";
-import { MobileNavigation } from "./MobileNavigation";
-import { Menu, ArrowRight } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { Menu, X } from "lucide-react";
+import { BrandLogo } from "@/components/brand/BrandLogo";
+
+const LINKS = [
+  { label: "Home", href: "/#", id: "home" },
+  { label: "Why PerfAI", href: "/#why-perfai", id: "why-perfai" },
+];
+const DEMO = { label: "Contact Us", href: "/#demo", id: "demo" };
+const SPY_IDS = ["home", "why-perfai", "demo"] as const;
+
+const COLLAPSE_AT = 48;
+const EXPAND_AT = 12;
+
+function useActiveSection(enabled: boolean) {
+  const [active, setActive] = useState<(typeof SPY_IDS)[number]>("home");
+
+  useEffect(() => {
+    if (!enabled) return;
+
+    const onScroll = () => {
+      if (window.scrollY < 120) {
+        setActive("home");
+        return;
+      }
+      const marker = window.scrollY + Math.min(window.innerHeight * 0.32, 260);
+      let current: (typeof SPY_IDS)[number] = "home";
+      for (const id of SPY_IDS) {
+        if (id === "home") continue;
+        const el = document.getElementById(id);
+        if (el && el.offsetTop <= marker) current = id;
+      }
+      setActive(current);
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [enabled]);
+
+  return active;
+}
 
 export function Navbar() {
   const pathname = usePathname();
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const [isMobileScrolled, setIsMobileScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const triggerRef = useRef<HTMLButtonElement>(null);
-  const shouldReduceMotion = useReducedMotion();
+  const reduce = useReducedMotion();
+  const [collapsed, setCollapsed] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const menuButton = useRef<HTMLButtonElement>(null);
+  const drawer = useRef<HTMLDivElement>(null);
+  const onHome = pathname === "/";
+  const activeSection = useActiveSection(onHome);
 
   useEffect(() => {
-    const handleScroll = () => {
+    const onScroll = () => {
       const y = window.scrollY;
-
-      if (!isCollapsed && y > 40) {
-        setIsCollapsed(true);
-      } else if (isCollapsed && y < 10) {
-        setIsCollapsed(false);
-      }
-
-      setIsMobileScrolled(y > 20);
+      setScrolled(y > 8);
+      setCollapsed((prev) => (prev ? y > EXPAND_AT : y > COLLAPSE_AT));
     };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [isCollapsed]);
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
-  const navLinks = [
-    { label: "Home", href: "/" },
-    { label: "Application", href: "/application" },
-    { label: "Partner", href: "/partner" },
-  ];
+  const close = useCallback(() => {
+    setOpen(false);
+    menuButton.current?.focus();
+  }, []);
 
-  const springTransition: Transition = shouldReduceMotion
-    ? { duration: 0 }
-    : { type: "spring", stiffness: 260, damping: 30, mass: 1 };
+  useEffect(() => {
+    if (!open) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const focusables = () =>
+      Array.from(
+        drawer.current?.querySelectorAll<HTMLElement>(
+          "a[href], button:not([disabled])"
+        ) ?? []
+      );
+    focusables()[0]?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        close();
+        return;
+      }
+      if (e.key !== "Tab") return;
+      const items = focusables();
+      if (items.length === 0) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open, close]);
+
+  const pill = collapsed && !reduce;
+  const overDarkHero = onHome && !scrolled && !pill;
+  const solid = !overDarkHero;
+
+  const isActive = (id: string) =>
+    onHome ? activeSection === id : id === "home" && pathname === "/";
 
   return (
-    <>
-      <header className="fixed top-0 inset-x-0 z-40 pointer-events-none flex justify-center w-full">
-        <motion.div
-          className="hidden md:flex pointer-events-auto items-center justify-between overflow-hidden"
-          initial={false}
-          animate={{
-            width: "100%",
-            maxWidth: isCollapsed ? 780 : 1320,
-            marginTop: isCollapsed ? 16 : 0,
-            height: isCollapsed ? 58 : 80,
-            borderRadius: isCollapsed ? 9999 : 0,
-            paddingLeft: isCollapsed ? 20 : 36,
-            paddingRight: isCollapsed ? 20 : 36,
-            backgroundColor: isCollapsed
-              ? "rgba(7, 27, 23, 0.92)"
-              : isMobileScrolled
-              ? "rgba(7, 27, 23, 0.88)"
-              : "rgba(7, 27, 23, 0.72)",
-            backdropFilter: "blur(20px)",
-            borderBottomWidth: 1,
-            borderTopWidth: isCollapsed ? 1 : 0,
-            borderLeftWidth: isCollapsed ? 1 : 0,
-            borderRightWidth: isCollapsed ? 1 : 0,
-            borderColor: isCollapsed
-              ? "rgba(117, 230, 174, 0.22)"
-              : "rgba(220, 232, 224, 0.08)",
-            boxShadow: isCollapsed
-              ? "0 16px 40px -16px rgba(0, 0, 0, 0.55)"
-              : "none",
-          }}
-          transition={springTransition}
-        >
-          <Link
-            href="/"
-            className="flex items-center gap-2.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mint-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg-deep rounded-full py-1 pr-2 select-none shrink-0"
-            data-testid="navbar-brand"
-          >
-            <div
-              aria-hidden="true"
-              className="h-8 w-8 sm:h-9 sm:w-9 rounded-xl bg-gradient-to-br from-green-primary to-mint-accent text-bg-deep flex items-center justify-center font-heading font-extrabold text-base sm:text-lg"
-            >
-              P
-            </div>
-            <span className="font-heading font-extrabold text-xl tracking-tight text-white group-hover:text-mint-accent transition-colors">
-              PerfAI
-            </span>
-          </Link>
+    <header className="pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center px-0">
+      <nav
+        aria-label="Primary"
+        className={[
+          "pointer-events-auto hidden items-center justify-between transition-[width,margin,border-radius,background-color,box-shadow,padding] duration-300 ease-out md:flex",
+          pill
+            ? "mt-3 h-14 w-[min(720px,calc(100%-2rem))] shrink-0 overflow-visible rounded-full border border-white/10 bg-bg-deep/95 px-5 shadow-[0_12px_40px_-20px_rgba(0,0,0,0.55)] backdrop-blur-xl"
+            : "mt-0 h-16 w-full rounded-none border-b px-6 lg:px-8",
+          !pill && solid ? "border-white/10 bg-bg-deep/95 backdrop-blur-xl" : "",
+          !pill && overDarkHero ? "border-transparent bg-transparent" : "",
+        ].join(" ")}
+      >
+        <div className="shrink-0">
+          <BrandLogo
+            variant="dark"
+            size="sm"
+            compact
+            priority
+            testId="navbar-brand"
+          />
+        </div>
 
-          <div className="flex items-center gap-4 sm:gap-6 lg:gap-8 shrink-0">
-            <nav className="flex items-center gap-1 sm:gap-2" aria-label="Main Navigation">
-              {navLinks.map((link) => {
-                const isActive = pathname === link.href;
+        <ul className="flex items-center gap-0.5">
+          {LINKS.map((l) => {
+            const active = isActive(l.id);
+            return (
+              <li key={l.id}>
+                <Link
+                  href={l.href}
+                  aria-current={active ? "true" : undefined}
+                  className={[
+                    "rounded-full px-3.5 py-2 text-sm font-medium transition-colors duration-200",
+                    active
+                      ? "text-mint-accent"
+                      : "text-white/80 hover:text-white",
+                  ].join(" ")}
+                >
+                  {l.label}
+                </Link>
+              </li>
+            );
+          })}
+          <li className="ml-1.5">
+            <Link
+              href={DEMO.href}
+              className="inline-flex h-9 items-center rounded-full bg-green-primary px-4 text-sm font-semibold text-bg-deep transition-colors duration-200 hover:bg-mint-accent"
+            >
+              {DEMO.label}
+            </Link>
+          </li>
+        </ul>
+      </nav>
+
+      <div
+        className={[
+          "pointer-events-auto flex h-14 w-full items-center justify-between px-4 transition-colors duration-300 md:hidden",
+          solid
+            ? "border-b border-white/10 bg-bg-deep/95 backdrop-blur-xl"
+            : "bg-transparent",
+        ].join(" ")}
+      >
+        <BrandLogo
+          variant="dark"
+          size="sm"
+          compact
+          priority
+          testId="navbar-brand-mobile"
+        />
+        <button
+          ref={menuButton}
+          type="button"
+          aria-label="Open menu"
+          aria-expanded={open}
+          aria-controls="mobile-drawer"
+          onClick={() => setOpen(true)}
+          className="grid h-11 w-11 place-items-center rounded-lg text-white"
+        >
+          <Menu aria-hidden size={24} />
+        </button>
+      </div>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            id="mobile-drawer"
+            ref={drawer}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menu"
+            initial={reduce ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={reduce ? undefined : { opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="pointer-events-auto fixed inset-0 z-50 flex flex-col bg-bg-deep px-6 pt-4 md:hidden"
+          >
+            <div className="flex h-16 items-center justify-between">
+              <BrandLogo variant="dark" size="sm" compact href={null} />
+              <button
+                type="button"
+                aria-label="Close menu"
+                onClick={close}
+                className="grid h-11 w-11 place-items-center rounded-lg text-white"
+              >
+                <X aria-hidden size={24} />
+              </button>
+            </div>
+            <ul className="mt-6 flex flex-col gap-2">
+              {LINKS.map((l) => {
+                const active = isActive(l.id);
                 return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    aria-current={isActive ? "page" : undefined}
-                    className={cn(
-                      "text-xs sm:text-sm font-medium px-3.5 py-1.5 rounded-full transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mint-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg-deep",
-                      isActive
-                        ? "text-mint-accent font-semibold bg-green-primary/15 border border-green-primary/30"
-                        : "text-white/80 hover:text-white hover:bg-white/5"
-                    )}
-                  >
-                    {link.label}
-                  </Link>
+                  <li key={l.id}>
+                    <Link
+                      href={l.href}
+                      onClick={close}
+                      aria-current={active ? "true" : undefined}
+                      className={[
+                        "block rounded-xl px-4 py-4 font-heading text-2xl font-bold",
+                        active ? "text-mint-accent" : "text-white",
+                      ].join(" ")}
+                    >
+                      {l.label}
+                    </Link>
+                  </li>
                 );
               })}
-            </nav>
-
+            </ul>
             <Link
-              href="/#demo"
-              className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold bg-green-primary text-bg-deep px-4 py-2 sm:py-2.5 rounded-full hover:bg-mint-accent active:scale-[0.98] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mint-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg-deep shrink-0"
+              href={DEMO.href}
+              onClick={close}
+              className="mt-8 inline-flex h-14 items-center justify-center rounded-full bg-green-primary text-base font-semibold text-bg-deep"
             >
-              <span>Request a Demo</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              {DEMO.label}
             </Link>
-          </div>
-        </motion.div>
-
-        <div
-          className={cn(
-            "flex md:hidden pointer-events-auto items-center justify-between w-full h-16 px-4 transition-colors duration-200 border-b",
-            isMobileScrolled
-              ? "bg-bg-deep/95 backdrop-blur-md border-border-dark"
-              : "bg-bg-deep/70 backdrop-blur-sm border-white/5"
-          )}
-        >
-          <Link
-            href="/"
-            className="flex items-center gap-2.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mint-accent rounded-lg p-1"
-            data-testid="navbar-brand-mobile"
-          >
-            <div
-              aria-hidden="true"
-              className="h-8 w-8 rounded-xl bg-gradient-to-br from-green-primary to-mint-accent text-bg-deep flex items-center justify-center font-heading font-extrabold text-base"
-            >
-              P
-            </div>
-            <span className="font-heading font-extrabold text-lg tracking-tight text-white">
-              PerfAI
-            </span>
-          </Link>
-
-          <button
-            ref={triggerRef}
-            type="button"
-            onClick={() => setMobileOpen(true)}
-            className="p-2 rounded-xl text-white/80 hover:text-white hover:bg-white/5 border border-border-dark transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mint-accent"
-            aria-label="Open mobile navigation menu"
-            aria-expanded={mobileOpen}
-          >
-            <Menu className="w-5 h-5" />
-          </button>
-        </div>
-      </header>
-
-      <div className="h-16 md:h-20 w-full shrink-0 pointer-events-none" aria-hidden="true" />
-
-      <MobileNavigation
-        isOpen={mobileOpen}
-        onClose={() => setMobileOpen(false)}
-        triggerRef={triggerRef}
-      />
-    </>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </header>
   );
 }

@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { siteConfig } from "@/lib/site-config";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
-import { Badge } from "@/components/ui/Badge";
 
 export const metadata: Metadata = {
   title: "Terms & Conditions",
@@ -16,12 +15,9 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <Section className="pt-10 pb-20 sm:pt-14 sm:pb-28 md:pt-16 md:pb-32 bg-bg-canvas text-ink">
+    <Section className="pt-24 pb-20 sm:pt-28 sm:pb-28 md:pt-32 md:pb-32 bg-bg-canvas text-ink">
       <Container>
         <div className="max-w-3xl mx-auto">
-          <Badge variant="outline" className="mb-4">
-            Legal Disclosure — Pending Review
-          </Badge>
           <h1 className="font-heading font-extrabold text-3xl sm:text-4xl text-ink tracking-tight">
             Terms & Conditions
           </h1>
@@ -35,9 +31,9 @@ export default function TermsPage() {
 
           <div className="mt-8 space-y-6 text-sm text-ink-muted leading-relaxed">
             <section>
-              <h2 className="text-base font-semibold text-ink mb-2">1. Reseller Relationship</h2>
+              <h2 className="text-base font-semibold text-ink mb-2">1. Channel Partner Relationship</h2>
               <p>
-                PerfAI is an authorised reseller and business partner of Senatria. PerfAI does not manufacture or claim proprietary ownership of Senatria software, hardware gateways, models, or algorithms. Senatria technology (including ATRIA, BuildingShield, GridShield, ComputeShield, and VERITAS) is licensed subject to Senatria&apos;s commercial software license agreements.
+                PerfAI is a channel partner for building management services. PerfAI markets and coordinates BMS-related offerings for commercial facility customers. Definitive product ownership, licences and warranties are governed by the relevant technology providers and formal bilateral contracts.
               </p>
             </section>
 

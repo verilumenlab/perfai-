@@ -1,74 +1,43 @@
-import React from "react";
-import Link from "next/link";
-import { Container } from "@/components/ui/Container";
-import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
 import { FadeIn } from "@/components/ui/FadeIn";
-import { ArrowRight } from "lucide-react";
+import { why } from "@/content/home";
 
 export function WhyPerfAI() {
-  const points = [
-    {
-      title: "Senatria Technology Partnership",
-      desc: "Authorised reseller relationship providing commercial access to Senatria's ATRIA platform, BuildingShield, GridShield, ComputeShield, and VERITAS.",
-    },
-    {
-      title: "Customer Engagement",
-      desc: "Direct enterprise consultation from discovery briefing to deployment planning, establishing clear return-on-investment parameters.",
-    },
-    {
-      title: "Infrastructure Understanding",
-      desc: "Hands-on experience with commercial building systems, BMS protocols, telemetry gateways, and energy metering environments.",
-    },
-    {
-      title: "Deployment Coordination & Support",
-      desc: "Dedicated local support ensuring smooth telemetry integration, operator governance bounds, and ongoing performance reviews.",
-    },
-  ];
-
   return (
-    <section id="about" className="w-full py-20 md:py-28 bg-bg-surface text-white border-t border-border-dark">
-      <Container>
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          <FadeIn className="lg:col-span-5 lg:sticky lg:top-28">
-            <Badge variant="default" className="mb-4">
-              Why PerfAI
-            </Badge>
-            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight">
-              The partner between technology and your facility.
+    <section id="why-perfai" className="section-shell scroll-mt-24 bg-bg-light text-ink">
+      <div className="section-inner grid gap-12 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16">
+        <FadeIn>
+          <div className="lg:sticky lg:top-28">
+            <h2 className="font-heading text-[clamp(1.85rem,3.6vw,2.85rem)] font-extrabold leading-[1.08] tracking-[-0.02em]">
+              {why.heading}
             </h2>
-            <p className="mt-4 text-base sm:text-lg text-text-muted leading-relaxed">
-              PerfAI bridges Senatria&apos;s Physical AI with practical commercial adoption, dedicated engineering coordination, and responsive local support.
-            </p>
-            <Link href="/partner" className="mt-8 inline-block">
-              <Button variant="secondary" size="lg">
-                <span>About the partnership</span>
-                <ArrowRight className="w-4 h-4 ml-1" />
-              </Button>
-            </Link>
-          </FadeIn>
+          </div>
+        </FadeIn>
 
-          <FadeIn delay={0.12} className="lg:col-span-7">
-            <ol className="space-y-0 divide-y divide-border-dark border-y border-border-dark">
-              {points.map((p, idx) => (
-                <li key={idx} className="py-7 sm:py-8 grid grid-cols-[auto_1fr] gap-5 sm:gap-8">
-                  <span className="font-heading font-bold text-2xl sm:text-3xl text-green-primary/50 tabular-nums leading-none pt-0.5">
-                    0{idx + 1}
+        <ol className="divide-y divide-line/80">
+          {why.points.map((p, i) => (
+            <li key={p.title}>
+              <FadeIn delay={i * 0.05}>
+                <div className="grid gap-2 py-7 sm:grid-cols-[3.25rem_1fr] sm:gap-4">
+                  <span
+                    aria-hidden
+                    className="font-heading text-2xl font-extrabold text-green-primary/90"
+                  >
+                    {String(i + 1).padStart(2, "0")}
                   </span>
                   <div>
-                    <h3 className="font-heading font-bold text-lg sm:text-xl text-white">
+                    <h3 className="font-heading text-lg font-bold tracking-tight sm:text-xl">
                       {p.title}
                     </h3>
-                    <p className="text-sm sm:text-base text-text-muted mt-2 leading-relaxed">
-                      {p.desc}
+                    <p className="mt-2 max-w-xl text-[15px] leading-relaxed text-ink/70">
+                      {p.text}
                     </p>
                   </div>
-                </li>
-              ))}
-            </ol>
-          </FadeIn>
-        </div>
-      </Container>
+                </div>
+              </FadeIn>
+            </li>
+          ))}
+        </ol>
+      </div>
     </section>
   );
 }

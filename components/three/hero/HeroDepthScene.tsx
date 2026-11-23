@@ -1,10 +1,7 @@
 "use client";
 
 import React, { Suspense } from "react";
-import { HeroSkyLayer } from "./HeroSkyLayer";
-import { OceanLayer } from "./OceanLayer";
-import { BeachParallaxLayer } from "./BeachParallaxLayer";
-import { BuildingPlane } from "./BuildingPlane";
+import { HeroCompositePlane } from "./HeroCompositePlane";
 import { AtmosphereLayer } from "./AtmosphereLayer";
 
 interface HeroDepthSceneProps {
@@ -14,8 +11,8 @@ interface HeroDepthSceneProps {
 }
 
 /**
- * Layered beachfront depth stack for the home hero (single canvas).
- * Walkthrough mode continues to use BuildingModel + BuildingEnvironment.
+ * Home hero depth scene: one seamless composite plate + light atmosphere.
+ * Cutout planes were abandoned — they produced visible seams in production.
  */
 export function HeroDepthScene({
   scrollProgress,
@@ -24,25 +21,17 @@ export function HeroDepthScene({
 }: HeroDepthSceneProps) {
   return (
     <Suspense fallback={null}>
-      <HeroSkyLayer scrollProgress={scrollProgress} reducedMotion={reducedMotion} />
-      <OceanLayer
-        scrollProgress={scrollProgress}
-        reducedMotion={reducedMotion}
-        lite={lite}
-      />
-      <BeachParallaxLayer
+      <HeroCompositePlane
         scrollProgress={scrollProgress}
         reducedMotion={reducedMotion}
       />
-      <BuildingPlane
-        scrollProgress={scrollProgress}
-        reducedMotion={reducedMotion}
-      />
-      <AtmosphereLayer
-        scrollProgress={scrollProgress}
-        reducedMotion={reducedMotion}
-        lite={lite}
-      />
+      {!lite && (
+        <AtmosphereLayer
+          scrollProgress={scrollProgress}
+          reducedMotion={reducedMotion}
+          lite={lite}
+        />
+      )}
     </Suspense>
   );
 }

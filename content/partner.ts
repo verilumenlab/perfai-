@@ -1,66 +1,65 @@
 /**
  * Partner page content.
- * Explains PerfAI's authorised reseller role, engagement steps, and market focus.
- * Sourced strictly from verified business facts.
+ * PerfAI as a channel partner for building management services.
  */
 
 export const partnerPageContent = {
   hero: {
-    badge: "Authorised Business Partner",
-    headline: "Bringing Physical AI to Businesses. Together.",
+    badge: "Channel Partner",
+    headline: "Building Management Services. Delivered With Focus.",
     subheading:
-      "PerfAI connects organisations with Senatria's infrastructure intelligence solutions through customer engagement, solution discovery and deployment coordination.",
+      "PerfAI connects organisations with building management services through customer engagement, solution discovery and deployment coordination.",
   },
 
   about: {
     badge: "About PerfAI",
-    title: "Technology Reseller & Deployment Coordinator",
+    title: "Channel Partner for Building Management",
     paragraph1:
-      "PerfAI is an authorised commercial reseller and deployment partner for Senatria. We specialize in bringing advanced Physical AI technology to commercial building operators, industrial facilities, and data centre environments.",
+      "PerfAI is a channel partner for building management services. We help commercial building operators, facility managers and infrastructure teams evaluate and adopt BMS solutions that fit their sites.",
     paragraph2:
-      "Our focus is customer-centric: we help facility directors and engineering executives assess compatibility, scope deployment requirements, and coordinate technical integration with Senatria's certified software stack.",
+      "Our focus is customer-centric: we help facility directors and engineering teams assess compatibility, scope requirements and coordinate deployment with the right technical partners.",
     coreTenets: [
       {
-        title: "Authorised Reseller Model",
-        desc: "PerfAI markets and distributes Senatria's ATRIA platform and Shield solutions under commercial partner terms.",
+        title: "Channel Partner Model",
+        desc: "PerfAI markets and coordinates building management services for commercial and facility customers.",
       },
       {
         title: "Customer Engagement Focus",
-        desc: "Dedicated discovery sessions and solution briefings tailored to your specific facility constraints.",
+        desc: "Dedicated discovery sessions and solution briefings tailored to your building constraints.",
       },
       {
-        title: "Infrastructure Grounding",
-        desc: "Practical familiarity with Building Management Systems (BMS), energy sub-metering, and HVAC operational protocols.",
+        title: "BMS Grounding",
+        desc: "Practical familiarity with building management systems, energy metering and HVAC operations.",
       },
       {
         title: "Deployment Coordination",
-        desc: "Coordinating technical resources from preliminary telemetry audits through deployment follow-up.",
+        desc: "Coordinating technical resources from preliminary site review through go-live follow-up.",
       },
     ],
   },
 
   partnership: {
-    badge: "Senatria Partnership",
-    title: "Clear Boundaries, Proven Technology",
+    badge: "How We Partner",
+    title: "Clear Roles. Practical Delivery.",
     description:
-      "Senatria creates cutting-edge Physical AI operating software, digital twins, and autonomous control platforms. PerfAI acts as the regional commercial interface, ensuring enterprise clients receive focused customer engagement and ongoing support.",
+      "Building management platforms and services are delivered through a channel model. PerfAI acts as the commercial interface — focused customer engagement, scoping and ongoing coordination for enterprise clients.",
     columns: [
       {
-        label: "Senatria's Role",
-        roleTitle: "Technology & Platform Provider",
+        label: "Technology Layer",
+        roleTitle: "BMS & Building Services",
         points: [
-          "Creator of ATRIA Physical AI platform",
-          "Developer of BuildingShield, GridShield, ComputeShield, and VERITAS",
-          "Software algorithms, model updates, and certified engineering standards",
+          "HVAC and plant control capabilities",
+          "Energy monitoring and metering visibility",
+          "Integration with existing building systems",
         ],
       },
       {
         label: "PerfAI's Role",
-        roleTitle: "Authorised Reseller & Business Partner",
+        roleTitle: "Channel Partner",
         points: [
           "Commercial briefings and facility compatibility assessment",
           "Customer relationship management and onboarding coordination",
-          "Local operational liaison and continuous client success follow-up",
+          "Local operational liaison and continuous client follow-up",
         ],
       },
     ],
@@ -70,41 +69,41 @@ export const partnerPageContent = {
     badge: "Engagement Framework",
     title: "How We Work With Your Team",
     subheading:
-      "A structured four-step methodology designed for commercial real estate and enterprise infrastructure operators.",
+      "A structured four-step methodology designed for commercial real estate and facility operators.",
     steps: [
       {
         step: "01",
         name: "Understand",
         title: "Identify Requirements",
-        desc: "We analyze your infrastructure portfolio, existing BMS/metering architectures, and key operational pain points (e.g., peak demand costs, cooling inefficiencies, or carbon reporting).",
+        desc: "We analyse your building portfolio, existing BMS or metering setup, and key operational pain points such as comfort, energy cost or plant reliability.",
       },
       {
         step: "02",
         name: "Explore",
-        title: "Match Solutions",
-        desc: "We map your specific requirements to relevant Senatria solutions—identifying where BuildingShield, GridShield, or ComputeShield deliver highest operational impact.",
+        title: "Match Services",
+        desc: "We map your requirements to the right building management services — HVAC, energy, integration or broader facility operations support.",
       },
       {
         step: "03",
         name: "Coordinate",
-        title: "Align Technical Resources",
-        desc: "PerfAI connects your engineering team with the appropriate technical specifications, integration gateways, and commercial resources for seamless deployment planning.",
+        title: "Align Resources",
+        desc: "PerfAI connects your team with the appropriate technical specifications, integration approaches and commercial resources for deployment planning.",
       },
       {
         step: "04",
         name: "Support",
         title: "Ongoing Engagement",
-        desc: "We facilitate regular check-ins, coordinate technical support inquiries with Senatria engineering, and maintain ongoing commercial alignment as your facility operations evolve.",
+        desc: "We facilitate regular check-ins, coordinate support enquiries and maintain commercial alignment as your facility operations evolve.",
       },
     ],
   },
 
   cta: {
     badge: "Direct Business Inquiry",
-    heading: "Let's Explore an Infrastructure Opportunity.",
+    heading: "Let's Explore a Building Management Opportunity.",
     subheading:
-      "Connect with our solutions team to discuss facility compatibility, schedule a briefing, or learn more about Senatria's Physical AI platform.",
+      "Connect with our team to discuss facility compatibility, schedule a briefing or learn more about building management services through PerfAI.",
     primaryButtonText: "Business Enquiry",
-    secondaryButtonText: "Explore Senatria Official Site",
+    secondaryButtonText: "Request a Demo",
   },
 };

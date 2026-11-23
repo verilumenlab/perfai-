@@ -18,7 +18,7 @@
   --bg-canvas: #f0f4f2;
   --bg-panel: #ffffff;
   --ink: #0c1612;
-  --ink-muted: #5a6b64;
+  --ink-muted: #3f4f48;
   --forest: #0f5c45;
   --signal: #1fa971;
   --line: rgba(12, 22, 18, 0.1);
@@ -53,10 +53,33 @@
 
 html {
   scroll-behavior: smooth;
+  background-color: var(--bg-deep);
+  scroll-padding-top: 88px;
 }
 
 body {
-  background-color: var(--bg-deep);
+  overflow-x: clip;
+}
+
+@keyframes hero-shimmer {
+  from { background-position: 0 0; }
+  to   { background-position: 0 28px; }
+}
+.hero-shimmer { animation: hero-shimmer 6s linear infinite; }
+
+@keyframes hero-lit {
+  0%, 100% { opacity: 0.45; }
+  50%      { opacity: 0.8; }
+}
+.hero-lit { animation: hero-lit 5s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-shimmer, .hero-lit { animation: none; }
+  html { scroll-behavior: auto; }
+}
+
+html body {
+  background-color: var(--bg-deep) !important;
   color: var(--white);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
@@ -71,4 +94,25 @@ body {
 ::selection {
   background-color: color-mix(in srgb, var(--green-primary) 35%, transparent);
   color: var(--white);
+}
+
+/* Shared light-section rhythm */
+.section-shell {
+  padding-block: 5rem;
+}
+@media (min-width: 768px) {
+  .section-shell {
+    padding-block: 7rem;
+  }
+}
+.section-inner {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 1200px;
+  padding-inline: 1.5rem;
+}
+.surface-card {
+  border: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
+  background: var(--bg-panel);
+  border-radius: 1rem;
 }

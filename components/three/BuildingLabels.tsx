@@ -7,48 +7,47 @@ interface BuildingLabelsProps {
 }
 
 /**
- * Spatial callouts matching senatria.ai product naming.
- * Appear through exploration stages (0.20 – 0.85).
+ * BMS callouts — beachfront uses screen-space anchors over the composite plate.
  */
 export function BuildingLabels({
   scrollProgress,
   layout = "procedural",
 }: BuildingLabelsProps) {
-  if (scrollProgress < 0.2 || scrollProgress > 0.85) {
+  if (scrollProgress < 0.22 || scrollProgress > 0.88) {
     return null;
   }
 
   const chip =
-    "bg-bg-deep/95 text-mint-accent px-3 py-1.5 rounded-lg border border-green-primary/40 text-[10px] font-mono whitespace-nowrap shadow-xl";
+    "bg-bg-deep/90 text-mint-accent px-3 py-1.5 rounded-lg border border-green-primary/40 text-[10px] font-mono whitespace-nowrap shadow-xl backdrop-blur-sm";
   const chipNeutral =
-    "bg-bg-deep/95 text-white px-3 py-1.5 rounded-lg border border-border-dark text-[10px] font-mono whitespace-nowrap shadow-xl";
+    "bg-bg-deep/90 text-white px-3 py-1.5 rounded-lg border border-border-dark text-[10px] font-mono whitespace-nowrap shadow-xl backdrop-blur-sm";
 
   if (layout === "beachfront") {
-    const showBuildingShield = scrollProgress >= 0.25;
-    const showAtria = scrollProgress >= 0.35;
-    const showGrid = scrollProgress >= 0.48;
-    const showCompute = scrollProgress >= 0.6;
+    const showHvac = scrollProgress >= 0.25;
+    const showBms = scrollProgress >= 0.38;
+    const showEnergy = scrollProgress >= 0.52;
+    const showOps = scrollProgress >= 0.65;
 
     return (
-      <group>
-        {showBuildingShield && (
-          <Html position={[7.5, 10.5, -1]} center distanceFactor={18} className="pointer-events-none">
-            <div className={chip}>BuildingShield: Asset Optimization</div>
+      <group position={[0, 0, -11]}>
+        {showHvac && (
+          <Html position={[3.2, 2.4, 0]} center distanceFactor={14} className="pointer-events-none">
+            <div className={chip}>HVAC: Plant & Comfort</div>
           </Html>
         )}
-        {showAtria && (
-          <Html position={[10.5, 5.5, -1]} center distanceFactor={18} className="pointer-events-none">
-            <div className={chipNeutral}>ATRIA: Physical AI Platform</div>
+        {showBms && (
+          <Html position={[4.2, 0.6, 0]} center distanceFactor={14} className="pointer-events-none">
+            <div className={chipNeutral}>BMS: Building Control</div>
           </Html>
         )}
-        {showGrid && (
-          <Html position={[4.2, 1.2, 0]} center distanceFactor={18} className="pointer-events-none">
-            <div className={chip}>GridShield: Demand Flexibility</div>
+        {showEnergy && (
+          <Html position={[2.4, -1.6, 0]} center distanceFactor={14} className="pointer-events-none">
+            <div className={chip}>Energy: Meters & Demand</div>
           </Html>
         )}
-        {showCompute && (
-          <Html position={[9.8, 2.8, 0]} center distanceFactor={18} className="pointer-events-none">
-            <div className={chip}>ComputeShield: Edge Capacity</div>
+        {showOps && (
+          <Html position={[4.6, -0.5, 0]} center distanceFactor={14} className="pointer-events-none">
+            <div className={chip}>Operations: Facility Desk</div>
           </Html>
         )}
       </group>
@@ -58,17 +57,17 @@ export function BuildingLabels({
   return (
     <group>
       <Html position={[0, 12.0, 0]} center distanceFactor={22} className="pointer-events-none">
-        <div className={chip}>BuildingShield: Asset Optimization</div>
+        <div className={chip}>HVAC: Plant & Comfort</div>
       </Html>
       <Html position={[4.2, 5.8, 0]} center distanceFactor={22} className="pointer-events-none">
-        <div className={chipNeutral}>ATRIA: Physical AI Platform</div>
+        <div className={chipNeutral}>BMS: Building Control</div>
       </Html>
       <Html position={[-4.2, 1.2, 0]} center distanceFactor={22} className="pointer-events-none">
-        <div className={chip}>GridShield: Demand Flexibility</div>
+        <div className={chip}>Energy: Meters & Demand</div>
       </Html>
       {scrollProgress >= 0.55 && (
         <Html position={[3.5, 2.2, 2]} center distanceFactor={22} className="pointer-events-none">
-          <div className={chip}>ComputeShield: Edge Capacity</div>
+          <div className={chip}>Operations: Facility Desk</div>
         </Html>
       )}
     </group>

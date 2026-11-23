@@ -3,15 +3,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import { useReducedMotion } from "framer-motion";
-import Lenis from "lenis";
 import { BuildingModel } from "./BuildingModel";
 import { BuildingLighting } from "./BuildingLighting";
 import { BuildingEnvironment } from "./BuildingEnvironment";
 import { ScrollCamera } from "./ScrollCamera";
 import { BuildingLabels } from "./BuildingLabels";
 import { BuildingPoster } from "./BuildingPoster";
-import { HeroDepthScene } from "./hero/HeroDepthScene";
-import { Badge } from "@/components/ui/Badge";
 import { cn } from "@/lib/utils";
 
 function checkWebGLSupport(): boolean {
@@ -91,19 +88,16 @@ export function BuildingScene({
   const [isLowPower] = useState(() => checkLowPowerDevice());
   const [preserveDrawingBuffer] = useState(() => shouldPreserveDrawingBuffer());
   const [isMobile, setIsMobile] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [isIntersecting, setIsIntersecting] = useState(true);
   const [canvasReady, setCanvasReady] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const reducedMotion = useReducedMotion();
-  const useBeachfront = mode === "scroll";
-  const lite = isLowPower || isMobile;
 
   const effectiveProgress =
     mode === "walkthrough" && activeZoneId
       ? getZoneProgress(activeZoneId)
-      : scrollProgress;
+      : 0.2;
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -122,51 +116,8 @@ export function BuildingScene({
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    if (reducedMotion || mode !== "scroll") return;
-
-    const onScroll = () => {
-      const heroSection = document.getElementById("hero-pin-container");
-      if (heroSection) {
-        const rect = heroSection.getBoundingClientRect();
-        const totalHeight = heroSection.offsetHeight - window.innerHeight;
-        if (totalHeight > 0) {
-          setScrollProgress(Math.min(1, Math.max(0, -rect.top / totalHeight)));
-        }
-      }
-    };
-
-    let lenis: Lenis | null = null;
-    let rafId = 0;
-
-    if (!isLowPower) {
-      lenis = new Lenis({
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        orientation: "vertical",
-        gestureOrientation: "vertical",
-        smoothWheel: true,
-      });
-      lenis.on("scroll", onScroll);
-      function raf(time: number) {
-        lenis?.raf(time);
-        rafId = requestAnimationFrame(raf);
-      }
-      rafId = requestAnimationFrame(raf);
-    }
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-
-    return () => {
-      if (rafId) cancelAnimationFrame(rafId);
-      window.removeEventListener("scroll", onScroll);
-      lenis?.destroy();
-    };
-  }, [reducedMotion, isLowPower, mode]);
-
-  // Reduced motion / no WebGL / low-power: static composite poster only
-  if (!hasWebGL || reducedMotion || (isLowPower && useBeachfront)) {
+  // Scroll/hero fallback: static poster (motion hero lives in HeroSection)
+  if (mode === "scroll" || variant === "hero") {
     return (
       <div
         ref={containerRef}
@@ -178,109 +129,95 @@ export function BuildingScene({
           className
         )}
       >
-        <BuildingPoster variant={variant === "hero" || useBeachfront ? "hero" : "default"} />
+        <BuildingPoster variant={variant === "hero" ? "hero" : "default"} />
       </div>
     );
   }
 
-  const showCanvas = !isLowPower;
+  // Walkthrough / reduced-motion / no WebGL: static poster
+  if (!hasWebGL || reducedMotion || isLowPower) {
+    return (
+      <div
+        ref={containerRef}
+        className={cn(
+          "relative w-full overflow-hidden",
+          "aspect-[16/10] sm:aspect-[16/9] min-h-[240px] max-h-[520px] rounded-xl border border-border-dark",
+          className
+        )}
+      >
+        <BuildingPoster variant="default" />
+      </div>
+    );
+  }
 
   return (
     <div
       ref={containerRef}
       className={cn(
         "relative w-full overflow-hidden bg-bg-deep",
-        variant === "hero"
-          ? "h-full min-h-0 max-h-none aspect-auto rounded-none border-0"
-          : "aspect-[16/10] sm:aspect-[16/9] min-h-[240px] max-h-[520px] rounded-xl border border-border-dark",
+        "aspect-[16/10] sm:aspect-[16/9] min-h-[240px] max-h-[520px] rounded-xl border border-border-dark",
         className
       )}
     >
-      {variant !== "hero" && mode === "walkthrough" && (
-        <div className="absolute top-4 left-4 z-20 pointer-events-none">
-          <Badge variant="outline" className="text-mint-accent bg-bg-deep/90 border-border-dark text-[10px]">
-            Illustrative 3D Concept
-          </Badge>
-        </div>
-      )}
-
       <div
         className={`absolute inset-0 transition-opacity duration-700 pointer-events-none z-10 ${
           canvasReady ? "opacity-0" : "opacity-100"
         }`}
       >
-        <BuildingPoster variant={useBeachfront ? "hero" : variant} />
+        <BuildingPoster variant="default" />
       </div>
 
-      {showCanvas && (
-        <div
-          className="absolute inset-0 w-full h-full z-0 pointer-events-none"
-          aria-label="Interactive beachfront building visualization (Illustrative)"
-          role="img"
+      <div
+        className="absolute inset-0 w-full h-full z-0 pointer-events-none"
+        aria-label="Interactive building visualization (Illustrative)"
+        role="img"
+      >
+        <Canvas
+          className="w-full h-full block"
+          style={{
+            width: "100%",
+            height: "100%",
+            display: "block",
+            position: "absolute",
+            inset: 0,
+          }}
+          resize={{ debounce: 0, scroll: false }}
+          shadows={!isMobile}
+          dpr={isMobile ? 1.0 : [1, 1.5]}
+          frameloop={isIntersecting || preserveDrawingBuffer ? "always" : "never"}
+          camera={{
+            position: [22, 14, 26],
+            fov: 38,
+            near: 0.5,
+            far: 180,
+          }}
+          gl={{
+            antialias: !isMobile,
+            powerPreference: "high-performance",
+            alpha: true,
+            preserveDrawingBuffer,
+          }}
+          onCreated={({ gl, size }) => {
+            gl.setSize(size.width, size.height);
+            setCanvasReady(true);
+          }}
         >
-          <Canvas
-            className="w-full h-full block"
-            style={{
-              width: "100%",
-              height: "100%",
-              display: "block",
-              position: "absolute",
-              inset: 0,
-            }}
-            resize={{ debounce: 0, scroll: false }}
-            shadows={!isMobile && !useBeachfront}
-            dpr={isMobile ? 1.0 : [1, 1.5]}
-            frameloop={isIntersecting || preserveDrawingBuffer ? "always" : "never"}
-            camera={{
-              position: useBeachfront ? [4, 3.5, 16] : [22, 14, 26],
-              fov: useBeachfront ? 42 : 38,
-              near: 0.5,
-              far: 180,
-            }}
-            gl={{
-              antialias: !isMobile,
-              powerPreference: "high-performance",
-              alpha: true,
-              preserveDrawingBuffer,
-            }}
-            onCreated={({ gl, size }) => {
-              gl.setSize(size.width, size.height);
-              setCanvasReady(true);
-            }}
-          >
-            <color attach="background" args={[useBeachfront ? "#1A0F0C" : "#0A241E"]} />
-            <fogExp2
-              attach="fog"
-              args={[useBeachfront ? "#2A1810" : "#0A241E", useBeachfront ? 0.012 : 0.014]}
-            />
-
-            <BuildingLighting isMobile={isMobile} />
-
-            {useBeachfront ? (
-              <HeroDepthScene
-                scrollProgress={effectiveProgress}
-                reducedMotion={Boolean(reducedMotion)}
-                lite={lite}
-              />
-            ) : (
-              <>
-                <BuildingEnvironment />
-                <BuildingModel scrollProgress={effectiveProgress} />
-              </>
-            )}
-
-            <BuildingLabels
-              scrollProgress={effectiveProgress}
-              layout={useBeachfront ? "beachfront" : "procedural"}
-            />
-            <ScrollCamera
-              scrollProgress={effectiveProgress}
-              reducedMotion={Boolean(reducedMotion)}
-              framing={useBeachfront ? "beachfront" : "procedural"}
-            />
-          </Canvas>
-        </div>
-      )}
+          <color attach="background" args={["#0A241E"]} />
+          <fogExp2 attach="fog" args={["#0A241E", 0.014]} />
+          <BuildingLighting isMobile={isMobile} />
+          <BuildingEnvironment />
+          <BuildingModel scrollProgress={effectiveProgress} />
+          <BuildingLabels
+            scrollProgress={effectiveProgress}
+            layout="procedural"
+          />
+          <ScrollCamera
+            scrollProgress={effectiveProgress}
+            reducedMotion={Boolean(reducedMotion)}
+            framing="procedural"
+          />
+        </Canvas>
+      </div>
     </div>
   );
 }

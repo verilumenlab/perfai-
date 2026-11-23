@@ -12,6 +12,11 @@ import {
 } from "@/lib/validation";
 import { CheckCircle2, AlertCircle, Loader2, ArrowRight, RotateCcw } from "lucide-react";
 
+const fieldClass =
+  "w-full rounded-xl border border-line bg-bg-light px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-muted/70 transition-colors focus:border-green-primary focus:outline-none focus:ring-1 focus:ring-green-primary";
+const labelClass = "mb-1.5 block text-xs font-medium text-ink";
+const errorClass = "mt-1 text-[11px] text-red-600";
+
 export function PartnerForm() {
   const [formLoadTime, setFormLoadTime] = useState<number>(() => Date.now());
   const [submitStatus, setSubmitStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
@@ -59,7 +64,7 @@ export function PartnerForm() {
         ...data,
         enquiryType: "PARTNER",
         formLoadTime,
-        sourcePage: typeof window !== "undefined" ? window.location.pathname : "/partner",
+        sourcePage: typeof window !== "undefined" ? window.location.pathname : "/",
         utmSource,
         utmMedium,
         utmCampaign,
@@ -98,32 +103,32 @@ export function PartnerForm() {
   if (submitStatus === "success") {
     return (
       <div
-        className="p-6 sm:p-8 rounded-2xl bg-bg-surface border border-green-primary/30 text-white text-center"
+        className="rounded-2xl border border-green-primary/25 bg-bg-light p-6 text-center text-ink sm:p-8"
         role="alert"
         aria-live="polite"
       >
-        <div className="w-12 h-12 mx-auto rounded-full bg-green-primary/20 flex items-center justify-center text-mint-accent mb-4">
-          <CheckCircle2 className="w-6 h-6" />
+        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-primary/15 text-green-primary">
+          <CheckCircle2 className="h-6 w-6" />
         </div>
-        <h3 className="font-heading font-bold text-xl text-white">
+        <h3 className="font-heading text-xl font-bold text-ink">
           Partnership Enquiry Registered
         </h3>
-        <p className="mt-2 text-sm text-text-muted max-w-md mx-auto">
+        <p className="mx-auto mt-2 max-w-md text-sm text-ink-muted">
           Thank you for reaching out to PerfAI. Our commercial partnerships team has received your details.
         </p>
-        <div className="mt-4 p-3 rounded-xl bg-bg-deep border border-border-dark inline-block font-mono text-xs text-mint-accent">
-          Reference: <span className="font-bold text-white">{leadNumber}</span>
+        <div className="mt-4 inline-block rounded-xl border border-line bg-white p-3 font-mono text-xs text-forest">
+          Reference: <span className="font-bold text-ink">{leadNumber}</span>
         </div>
-        <p className="mt-3 text-xs text-text-muted">
+        <p className="mt-3 text-xs text-ink-muted">
           A partnership coordinator will review your company profile and respond within two business days.
         </p>
         <div className="mt-6">
           <button
             type="button"
             onClick={handleReset}
-            className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-lg bg-bg-deep border border-border-dark text-white hover:border-green-primary transition-colors cursor-pointer"
+            className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-line bg-white px-4 py-2 text-xs font-semibold text-ink transition-colors hover:border-green-primary"
           >
-            <RotateCcw className="w-3.5 h-3.5" />
+            <RotateCcw className="h-3.5 w-3.5" />
             <span>Submit another enquiry</span>
           </button>
         </div>
@@ -138,8 +143,7 @@ export function PartnerForm() {
       noValidate
       aria-label="Partnership enquiry form"
     >
-      {/* Hidden Honeypot */}
-      <div className="absolute opacity-0 -z-50 pointer-events-none h-0 w-0 overflow-hidden" aria-hidden="true">
+      <div className="pointer-events-none absolute -z-50 h-0 w-0 overflow-hidden opacity-0" aria-hidden="true">
         <label htmlFor="hp_website_partner">Leave this field blank</label>
         <input
           id="hp_website_partner"
@@ -150,22 +154,20 @@ export function PartnerForm() {
         />
       </div>
 
-      {/* Global Error Banner */}
       {submitStatus === "error" && errorMessage && (
         <div
-          className="p-4 rounded-xl bg-red-950/40 border border-red-500/50 flex items-start gap-3 text-red-200 text-xs"
+          className="flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-xs text-red-700"
           role="alert"
         >
-          <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-500" />
           <span>{errorMessage}</span>
         </div>
       )}
 
-      {/* Name and Email */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor="p_fullName" className="block text-xs font-medium text-white mb-1.5">
-            Full Name <span className="text-mint-accent">*</span>
+          <label htmlFor="p_fullName" className={labelClass}>
+            Full Name <span className="text-green-primary">*</span>
           </label>
           <input
             id="p_fullName"
@@ -173,20 +175,20 @@ export function PartnerForm() {
             autoComplete="name"
             aria-invalid={!!errors.fullName}
             aria-describedby={errors.fullName ? "p_fullName-error" : undefined}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-bg-deep border border-border-dark text-white text-sm focus:outline-none focus:border-green-primary focus:ring-1 focus:ring-green-primary transition-colors"
+            className={fieldClass}
             placeholder="Marcus Vance"
             {...register("fullName")}
           />
           {errors.fullName && (
-            <p id="p_fullName-error" className="mt-1 text-[11px] text-red-400">
+            <p id="p_fullName-error" className={errorClass}>
               {errors.fullName.message}
             </p>
           )}
         </div>
 
         <div>
-          <label htmlFor="p_businessEmail" className="block text-xs font-medium text-white mb-1.5">
-            Business Email <span className="text-mint-accent">*</span>
+          <label htmlFor="p_businessEmail" className={labelClass}>
+            Business Email <span className="text-green-primary">*</span>
           </label>
           <input
             id="p_businessEmail"
@@ -194,23 +196,22 @@ export function PartnerForm() {
             autoComplete="email"
             aria-invalid={!!errors.businessEmail}
             aria-describedby={errors.businessEmail ? "p_businessEmail-error" : undefined}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-bg-deep border border-border-dark text-white text-sm focus:outline-none focus:border-green-primary focus:ring-1 focus:ring-green-primary transition-colors"
+            className={fieldClass}
             placeholder="m.vance@company.com"
             {...register("businessEmail")}
           />
           {errors.businessEmail && (
-            <p id="p_businessEmail-error" className="mt-1 text-[11px] text-red-400">
+            <p id="p_businessEmail-error" className={errorClass}>
               {errors.businessEmail.message}
             </p>
           )}
         </div>
       </div>
 
-      {/* Company and Job Title */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor="p_companyName" className="block text-xs font-medium text-white mb-1.5">
-            Company / Organisation <span className="text-mint-accent">*</span>
+          <label htmlFor="p_companyName" className={labelClass}>
+            Company / Organisation <span className="text-green-primary">*</span>
           </label>
           <input
             id="p_companyName"
@@ -218,20 +219,20 @@ export function PartnerForm() {
             autoComplete="organization"
             aria-invalid={!!errors.companyName}
             aria-describedby={errors.companyName ? "p_companyName-error" : undefined}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-bg-deep border border-border-dark text-white text-sm focus:outline-none focus:border-green-primary focus:ring-1 focus:ring-green-primary transition-colors"
+            className={fieldClass}
             placeholder="Apex Infrastructure Partners"
             {...register("companyName")}
           />
           {errors.companyName && (
-            <p id="p_companyName-error" className="mt-1 text-[11px] text-red-400">
+            <p id="p_companyName-error" className={errorClass}>
               {errors.companyName.message}
             </p>
           )}
         </div>
 
         <div>
-          <label htmlFor="p_jobTitle" className="block text-xs font-medium text-white mb-1.5">
-            Job Title / Role <span className="text-mint-accent">*</span>
+          <label htmlFor="p_jobTitle" className={labelClass}>
+            Job Title / Role <span className="text-green-primary">*</span>
           </label>
           <input
             id="p_jobTitle"
@@ -239,23 +240,22 @@ export function PartnerForm() {
             autoComplete="organization-title"
             aria-invalid={!!errors.jobTitle}
             aria-describedby={errors.jobTitle ? "p_jobTitle-error" : undefined}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-bg-deep border border-border-dark text-white text-sm focus:outline-none focus:border-green-primary focus:ring-1 focus:ring-green-primary transition-colors"
+            className={fieldClass}
             placeholder="Managing Director / Partnership Lead"
             {...register("jobTitle")}
           />
           {errors.jobTitle && (
-            <p id="p_jobTitle-error" className="mt-1 text-[11px] text-red-400">
+            <p id="p_jobTitle-error" className={errorClass}>
               {errors.jobTitle.message}
             </p>
           )}
         </div>
       </div>
 
-      {/* Country and Phone */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor="p_country" className="block text-xs font-medium text-white mb-1.5">
-            Country / Region <span className="text-mint-accent">*</span>
+          <label htmlFor="p_country" className={labelClass}>
+            Country / Region <span className="text-green-primary">*</span>
           </label>
           <input
             id="p_country"
@@ -263,20 +263,20 @@ export function PartnerForm() {
             autoComplete="country-name"
             aria-invalid={!!errors.country}
             aria-describedby={errors.country ? "p_country-error" : undefined}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-bg-deep border border-border-dark text-white text-sm focus:outline-none focus:border-green-primary focus:ring-1 focus:ring-green-primary transition-colors"
+            className={fieldClass}
             placeholder="India / United Arab Emirates / Germany"
             {...register("country")}
           />
           {errors.country && (
-            <p id="p_country-error" className="mt-1 text-[11px] text-red-400">
+            <p id="p_country-error" className={errorClass}>
               {errors.country.message}
             </p>
           )}
         </div>
 
         <div>
-          <label htmlFor="p_phoneNumber" className="block text-xs font-medium text-white mb-1.5">
-            Phone Number <span className="text-text-muted text-[10px]">(optional)</span>
+          <label htmlFor="p_phoneNumber" className={labelClass}>
+            Phone Number <span className="text-[10px] text-ink-muted">(optional)</span>
           </label>
           <input
             id="p_phoneNumber"
@@ -284,131 +284,134 @@ export function PartnerForm() {
             autoComplete="tel"
             aria-invalid={!!errors.phoneNumber}
             aria-describedby={errors.phoneNumber ? "p_phoneNumber-error" : undefined}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-bg-deep border border-border-dark text-white text-sm focus:outline-none focus:border-green-primary focus:ring-1 focus:ring-green-primary transition-colors"
+            className={fieldClass}
             placeholder="+44 20 7946 0912"
             {...register("phoneNumber")}
           />
           {errors.phoneNumber && (
-            <p id="p_phoneNumber-error" className="mt-1 text-[11px] text-red-400">
+            <p id="p_phoneNumber-error" className={errorClass}>
               {errors.phoneNumber.message}
             </p>
           )}
         </div>
       </div>
 
-      {/* Industry and Partnership Type */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor="p_industry" className="block text-xs font-medium text-white mb-1.5">
-            Primary Industry <span className="text-mint-accent">*</span>
+          <label htmlFor="p_industry" className={labelClass}>
+            Primary Industry <span className="text-green-primary">*</span>
           </label>
           <select
             id="p_industry"
             aria-invalid={!!errors.industry}
             aria-describedby={errors.industry ? "p_industry-error" : undefined}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-bg-deep border border-border-dark text-white text-sm focus:outline-none focus:border-green-primary focus:ring-1 focus:ring-green-primary transition-colors cursor-pointer"
+            className={`${fieldClass} cursor-pointer`}
             {...register("industry")}
           >
             {INDUSTRY_OPTIONS.map((ind) => (
-              <option key={ind} value={ind} className="bg-bg-deep text-white">
+              <option key={ind} value={ind}>
                 {ind}
               </option>
             ))}
           </select>
           {errors.industry && (
-            <p id="p_industry-error" className="mt-1 text-[11px] text-red-400">
+            <p id="p_industry-error" className={errorClass}>
               {errors.industry.message}
             </p>
           )}
         </div>
 
         <div>
-          <label htmlFor="p_partnershipType" className="block text-xs font-medium text-white mb-1.5">
-            Partnership Profile <span className="text-mint-accent">*</span>
+          <label htmlFor="p_partnershipType" className={labelClass}>
+            Partnership Profile <span className="text-green-primary">*</span>
           </label>
           <select
             id="p_partnershipType"
             aria-invalid={!!errors.partnershipType}
             aria-describedby={errors.partnershipType ? "p_partnershipType-error" : undefined}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-bg-deep border border-border-dark text-white text-sm focus:outline-none focus:border-green-primary focus:ring-1 focus:ring-green-primary transition-colors cursor-pointer"
+            className={`${fieldClass} cursor-pointer`}
             {...register("partnershipType")}
           >
             {PARTNERSHIP_TYPE_OPTIONS.map((type) => (
-              <option key={type} value={type} className="bg-bg-deep text-white">
+              <option key={type} value={type}>
                 {type}
               </option>
             ))}
           </select>
           {errors.partnershipType && (
-            <p id="p_partnershipType-error" className="mt-1 text-[11px] text-red-400">
+            <p id="p_partnershipType-error" className={errorClass}>
               {errors.partnershipType.message}
             </p>
           )}
         </div>
       </div>
 
-      {/* Collaboration Message */}
       <div>
-        <label htmlFor="p_message" className="block text-xs font-medium text-white mb-1.5">
-          Partnership Overview or Collaboration Scope <span className="text-mint-accent">*</span>
+        <label htmlFor="p_message" className={labelClass}>
+          Partnership Overview or Collaboration Scope{" "}
+          <span className="text-green-primary">*</span>
         </label>
         <textarea
           id="p_message"
           rows={3}
           aria-invalid={!!errors.message}
           aria-describedby={errors.message ? "p_message-error" : undefined}
-          className="w-full px-3.5 py-2.5 rounded-xl bg-bg-deep border border-border-dark text-white text-sm focus:outline-none focus:border-green-primary focus:ring-1 focus:ring-green-primary transition-colors resize-y"
+          className={`${fieldClass} resize-y`}
           placeholder="Describe your organization and proposed collaboration model (e.g. facility deployment, systems integration, distribution)."
           {...register("message")}
         />
         {errors.message && (
-          <p id="p_message-error" className="mt-1 text-[11px] text-red-400">
+          <p id="p_message-error" className={errorClass}>
             {errors.message.message}
           </p>
         )}
       </div>
 
-      {/* Consent Checkbox */}
       <div className="pt-2">
-        <label className="flex items-start gap-3 cursor-pointer select-none">
+        <label className="flex cursor-pointer select-none items-start gap-3">
           <input
             type="checkbox"
             id="p_privacyConsent"
             aria-invalid={!!errors.privacyConsent}
             aria-describedby={errors.privacyConsent ? "p_privacyConsent-error" : undefined}
-            className="mt-1 w-4 h-4 rounded border-border-dark text-mint-accent focus:ring-green-primary bg-bg-deep accent-[#23A875]"
+            className="mt-1 h-4 w-4 rounded border-line bg-white accent-[#23A875] focus:ring-green-primary"
             {...register("privacyConsent")}
           />
-          <span className="text-xs text-text-muted leading-relaxed">
-            I consent to PerfAI storing and processing my professional contact information in accordance with the{" "}
-            <Link href="/privacy" target="_blank" className="text-mint-accent underline hover:text-mint-accent">
+          <span className="text-xs leading-relaxed text-ink-muted">
+            I consent to PerfAI storing and processing my professional contact information in
+            accordance with the{" "}
+            <Link
+              href="/privacy"
+              target="_blank"
+              className="text-forest underline hover:text-green-primary"
+            >
               Privacy Policy
-            </Link>.
+            </Link>
+            .
           </span>
         </label>
         {errors.privacyConsent && (
-          <p id="p_privacyConsent-error" className="mt-1 text-[11px] text-red-400">
+          <p id="p_privacyConsent-error" className={errorClass}>
             {errors.privacyConsent.message}
           </p>
         )}
       </div>
 
-      {/* Submit Button */}
       <div className="pt-3">
         <button
           type="submit"
           disabled={submitStatus === "submitting"}
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-green-primary text-bg-deep text-sm font-semibold hover:bg-mint-accent focus:outline-none focus:ring-2 focus:ring-green-primary focus:ring-offset-2 focus:ring-offset-bg-deep transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-green-primary px-6 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:bg-forest focus:outline-none focus:ring-2 focus:ring-green-primary focus:ring-offset-2 focus:ring-offset-white disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
         >
           {submitStatus === "submitting" ? (
             <>
-              <Loader2 className="w-4 h-4 animate-spin" />
+              <Loader2 className="h-4 w-4 animate-spin" />
               <span>Submitting Enquiry...</span>
             </>
           ) : (
             <>
               <span>Submit Partnership Enquiry</span>
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="h-4 w-4" />
             </>
           )}
         </button>

@@ -10,12 +10,12 @@ export const INDUSTRY_OPTIONS = [
 ] as const;
 
 export const AREA_OF_INTEREST_OPTIONS = [
-  "ATRIA Platform Core",
-  "BuildingShield (HVAC & BMS)",
-  "GridShield (Energy & Microgrid)",
-  "ComputeShield (Edge Infrastructure)",
-  "VERITAS (Verification Ledger)",
-  "Full Physical AI Suite",
+  "HVAC & Plant Control",
+  "Energy Monitoring & Metering",
+  "BMS Integration",
+  "Facility Operations Support",
+  "Full Building Management Suite",
+  "Partnership / Channel Enquiry",
 ] as const;
 
 export const PARTNERSHIP_TYPE_OPTIONS = [

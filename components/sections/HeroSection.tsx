@@ -1,112 +1,104 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
-import dynamic from "next/dynamic";
-import { motion, useReducedMotion } from "framer-motion";
-import { siteConfig } from "@/lib/site-config";
-import { Button } from "@/components/ui/Button";
-import { BuildingPoster } from "@/components/three/BuildingPoster";
+import { useEffect, useRef, useState } from "react";
+import { motion, useReducedMotion, useScroll } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import { BeachfrontHeroVisual } from "@/components/three/BeachfrontHeroVisual";
+import { hero } from "@/content/home";
 
-const BuildingScene = dynamic(
-  () => import("@/components/three/BuildingScene").then((m) => m.BuildingScene),
-  {
-    ssr: false,
-    loading: () => <BuildingPoster variant="hero" />,
-  }
-);
-
+/** One-screen hero — no tall sticky pin (avoids empty scroll / overlap feel). */
 export function HeroSection() {
-  const reduceMotion = useReducedMotion();
+  const reduce = useReducedMotion() ?? false;
+  const ref = useRef<HTMLElement>(null);
+  const [lite, setLite] = useState(false);
 
-  const rise = (delay: number) =>
-    reduceMotion
-      ? undefined
-      : {
-          initial: { opacity: 0, y: 24 },
-          animate: { opacity: 1, y: 0 },
-          transition: {
-            duration: 0.65,
-            delay,
-            ease: [0.21, 0.47, 0.32, 0.98] as const,
-          },
-        };
+  useEffect(() => {
+    const small = window.matchMedia("(max-width: 767px)").matches;
+    const nav = navigator as Navigator & { deviceMemory?: number };
+    const weak =
+      (nav.hardwareConcurrency ?? 8) <= 2 || (nav.deviceMemory ?? 8) < 4;
+    setLite(small || weak);
+  }, []);
+
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
 
   return (
-    <section className="relative w-full h-[calc(100svh-4rem)] md:h-[calc(100svh-5rem)] min-h-[560px] flex flex-col overflow-hidden bg-bg-deep">
-      {/* Full-bleed layered scene (single canvas, lazy) */}
-      <div className="absolute inset-0 z-0">
-        <BuildingScene
-          mode="scroll"
-          variant="hero"
-          className="!h-full !max-h-none !min-h-full !aspect-auto !rounded-none !border-0"
-        />
-      </div>
-
-      {/* Left readable gradient (~48%) */}
-      <div
-        className="absolute inset-y-0 left-0 z-10 w-full md:w-[52%] pointer-events-none bg-gradient-to-r from-bg-deep via-bg-deep/85 to-transparent"
-        aria-hidden="true"
-      />
-      <div
-        className="absolute inset-x-0 bottom-0 z-10 h-32 pointer-events-none bg-gradient-to-t from-bg-deep/80 to-transparent"
-        aria-hidden="true"
+    <section
+      ref={ref}
+      id="home"
+      aria-labelledby="hero-heading"
+      className="relative h-[100svh] min-h-[560px] overflow-hidden"
+    >
+      <BeachfrontHeroVisual
+        progress={scrollYProgress}
+        reduce={reduce}
+        lite={lite}
       />
 
-      <div className="relative z-20 flex-1 flex flex-col justify-center">
-        <div className="w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-[48%] min-w-[min(100%,20rem)]">
-            <motion.div {...rise(0.05)}>
-              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold tracking-wide bg-bg-surface/80 border border-green-primary/30 text-mint-accent backdrop-blur-sm">
-                <span className="h-1.5 w-1.5 rounded-full bg-mint-accent" aria-hidden="true" />
-                {siteConfig.resellerBadge}
+      <div className="relative z-10 mx-auto flex h-full max-w-[1200px] items-center px-6 pt-16 md:pt-20">
+        <div className="w-full max-w-xl md:w-[48%] md:max-w-none">
+          <h1
+            id="hero-heading"
+            className="font-heading text-[clamp(2rem,4.8vw,3.75rem)] font-extrabold leading-[1.08] tracking-[-0.03em] text-white"
+          >
+            {hero.lines.map((line, i) => (
+              <span key={line} className="block overflow-hidden pb-[0.04em]">
+                <motion.span
+                  initial={reduce ? false : { y: "105%" }}
+                  animate={{ y: 0 }}
+                  transition={{
+                    duration: 0.75,
+                    delay: 0.1 + i * 0.08,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  className={[
+                    "block",
+                    i === hero.accentLineIndex ? "text-mint-accent" : "",
+                  ].join(" ")}
+                >
+                  {line}
+                </motion.span>
               </span>
-            </motion.div>
+            ))}
+          </h1>
 
-            <motion.h1
-              className="mt-6 font-heading font-extrabold text-[clamp(1.85rem,4.2vw,3.35rem)] text-white tracking-tight leading-[1.12]"
-              {...rise(0.15)}
-            >
-              Make Your Infrastructure
-              <br />
-              Smarter. More Efficient.
-              <br />
-              <span className="text-mint-accent">More Valuable.</span>
-            </motion.h1>
+          <motion.p
+            initial={reduce ? false : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.45 }}
+            className="mt-5 max-w-[30rem] text-[15px] leading-relaxed text-white/75 sm:text-base"
+          >
+            {hero.sub}
+          </motion.p>
 
-            <motion.p
-              className="mt-5 text-base sm:text-lg text-text-muted max-w-md leading-relaxed"
-              {...rise(0.28)}
+          <motion.div
+            initial={reduce ? false : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.58 }}
+            className="mt-7 flex flex-wrap items-center gap-3"
+          >
+            <Link
+              href={hero.primary.href}
+              className="group inline-flex h-11 items-center gap-2 rounded-full bg-green-primary px-5 text-sm font-semibold text-bg-deep transition-colors duration-200 hover:bg-mint-accent sm:h-12 sm:px-6"
             >
-              Discover Senatria&apos;s Physical AI platform and solutions, brought to you by PerfAI, your technology partner.
-            </motion.p>
-
-            <motion.div
-              className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3"
-              {...rise(0.4)}
+              {hero.primary.label}
+              <ArrowRight
+                aria-hidden
+                size={16}
+                className="transition-transform duration-200 group-hover:translate-x-1"
+              />
+            </Link>
+            <Link
+              href={hero.secondary.href}
+              className="inline-flex h-11 items-center rounded-full border border-white/25 bg-bg-deep/30 px-5 text-sm font-semibold text-white backdrop-blur-sm transition-colors duration-200 hover:border-white/45 hover:bg-white/10 sm:h-12 sm:px-6"
             >
-              <Link href="/application">
-                <Button
-                  variant="primary"
-                  size="lg"
-                  className="w-full sm:w-auto bg-green-primary text-bg-deep hover:bg-mint-accent focus-visible:ring-mint-accent focus-visible:ring-offset-bg-deep"
-                >
-                  <span>Explore the Application</span>
-                  <ArrowRight className="w-4 h-4 ml-1" />
-                </Button>
-              </Link>
-              <Link href="/#demo">
-                <Button
-                  variant="secondary"
-                  size="lg"
-                  className="w-full sm:w-auto bg-bg-surface/80 text-white border-border-dark hover:border-green-primary focus-visible:ring-mint-accent focus-visible:ring-offset-bg-deep"
-                >
-                  <span>Request a Demo</span>
-                </Button>
-              </Link>
-            </motion.div>
-          </div>
+              {hero.secondary.label}
+            </Link>
+          </motion.div>
         </div>
       </div>
     </section>

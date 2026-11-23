@@ -85,7 +85,7 @@ export class ResendOrMockEmailProvider implements EmailProvider {
           from: this.senderEmail,
           to: [to],
           subject: `Thank you for contacting PerfAI [Ref: ${leadNumber}]`,
-          text: `Dear ${name},\n\nThank you for reaching out to PerfAI regarding Senatria's Physical AI platform and solutions.\n\nWe have received your enquiry (Reference: ${leadNumber}). A member of our enterprise technical team will review your requirements and follow up promptly.\n\nBest regards,\nPerfAI Client Success Team\nhttps://perfai.in`,
+          text: `Dear ${name},\n\nThank you for reaching out to PerfAI regarding building management services.\n\nWe have received your enquiry (Reference: ${leadNumber}). A member of our team will review your requirements and follow up promptly.\n\nBest regards,\nPerfAI Client Success Team\nhttps://perfai.in`,
         }),
       });
 
