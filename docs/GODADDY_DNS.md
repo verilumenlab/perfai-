@@ -1,38 +1,40 @@
 # GoDaddy DNS for perfai.in → Vercel
 
-Site is live on Vercel: **https://perfai-one.vercel.app**
+**Live now:** https://perfai-one.vercel.app  
 
-Add these records in GoDaddy → **My Products → perfai.in → DNS**.
+`perfai.in` is already on Vercel under another project. To move it to this **perfai** project, verify ownership in GoDaddy DNS.
 
-## 1. Domain verification (required first)
+## 1. Verify ownership (required)
+
+GoDaddy → **My Products → perfai.in → DNS** → Add:
 
 | Type | Name / Host | Value | TTL |
 |------|-------------|-------|-----|
 | TXT | `_vercel` | `vc-domain-verify=perfai.in,562b783b3e30fbcb2ffe` | 600 |
 
-If GoDaddy already has a `_vercel` TXT for `www`, keep **both** TXT values on `_vercel` (GoDaddy supports multiple TXT on the same host), or verify apex first then add `www`.
+Then run (or click Refresh in Vercel Domains):
 
-Optional second verification for www:
+```bash
+npx vercel domains verify perfai.in
+```
 
-| Type | Name / Host | Value | TTL |
-|------|-------------|-------|-----|
-| TXT | `_vercel` | `vc-domain-verify=www.perfai.in,ef5e6b71e023c434a0b4` | 600 |
+Optional www verification TXT (same host `_vercel`, second value):
 
-## 2. Point traffic to Vercel
+| Type | Name / Host | Value |
+|------|-------------|-------|
+| TXT | `_vercel` | `vc-domain-verify=www.perfai.in,ef5e6b71e023c434a0b4` |
 
-Remove any old **A / CNAME / forwarding** that send `@` or `www` elsewhere.
+## 2. Point traffic (after verify)
 
-| Type | Name / Host | Value | TTL |
-|------|-------------|-------|-----|
-| A | `@` | `76.76.21.21` | 600 |
-| CNAME | `www` | `cname.vercel-dns.com` | 600 |
+Keep/update:
 
-## 3. After saving
+| Type | Name | Value |
+|------|------|-------|
+| A | `@` | `76.76.21.21` |
+| CNAME | `www` | `cname.vercel-dns.com` |
 
-Wait 5–60 minutes, then open **https://perfai.in**.
+Remove conflicting old A/CNAME/forwarding for `@` / `www` if they do not match the above.
 
-In Vercel → Project **perfai** → **Domains**, click **Refresh** if still pending.
+## 3. Note
 
-## Note
-
-Contact form and admin need a production database later (SQLite is not used on Vercel). Marketing pages work now on the Vercel URL.
+Contact form and admin need a production database later. Marketing pages work on the Vercel URL today.
