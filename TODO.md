@@ -29,3 +29,4 @@ This document tracks all unverified claims, placeholders, contact information, c
 - [ ] **Email Dispatch:** Configure Resend or SMTP provider API keys for demo enquiry notifications.
 - [ ] **Cloudflare Turnstile:** Provide `TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY` if bot challenge is required.
 - [ ] **Admin Credentials:** Seed initial secure admin password for `/admin`.
+
