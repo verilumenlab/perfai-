@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getCurrentAdmin } from "@/lib/auth";
+import { getCurrentAdmin, validateCsrf, ADMIN_COOKIE_NAME } from "@/lib/auth";
 
 export async function GET(
   req: NextRequest,
@@ -45,6 +45,16 @@ export async function PATCH(
     const admin = await getCurrentAdmin();
     if (!admin) {
       return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+    }
+
+    const token = req.cookies.get(ADMIN_COOKIE_NAME)?.value;
+    if (!token) {
+      return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+    }
+
+    const csrfCheck = validateCsrf(req, token);
+    if (!csrfCheck.valid) {
+      return NextResponse.json({ success: false, error: csrfCheck.reason }, { status: 403 });
     }
 
     const { id } = await params;
@@ -135,3 +145,4 @@ export async function PATCH(
     return NextResponse.json({ success: false, error: "Internal error" }, { status: 500 });
   }
 }
+

@@ -88,11 +88,27 @@ async function run() {
             const gl = canvas.getContext("webgl2") || canvas.getContext("webgl");
             const renderer = gl ? gl.getParameter(gl.RENDERER) : "Unknown";
             const rect = canvas.getBoundingClientRect();
+
+            let nonZeroPixels = 0;
+            if (gl) {
+              const pixels = new Uint8Array(4 * 16);
+              const cx = Math.floor(canvas.width / 2);
+              const cy = Math.floor(canvas.height / 2);
+              gl.readPixels(cx, cy, 4, 4, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+              for (let i = 0; i < pixels.length; i++) {
+                if (pixels[i] > 0) nonZeroPixels++;
+              }
+            }
+
             return {
               width: rect.width,
               height: rect.height,
+              drawingWidth: canvas.width,
+              drawingHeight: canvas.height,
               renderer: renderer,
               hasContext: !!gl,
+              nonZeroSampledPixels: nonZeroPixels,
+              isNonBlank: nonZeroPixels > 0,
             };
           });
           console.log(`Route ${route.path} @ ${vp.name}px: Canvas info:`, JSON.stringify(canvasDetails));

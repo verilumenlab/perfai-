@@ -71,26 +71,30 @@ model LeadActivity {
 }
 
 model AdminUser {
-  id           String         @id @default(cuid())
-  name         String
-  email        String         @unique
-  passwordHash String
-  role         String         @default("ADMIN") // "ADMIN" | "SUPERADMIN"
-  isActive     Boolean        @default(true)
-  lastLoginAt  DateTime?
-  sessions     AdminSession[]
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
+  id                  String         @id @default(cuid())
+  name                String
+  email               String         @unique
+  passwordHash        String
+  role                String         @default("ADMIN") // "ADMIN" | "SUPERADMIN"
+  isActive            Boolean        @default(true)
+  lastLoginAt         DateTime?
+  failedLoginAttempts Int            @default(0)
+  lockedUntil         DateTime?
+  sessions            AdminSession[]
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
 }
 
 model AdminSession {
   id           String    @id @default(cuid())
-  sessionToken String    @unique
+  tokenHash    String    @unique
   adminUserId  String
   adminUser    AdminUser @relation(fields: [adminUserId], references: [id], onDelete: Cascade)
-  expiresAt    DateTime
+  expiresAt    DateTime  // Absolute session expiry (e.g. 24 hours)
+  lastActiveAt DateTime  @default(now()) // Idle session expiry (e.g. 2 hours)
   createdAt    DateTime  @default(now())
 
-  @@index([sessionToken])
+  @@index([tokenHash])
   @@index([adminUserId])
 }
+

@@ -68,3 +68,4 @@ export const crmAdapter: CrmAdapter = new WebhookCrmAdapter(
   process.env.CRM_WEBHOOK_URL,
   process.env.CRM_API_BEARER_TOKEN
 );
+

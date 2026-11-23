@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import readline from "readline";
 import fs from "fs";
 import path from "path";
 
@@ -22,19 +23,104 @@ if (fs.existsSync(envPath)) {
 
 const prisma = new PrismaClient();
 
-async function main() {
-  const args = process.argv.slice(2);
-  const email = (args[0] || process.env.ADMIN_EMAIL || "admin@perfai.in").trim().toLowerCase();
-  const password = args[1] || process.env.ADMIN_PASSWORD || "AdminPlaceholder2026!";
-  const name = args[2] || process.env.ADMIN_NAME || "PerfAI Administrator";
-  const role = args[3] || "SUPERADMIN";
+function promptHidden(question) {
+  return new Promise((resolve) => {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
 
-  if (!email || !password) {
-    console.error("Usage: node scripts/create-admin.mjs <email> <password> [name] [role]");
+    const stdin = process.stdin;
+    const isRaw = stdin.isRaw;
+
+    process.stdout.write(question);
+
+    let password = "";
+
+    // If running in an environment without TTY (e.g. piped input), read standard line
+    if (!process.stdin.isTTY) {
+      rl.question("", (answer) => {
+        rl.close();
+        resolve(answer.trim());
+      });
+      return;
+    }
+
+    stdin.setRawMode(true);
+    stdin.resume();
+
+    const onData = (chunk) => {
+      const char = chunk.toString("utf8");
+      if (char === "\n" || char === "\r" || char === "\u0004") {
+        stdin.setRawMode(isRaw || false);
+        stdin.removeListener("data", onData);
+        process.stdout.write("\n");
+        rl.close();
+        resolve(password.trim());
+      } else if (char === "\u0003") {
+        // Ctrl+C
+        process.exit(1);
+      } else if (char === "\b" || char === "\x7f") {
+        // Backspace
+        if (password.length > 0) {
+          password = password.slice(0, -1);
+          process.stdout.write("\b \b");
+        }
+      } else {
+        password += char;
+        process.stdout.write("*");
+      }
+    };
+
+    stdin.on("data", onData);
+  });
+}
+
+function promptVisible(question) {
+  return new Promise((resolve) => {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+    rl.question(question, (answer) => {
+      rl.close();
+      resolve(answer.trim());
+    });
+  });
+}
+
+async function main() {
+  console.log("=== PerfAI Enterprise Admin Provisioning ===");
+
+  let email = process.env.ADMIN_EMAIL;
+  let password = process.env.ADMIN_PASSWORD;
+  let name = process.env.ADMIN_NAME;
+
+  if (!email) {
+    email = await promptVisible("Enter administrator email: ");
+  }
+
+  if (!email || !email.includes("@")) {
+    console.error("❌ Invalid email address.");
     process.exit(1);
   }
 
-  console.log(`Provisioning admin user: ${email}...`);
+  email = email.trim().toLowerCase();
+
+  if (!password) {
+    password = await promptHidden("Enter secure password (min 12 characters, input hidden): ");
+  }
+
+  if (!password || password.length < 12) {
+    console.error("❌ Password must be at least 12 characters long.");
+    process.exit(1);
+  }
+
+  if (!name) {
+    name = (await promptVisible("Enter administrator full name (optional, press Enter for 'System Admin'): ")) || "System Admin";
+  }
+
+  console.log(`Provisioning administrator account for: ${email}...`);
 
   const passwordHash = await bcrypt.hash(password, 12);
 
@@ -43,24 +129,27 @@ async function main() {
     update: {
       name,
       passwordHash,
-      role,
+      role: "SUPERADMIN",
       isActive: true,
+      failedLoginAttempts: 0,
+      lockedUntil: null,
     },
     create: {
       email,
       name,
       passwordHash,
-      role,
+      role: "SUPERADMIN",
       isActive: true,
+      failedLoginAttempts: 0,
     },
   });
 
-  console.log(`✅ Admin user [${admin.email}] successfully provisioned (Role: ${admin.role}, ID: ${admin.id})`);
+  console.log(`✅ Administrator successfully provisioned (ID: ${admin.id}, Role: ${admin.role})`);
 }
 
 main()
   .catch((e) => {
-    console.error("❌ Error provisioning admin user:", e);
+    console.error("❌ Provisioning failed:", e.message);
     process.exit(1);
   })
   .finally(async () => {

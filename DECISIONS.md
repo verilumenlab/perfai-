@@ -66,23 +66,35 @@
 
 ---
 
-### 6. Phase 6 Decisions: Enquiry System, Lead Management & Admin Console
-- **ORM & Database:**
-  - Prisma 6.4.1 selected with SQLite (`prisma/dev.db`) for zero-dependency local development, written with strict Postgres-compatible types and indexes for instant production cutover.
-  - Entities implemented: `Lead` (comprehensive metadata, status, priority, human reference number `PF-YYYY-XXXX`), `LeadNote` (audit internal notes), `LeadActivity` (immutable event audit ledger), `AdminUser` (staff authentication), and `AdminSession` (secure session tokens).
-- **Anti-Spam & Submission Protection:**
-  - In-memory sliding window rate limiter (`lib/rate-limit.ts`) enforcing max 5 submissions/min per IP.
-  - Honeypot field (`hp_website`) silently discarding automated bot submissions with fake 200 responses without database writes.
-  - Form load timestamp token enforcing a minimum 1.5s time-to-submit check.
-- **Admin Authentication & Access Control:**
-  - Session-based authentication via HTTP-only, SameSite=Lax, Secure cookies (`perfai_admin_session`).
-  - Passwords hashed using `bcryptjs` with salt rounds = 12.
-  - Dedicated CLI provisioning script `scripts/create-admin.mjs` (`npm run admin:create`).
-  - Next.js edge middleware routing unauthenticated traffic on `/admin/*` to `/admin/login`, with double verification in the Server Component layout.
-- **Data Export Security:**
-  - CSV export endpoint (`/api/admin/leads/export`) neutralizes spreadsheet formula injection (CSV injection) by prefixing leading characters `=`, `+`, `-`, `@`, `\t`, and `\r` with single quotes `'`.
-- **Pluggable Architecture:**
-  - `CrmAdapter` interface (`lib/crm.ts`) supporting optional webhook sync.
-  - `EmailProvider` interface (`lib/email.ts`) with development console mock and production Resend dispatch. Failure never blocks lead storage.
+### 7. Phase 7 Decisions: SEO, Performance, Accessibility & Security Hardening
+- **Credential Hygiene & Administration:**
+  - Default credentials removed across all scripts, tests, and documentation.
+  - `npm run admin:create` enforces hidden password masking via TTY, mandatory validation (minimum 12 characters), and safe reading of `ADMIN_EMAIL` / `ADMIN_PASSWORD` from environment variables without logging.
+  - Automated tests provision temporary throwaway administrator credentials and clean them up upon test conclusion.
+- **Session Architecture & Hashing:**
+  - Database persistence stores cryptographic SHA-256 hashes (`tokenHash`) of raw session tokens. Raw tokens are never stored in the database.
+  - Multi-tier session timeout: 24-hour absolute expiration combined with a rolling 2-hour idle expiration extending upon active requests.
+  - Old sessions rotated and invalidated upon successful login. Revoked immediately on logout.
+- **Account Lockout & Brute-Force Defense:**
+  - Admin login tracks consecutive failed attempts per email (`failedLoginAttempts`). 5 consecutive failures triggers an automatic 15-minute lockout (`lockedUntil`).
+  - IP-based rate limiting enforced on `/api/admin/auth/login` and `/api/leads`.
+- **Proxy Header Trust & Distributed Rate Limiting Interface:**
+  - Client IP derived safely via `lib/client-ip.ts`: `x-forwarded-for` and `x-real-ip` are ignored unless `TRUST_PROXY="true"` is explicitly set.
+  - `RateLimiter` interface abstracted in `lib/rate-limit.ts`. The in-memory limiter serves single-instance development and small deployments. For multi-instance clustered production, a Redis-backed implementation must be supplied via this interface.
+- **CSRF Defense on Mutations:**
+  - Every mutating endpoint (`PATCH /api/admin/leads/[id]`, `POST /api/admin/auth/logout`) validates Origin/Referer against Host and checks the `x-csrf-token` header against an HMAC-SHA256 signature of the active session token.
+- **Next.js 16 Request Guards:**
+  - Migrated from deprecated `middleware.ts` convention to Next.js 16 `proxy.ts`. Both `/admin` (redirects to `/admin/login`) and `/api/admin/*` (HTTP 401) are guarded, with independent session validation inside each API route handler.
+- **HTTP Security Headers:**
+  - Content-Security-Policy (CSP) configured allowing Next.js runtime, WebGL shader compilation, Three.js canvas buffers, and HTTPS connections, with `frame-ancestors 'none'`.
+  - HSTS (`Strict-Transport-Security`), `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, and `Permissions-Policy`.
+- **Canvas Sizing & WebGL Non-Blank Verification:**
+  - Explicit container dimensions and `preserveDrawingBuffer: true` prevent intrinsic 300x150 canvas sizing. Verified non-blank pixel buffers (> 0 non-zero sampled pixels) on both 360px mobile and 1280px desktop.
+- **SEO & WCAG 2.2 AA Compliance:**
+  - Organization JSON-LD embedded representing PerfAI strictly as an authorized reseller and business partner of Senatria.
+  - `axe-core` automated scans across all 7 pages verified 0 WCAG violations.
+  - Text-muted color token brightened to `#9EB1A9`, guaranteeing contrast ratios > 6:1 on both `#071B17` and `#102C25`.
+  - SkipLink updated with programmatic focus transfer to `#main-content` (`tabIndex={-1}`).
+
 
 

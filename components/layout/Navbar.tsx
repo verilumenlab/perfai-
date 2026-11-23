@@ -34,7 +34,6 @@ export function Navbar() {
             <Link
               href="/"
               className="flex items-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-mint-accent rounded-lg p-0.5"
-              aria-label="PerfAI Home"
             >
               <div className="h-9 w-9 rounded-xl bg-green-primary text-bg-deep flex items-center justify-center font-bold text-base shadow-sm group-hover:scale-105 transition-transform">
                 P

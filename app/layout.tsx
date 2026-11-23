@@ -28,6 +28,41 @@ export const metadata: Metadata = {
   },
   description:
     "PerfAI is an authorised reseller and business partner bringing Senatria's Physical AI platform to commercial enterprises and infrastructure operators.",
+  alternates: {
+    canonical: siteConfig.domain,
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_IE",
+    url: siteConfig.domain,
+    siteName: "PerfAI",
+    title: "PerfAI | SENATRIA — Authorised Partner",
+    description:
+      "Enterprise deployment partner for Senatria Physical AI infrastructure solutions: ATRIA, BuildingShield, GridShield, ComputeShield.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "PerfAI | SENATRIA — Authorised Partner",
+    description:
+      "Enterprise deployment partner for Senatria Physical AI infrastructure solutions.",
+  },
+};
+
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "PerfAI",
+  url: siteConfig.domain,
+  description:
+    "Authorised commercial partner and reseller of Senatria Physical AI infrastructure solutions.",
+  knowsAbout: [
+    "Physical AI",
+    "BuildingShield",
+    "GridShield",
+    "ComputeShield",
+    "HVAC Optimization",
+    "Building Management Systems",
+  ],
 };
 
 export default function RootLayout({
@@ -40,10 +75,16 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${manrope.variable} scroll-smooth antialiased`}
     >
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+      </head>
       <body className="min-h-screen flex flex-col bg-bg-deep text-white">
         <SkipLink />
         <Navbar />
-        <main id="main-content" className="flex-1">
+        <main id="main-content" className="flex-1 focus:outline-none" tabIndex={-1}>
           {children}
         </main>
         <Footer />

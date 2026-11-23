@@ -63,6 +63,12 @@ interface LeadDetailModalProps {
 const STATUS_OPTIONS = ["NEW", "CONTACTED", "QUALIFIED", "IN_PROGRESS", "CLOSED", "ARCHIVED"];
 const PRIORITY_OPTIONS = ["LOW", "NORMAL", "HIGH", "URGENT"];
 
+function getCsrfToken(): string {
+  if (typeof document === "undefined") return "";
+  const match = document.cookie.match(/perfai_csrf_token=([^;]+)/);
+  return match ? decodeURIComponent(match[1]) : "";
+}
+
 export function LeadDetailModal({ lead, onClose, onLeadUpdated }: LeadDetailModalProps) {
   const [status, setStatus] = useState<string>(lead?.status || "NEW");
   const [priority, setPriority] = useState<string>(lead?.priority || "NORMAL");
@@ -77,7 +83,10 @@ export function LeadDetailModal({ lead, onClose, onLeadUpdated }: LeadDetailModa
     try {
       const res = await fetch(`/api/admin/leads/${lead.id}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-csrf-token": getCsrfToken(),
+        },
         body: JSON.stringify(updatedFields),
       });
 

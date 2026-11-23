@@ -4,6 +4,12 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { LogOut, Loader2 } from "lucide-react";
 
+function getCsrfToken(): string {
+  if (typeof document === "undefined") return "";
+  const match = document.cookie.match(/perfai_csrf_token=([^;]+)/);
+  return match ? decodeURIComponent(match[1]) : "";
+}
+
 export function AdminLogoutButton() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -11,7 +17,12 @@ export function AdminLogoutButton() {
   const handleLogout = async () => {
     setLoading(true);
     try {
-      await fetch("/api/admin/auth/logout", { method: "POST" });
+      await fetch("/api/admin/auth/logout", {
+        method: "POST",
+        headers: {
+          "x-csrf-token": getCsrfToken(),
+        },
+      });
       router.push("/admin/login");
       router.refresh();
     } catch {
@@ -35,3 +46,4 @@ export function AdminLogoutButton() {
     </button>
   );
 }
+

@@ -169,7 +169,7 @@ export function BuildingScene({
   return (
     <div
       ref={containerRef}
-      className={`relative w-full aspect-[16/10] sm:aspect-[16/9] max-h-[520px] rounded-2xl sm:rounded-3xl overflow-hidden border border-border-dark bg-bg-surface ${className}`}
+      className={`relative w-full aspect-[16/10] sm:aspect-[16/9] min-h-[240px] max-h-[520px] rounded-2xl sm:rounded-3xl overflow-hidden border border-border-dark bg-bg-surface ${className}`}
     >
       {/* Illustrative Concept Badge */}
       <div className="absolute top-4 left-4 z-20 pointer-events-none">
@@ -190,11 +190,14 @@ export function BuildingScene({
       {/* 3D WebGL Canvas Layer */}
       {!isLowPower && (
         <div
-          className="absolute inset-0 z-0 pointer-events-none"
+          className="absolute inset-0 w-full h-full z-0 pointer-events-none"
           aria-label="Interactive 3D building simulation showing commercial facility architecture (Illustrative)"
           role="img"
         >
           <Canvas
+            className="w-full h-full block"
+            style={{ width: "100%", height: "100%", display: "block", position: "absolute", inset: 0 }}
+            resize={{ debounce: 0, scroll: false }}
             shadows={!isMobile}
             dpr={isMobile ? 1.0 : [1, 1.5]} // Limit mobile DPR to 1.0, desktop to 1.5
             frameloop={isIntersecting ? "always" : "never"} // Pause rendering when offscreen
@@ -203,8 +206,10 @@ export function BuildingScene({
               antialias: !isMobile,
               powerPreference: "high-performance",
               alpha: true,
+              preserveDrawingBuffer: true,
             }}
-            onCreated={() => {
+            onCreated={({ gl, size }) => {
+              gl.setSize(size.width, size.height);
               setCanvasReady(true);
             }}
           >
