@@ -21,7 +21,7 @@ export const managementPage = {
     fullName: siteConfig.contact.name,
     designation: "MD",
     /** Professional portrait served from public/images/team/ */
-    photo: "/images/team/manager.png",
+    photo: "/images/team/manager.jpg",
     photoReady: true,
     photoAlt: "Professional portrait — MD, PerfAI",
     introduction:
