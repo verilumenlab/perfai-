@@ -17,11 +17,13 @@ export const siteConfig = {
   },
 
   contact: {
-    salesEmail: "Business email (to be confirmed)", // TODO(contact): Confirm operational mailbox
-    supportEmail: "Business support (to be confirmed)", // TODO(contact): Confirm operational mailbox
-    phone: "Business phone (to be confirmed)", // TODO(contact): Replace placeholder business phone
+    name: "Satheesh Tiptur",
+    salesEmail: "satish@perfai.in",
+    supportEmail: "satish@perfai.in",
+    phone: "+91 95356 63909",
+    phoneHref: "tel:+919535663909",
     address: {
-      line1: "Business address (to be confirmed)", // TODO(contact): Add registered office address
+      line1: "", // TODO(contact): Add registered office street address (footer shows the city only until then)
       city: "Bengaluru",
       region: "Karnataka",
       country: "India",
@@ -32,6 +34,7 @@ export const siteConfig = {
   nav: [
     { label: "Home", href: "/#" },
     { label: "Why PerfAI", href: "/#why-perfai" },
+    { label: "Management", href: "/management" },
     { label: "Contact Us", href: "/#demo" },
   ],
 };

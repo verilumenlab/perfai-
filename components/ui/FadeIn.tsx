@@ -12,7 +12,11 @@ interface FadeInProps {
   y?: number;
 }
 
-/** Fade + rise on first view. Plain children when reduced motion is on. */
+/**
+ * Fade + rise on first view.
+ * The starting state is identical on server and client (branching on reduced motion here
+ * causes a hydration mismatch). With reduced motion the transition is instant instead.
+ */
 export function FadeIn({
   children,
   className,
@@ -21,10 +25,6 @@ export function FadeIn({
   y = 24,
 }: FadeInProps) {
   const shouldReduceMotion = useReducedMotion();
-
-  if (shouldReduceMotion) {
-    return <div className={className}>{children}</div>;
-  }
 
   const initialVariants = {
     up: { opacity: 0, y },
@@ -40,8 +40,8 @@ export function FadeIn({
       whileInView={{ opacity: 1, x: 0, y: 0 }}
       viewport={{ once: true, amount: 0.2, margin: "0px 0px -40px 0px" }}
       transition={{
-        duration: 0.7,
-        delay,
+        duration: shouldReduceMotion ? 0 : 0.7,
+        delay: shouldReduceMotion ? 0 : delay,
         ease: [0.22, 1, 0.36, 1],
       }}
       className={className}

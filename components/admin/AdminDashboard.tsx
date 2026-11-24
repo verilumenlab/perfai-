@@ -272,7 +272,7 @@ export function AdminDashboard({
           >
             <option value="ALL">Type: All</option>
             <option value="DEMO">Demo Requests</option>
-            <option value="PARTNER">Partner Inquiries</option>
+            <option value="PARTNER">Partner Enquiries</option>
           </select>
 
           {/* Priority */}

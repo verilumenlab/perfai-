@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useReducedMotion } from "framer-motion";
+import { useStableReducedMotion } from "@/components/ui/useStableReducedMotion";
 
 type Particle = {
   x: number;
@@ -19,7 +19,7 @@ type Particle = {
  * Canvas only — no DOM nodes per particle. Honors reduced motion.
  */
 export function FooterWaveParticles() {
-  const reduce = useReducedMotion();
+  const reduce = useStableReducedMotion();
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {

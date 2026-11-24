@@ -99,7 +99,7 @@ export const partnerPageContent = {
   },
 
   cta: {
-    badge: "Direct Business Inquiry",
+    badge: "Direct Business Enquiry",
     heading: "Let's Explore a Building Management Opportunity.",
     subheading:
       "Connect with our team to discuss facility compatibility, schedule a briefing or learn more about building management services through PerfAI.",

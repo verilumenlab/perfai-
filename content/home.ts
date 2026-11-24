@@ -273,7 +273,7 @@ export const faq = {
     },
     {
       q: "Is there another way to reach you besides the form?",
-      a: "The Contact Us section also lists our direct inquiries email for corporate procurement and official correspondence. Prefer the form for the fastest routing.",
+      a: "The Contact Us section also lists our direct enquiries email for corporate procurement and official correspondence. Prefer the form for the fastest routing.",
     },
   ],
 };

@@ -58,7 +58,7 @@ const organizationJsonLd = {
     "Channel partner for building management services for commercial buildings and facilities.",
   knowsAbout: [
     "Building Management Systems",
-    "HVAC Optimization",
+    "HVAC Optimisation",
     "Energy Monitoring",
     "Facility Operations",
     "BMS Integration",

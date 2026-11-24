@@ -33,14 +33,27 @@ export function CTASection() {
 
           <div className="mt-8 border-t border-line/80 pt-5">
             <span className="mb-1 block font-mono text-[10px] uppercase tracking-[0.16em] text-forest">
-              Direct Inquiries
+              Direct Enquiries
             </span>
             <p className="text-sm leading-relaxed text-ink-muted">
               For corporate procurement and official business correspondence:
             </p>
-            <div className="mt-2.5 flex items-center gap-2 font-mono text-sm text-ink">
-              <Mail className="h-3.5 w-3.5 text-forest" />
-              <span>{siteConfig.contact.salesEmail}</span>
+            <div className="mt-2.5 flex flex-col gap-1.5 text-sm text-ink">
+              <span className="font-semibold">{siteConfig.contact.name}</span>
+              <a
+                href={`mailto:${siteConfig.contact.salesEmail}`}
+                className="flex items-center gap-2 font-mono hover:text-forest"
+              >
+                <Mail className="h-3.5 w-3.5 text-forest" />
+                <span>{siteConfig.contact.salesEmail}</span>
+              </a>
+              <a
+                href={siteConfig.contact.phoneHref}
+                className="flex items-center gap-2 font-mono hover:text-forest"
+              >
+                <span className="h-3.5 w-3.5 text-center text-forest">☎</span>
+                <span>{siteConfig.contact.phone}</span>
+              </a>
             </div>
           </div>
         </FadeIn>

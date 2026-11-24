@@ -10,6 +10,7 @@ import { BrandLogo } from "@/components/brand/BrandLogo";
 const LINKS = [
   { label: "Home", href: "/#", id: "home" },
   { label: "Why PerfAI", href: "/#why-perfai", id: "why-perfai" },
+  { label: "Management", href: "/management", id: "management" },
 ];
 const DEMO = { label: "Contact Us", href: "/#demo", id: "demo" };
 const SPY_IDS = ["home", "why-perfai", "demo"] as const;
@@ -117,8 +118,11 @@ export function Navbar() {
   const overDarkHero = onHome && !scrolled && !pill;
   const solid = !overDarkHero;
 
-  const isActive = (id: string) =>
-    onHome ? activeSection === id : id === "home" && pathname === "/";
+  const isActive = (id: string) => {
+    if (id === "management") return pathname === "/management";
+    if (!onHome) return false;
+    return activeSection === id;
+  };
 
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center px-0">

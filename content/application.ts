@@ -190,7 +190,7 @@ export const applicationContent = {
       {
         id: "verification",
         name: "Operations & Performance Review",
-        floorLabel: "Command Center",
+        floorLabel: "Command Centre",
         system: "Operations Desk",
         product: "Facility Operations",
         description:

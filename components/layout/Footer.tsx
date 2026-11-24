@@ -1,77 +1,130 @@
 "use client";
 
 import React, { useRef } from "react";
+import { useStableReducedMotion } from "@/components/ui/useStableReducedMotion";
+import Image from "next/image";
 import Link from "next/link";
 import {
   motion,
-  useMotionTemplate,
-  useMotionValue,
-  useReducedMotion,
   useSpring,
+  useMotionValue,
   useTransform,
 } from "framer-motion";
+import {
+  ArrowRight,
+  Building2,
+  Cctv,
+  Cloud,
+  Fan,
+  Mail,
+  MapPin,
+  Phone,
+  UserRound,
+  Zap,
+  type LucideIcon,
+} from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
 import { BrandLogo } from "@/components/brand/BrandLogo";
 import { FooterWaveParticles } from "@/components/layout/FooterWaveParticles";
 
 const spring = { stiffness: 120, damping: 18, mass: 0.4 };
 
-function FooterColumn({
-  children,
-  depth = 0,
-  className = "",
-}: {
-  children: React.ReactNode;
-  depth?: number;
-  className?: string;
-}) {
-  const reduce = useReducedMotion();
+const FLOATING_ICONS: { Icon: LucideIcon; label: string }[] = [
+  { Icon: Building2, label: "Buildings" },
+  { Icon: Fan, label: "HVAC" },
+  { Icon: Zap, label: "Energy" },
+  { Icon: Cctv, label: "Monitoring" },
+  { Icon: Cloud, label: "Cloud control" },
+];
 
+const SERVICES = [
+  "HVAC Management",
+  "Energy Monitoring",
+  "BMS Integration",
+  "Facility Operations",
+];
+
+function FloatingChip({
+  Icon,
+  label,
+  index,
+  reduce,
+}: {
+  Icon: LucideIcon;
+  label: string;
+  index: number;
+  reduce: boolean | null;
+}) {
   return (
     <motion.div
-      className={`relative transform-gpu ${className}`}
-      style={{ transformStyle: "preserve-3d" }}
-      whileHover={
+      title={label}
+      aria-hidden
+      className="grid h-11 w-11 place-items-center rounded-xl border border-mint-accent/35 bg-bg-deep/60 text-mint-accent shadow-[0_0_26px_-6px_rgba(117,230,174,0.65)] backdrop-blur-md"
+      style={{
+        transformStyle: "preserve-3d",
+        translateZ: 24 + index * 6,
+        marginTop: index % 2 === 0 ? 0 : 14,
+      }}
+      animate={
         reduce
           ? undefined
-          : {
-              z: depth + 28,
-              transition: { type: "spring", ...spring },
-            }
+          : { y: [0, -8, 0], rotateY: [0, 18, 0, -18, 0], rotateX: [0, 8, 0] }
       }
-      initial={false}
-      animate={reduce ? undefined : { z: depth }}
+      transition={{ duration: 5.5 + index * 0.7, repeat: Infinity, ease: "easeInOut" }}
+      whileHover={reduce ? undefined : { scale: 1.14 }}
     >
-      <div className="relative h-full rounded-xl border border-white/[0.06] bg-bg-surface/35 p-5 backdrop-blur-[2px]">
-        {children}
-      </div>
+      <Icon size={20} strokeWidth={1.6} />
     </motion.div>
   );
 }
 
+function ColumnTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <h4 className="mb-4 flex items-center gap-2 font-heading text-xs font-semibold uppercase tracking-[0.16em] text-white">
+      <span aria-hidden className="h-px w-5 bg-green-primary" />
+      {children}
+    </h4>
+  );
+}
+
+function ContactRow({
+  Icon,
+  label,
+  children,
+}: {
+  Icon: LucideIcon;
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <li className="flex items-start gap-3">
+      <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-white/12 bg-white/5 text-mint-accent">
+        <Icon aria-hidden size={15} />
+      </span>
+      <span className="min-w-0">
+        <span className="block text-[10px] uppercase tracking-[0.14em] text-white/45">
+          {label}
+        </span>
+        <span className="mt-0.5 block text-sm text-white/90">{children}</span>
+      </span>
+    </li>
+  );
+}
+
 export function Footer() {
-  const reduce = useReducedMotion();
-  const sceneRef = useRef<HTMLElement>(null);
+  const reduce = useStableReducedMotion();
+  const panelRef = useRef<HTMLDivElement>(null);
 
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
   const sx = useSpring(mx, spring);
   const sy = useSpring(my, spring);
+  const rotateX = useTransform(sy, [-0.5, 0.5], [4, -4]);
+  const rotateY = useTransform(sx, [-0.5, 0.5], [-5, 5]);
 
-  const rotateX = useTransform(sy, [-0.5, 0.5], [7, -7]);
-  const rotateY = useTransform(sx, [-0.5, 0.5], [-9, 9]);
-  const glareX = useTransform(sx, [-0.5, 0.5], [20, 80]);
-  const glareY = useTransform(sy, [-0.5, 0.5], [15, 75]);
-  const glare = useMotionTemplate`radial-gradient(520px circle at ${glareX}% ${glareY}%, rgba(117,230,174,0.14), transparent 55%)`;
-
-  const slabARotateX = useTransform(sy, [-0.5, 0.5], [18, 8]);
-  const slabARotateY = useTransform(sx, [-0.5, 0.5], [-22, -8]);
-  const slabBRotateX = useTransform(sy, [-0.5, 0.5], [10, 20]);
-  const slabBRotateY = useTransform(sx, [-0.5, 0.5], [8, 24]);
-
-  function onMove(e: React.MouseEvent<HTMLElement>) {
-    if (reduce || !sceneRef.current) return;
-    const rect = sceneRef.current.getBoundingClientRect();
+  function onMove(e: React.MouseEvent<HTMLDivElement>) {
+    if (reduce || !panelRef.current) return;
+    const rect = panelRef.current.getBoundingClientRect();
     mx.set((e.clientX - rect.left) / rect.width - 0.5);
     my.set((e.clientY - rect.top) / rect.height - 0.5);
   }
@@ -82,180 +135,163 @@ export function Footer() {
   }
 
   return (
-    <footer
-      ref={sceneRef}
-      onMouseMove={onMove}
-      onMouseLeave={onLeave}
-      className="relative isolate w-full overflow-hidden border-t border-white/10 bg-bg-deep pt-14 pb-10 text-white/70"
-    >
-      <FooterWaveParticles />
-
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 z-[1]"
-        style={{ perspective: "1400px", perspectiveOrigin: "50% 40%" }}
-      >
-        <div
-          className="absolute inset-[-20%] opacity-[0.35]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(117,230,174,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(117,230,174,0.07) 1px, transparent 1px)",
-            backgroundSize: "64px 64px",
-            transform: "rotateX(62deg) translateY(18%) scale(1.35)",
-            transformOrigin: "center top",
-            maskImage:
-              "linear-gradient(to bottom, transparent, black 25%, black 70%, transparent)",
-          }}
+    <footer className="relative isolate w-full overflow-hidden border-t border-white/10 bg-bg-deep text-white/70">
+      {/* Photo backdrop: building visible on the right, dark wash on the left */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <Image
+          src="/images/footer/footer-bg.jpg"
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover object-[right_center] opacity-90"
         />
-        <motion.div
-          className="absolute -left-24 top-10 h-56 w-56 rounded-full bg-green-primary/20 blur-3xl"
-          animate={
-            reduce
-              ? undefined
-              : { y: [0, 18, 0], x: [0, 10, 0], opacity: [0.35, 0.55, 0.35] }
-          }
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute -right-16 bottom-0 h-64 w-64 rounded-full bg-mint-accent/15 blur-3xl"
-          animate={
-            reduce
-              ? undefined
-              : { y: [0, -22, 0], x: [0, -12, 0], opacity: [0.25, 0.45, 0.25] }
-          }
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-        />
-        {!reduce && (
-          <>
-            <motion.div
-              className="absolute left-[12%] top-[28%] h-24 w-36 rounded-xl border border-mint-accent/15 bg-bg-surface/30"
-              style={{
-                rotateX: slabARotateX,
-                rotateY: slabARotateY,
-                translateZ: 40,
-              }}
-            />
-            <motion.div
-              className="absolute right-[10%] top-[18%] h-20 w-28 rounded-xl border border-green-primary/20 bg-green-primary/10"
-              style={{
-                rotateX: slabBRotateX,
-                rotateY: slabBRotateY,
-                translateZ: 60,
-              }}
-            />
-          </>
-        )}
+        <div className="absolute inset-0 bg-gradient-to-r from-bg-deep via-bg-deep/70 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-bg-deep/90 via-transparent to-bg-deep/50" />
       </div>
 
+      <FooterWaveParticles />
+
+      {/* Animated top hairline */}
       <motion.div
         aria-hidden
-        className="pointer-events-none absolute inset-0 z-[1] opacity-80"
-        style={{ background: glare }}
+        className="absolute inset-x-0 top-0 z-[2] h-px bg-gradient-to-r from-transparent via-mint-accent/70 to-transparent"
+        animate={reduce ? undefined : { opacity: [0.35, 1, 0.35] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        aria-hidden
+        className="pointer-events-none absolute -left-24 top-8 z-[1] h-56 w-56 rounded-full bg-green-primary/25 blur-3xl"
+        animate={reduce ? undefined : { y: [0, 18, 0], x: [0, 10, 0], opacity: [0.35, 0.6, 0.35] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      <div className="relative z-10 mx-auto w-full max-w-[1200px] px-4 sm:px-6 lg:px-8">
-        <motion.div
-          className="grid grid-cols-1 gap-4 border-b border-white/10 pb-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-4"
-          style={
-            reduce
-              ? undefined
-              : {
-                  perspective: 1200,
-                  transformStyle: "preserve-3d",
-                  rotateX,
-                  rotateY,
-                }
-          }
-        >
-          <FooterColumn depth={12}>
-            <div className="flex flex-col gap-4">
-              <BrandLogo variant="dark" size="sm" />
-              <p className="max-w-sm text-sm leading-relaxed text-text-muted">
-                PerfAI is a channel partner for building management services —
-                helping commercial buildings and facilities adopt BMS solutions that
-                fit real operations.
+      <div className="relative z-10 mx-auto w-full max-w-[1200px] px-4 py-10 sm:px-6 lg:px-8">
+        {/* CTA panel with floating 3D icons */}
+        <div style={{ perspective: 1200 }}>
+          <motion.div
+            ref={panelRef}
+            onMouseMove={onMove}
+            onMouseLeave={onLeave}
+            className="relative flex flex-col gap-6 overflow-hidden rounded-2xl border border-white/15 bg-bg-deep/55 px-6 py-6 shadow-[0_28px_70px_-36px_rgba(0,0,0,0.9)] backdrop-blur-md sm:px-8 lg:flex-row lg:items-center lg:justify-between"
+            style={reduce ? undefined : { rotateX, rotateY, transformStyle: "preserve-3d" }}
+          >
+            <div className="max-w-md">
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-mint-accent">
+                Let&apos;s talk
               </p>
+              <h3 className="mt-2 font-heading text-xl font-extrabold leading-tight tracking-tight text-white sm:text-2xl">
+                Make your building smarter and better managed.
+              </h3>
             </div>
-          </FooterColumn>
 
-          <FooterColumn depth={24}>
-            <div className="flex flex-col gap-3">
-              <h4 className="font-heading text-sm font-semibold uppercase tracking-wider text-white">
-                Navigation
-              </h4>
-              <ul className="flex flex-col gap-2 text-sm text-text-muted">
-                {siteConfig.nav.map((item) => (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      className={[
-                        "transition-colors hover:text-white",
-                        item.href === "/#demo"
-                          ? "text-mint-accent hover:underline"
-                          : "",
-                      ].join(" ")}
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+            <div className="hidden items-start gap-3 lg:flex" aria-hidden>
+              {FLOATING_ICONS.map(({ Icon, label }, i) => (
+                <FloatingChip key={label} Icon={Icon} label={label} index={i} reduce={reduce} />
+              ))}
             </div>
-          </FooterColumn>
 
-          <FooterColumn depth={36}>
-            <div className="flex flex-col gap-3">
-              <h4 className="font-heading text-sm font-semibold uppercase tracking-wider text-white">
-                Services
-              </h4>
-              <ul className="flex flex-col gap-2 text-sm text-text-muted">
-                <li>
-                  <span className="text-white/70">HVAC Management</span>
-                </li>
-                <li>
-                  <span className="text-white/70">Energy Monitoring</span>
-                </li>
-                <li>
-                  <span className="text-white/70">BMS Integration</span>
-                </li>
-                <li>
-                  <span className="text-white/70">Facility Operations</span>
-                </li>
-              </ul>
+            <div className="flex flex-wrap items-center gap-3">
+              <Link
+                href="/#demo"
+                className="group inline-flex h-11 items-center gap-2 rounded-full bg-green-primary px-5 text-sm font-semibold text-bg-deep transition-colors duration-200 hover:bg-mint-accent"
+              >
+                Contact Us
+                <ArrowRight
+                  aria-hidden
+                  size={16}
+                  className="transition-transform duration-200 group-hover:translate-x-1"
+                />
+              </Link>
+              <a
+                href={siteConfig.contact.phoneHref}
+                className="inline-flex h-11 items-center gap-2 rounded-full border border-white/25 bg-bg-deep/40 px-5 text-sm font-semibold text-white transition-colors duration-200 hover:border-white/45 hover:bg-white/10"
+              >
+                <Phone aria-hidden size={15} />
+                {siteConfig.contact.phone}
+              </a>
             </div>
-          </FooterColumn>
+          </motion.div>
+        </div>
 
-          <FooterColumn depth={48}>
-            <div className="flex flex-col gap-3">
-              <h4 className="font-heading text-sm font-semibold uppercase tracking-wider text-white">
-                Business Contact
-              </h4>
-              <div className="flex flex-col gap-2 text-xs text-text-muted">
-                <p>
-                  <span className="block text-white/60">Inquiries:</span>
-                  <span className="font-mono text-white">
-                    {siteConfig.contact.salesEmail}
-                  </span>
-                </p>
-                <p>
-                  <span className="block text-white/60">Phone:</span>
-                  <span className="font-mono text-white">
-                    {siteConfig.contact.phone}
-                  </span>
-                </p>
-                <p>
-                  <span className="block text-white/60">Office:</span>
-                  <span>
-                    {siteConfig.contact.address.line1},{" "}
-                    {siteConfig.contact.address.city}
-                  </span>
-                </p>
-              </div>
-            </div>
-          </FooterColumn>
-        </motion.div>
+        {/* Link grid */}
+        <div className="mt-10 grid gap-10 md:grid-cols-2 lg:grid-cols-12 lg:gap-8">
+          <div className="lg:col-span-4">
+            <BrandLogo variant="dark" size="sm" />
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-text-muted">
+              PerfAI is a channel partner for building management services —
+              helping commercial buildings and facilities adopt BMS solutions that
+              fit real operations.
+            </p>
+          </div>
 
-        <div className="flex flex-col items-center justify-between gap-4 pt-8 text-xs text-text-muted sm:flex-row">
+          <div className="lg:col-span-2">
+            <ColumnTitle>Navigation</ColumnTitle>
+            <ul className="flex flex-col gap-2.5 text-sm">
+              {siteConfig.nav.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className={[
+                      "inline-block transition-all duration-200 hover:translate-x-1",
+                      item.href === "/#demo"
+                        ? "text-mint-accent hover:underline"
+                        : "text-text-muted hover:text-white",
+                    ].join(" ")}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="lg:col-span-2">
+            <ColumnTitle>Services</ColumnTitle>
+            <ul className="flex flex-col gap-2.5 text-sm text-text-muted">
+              {SERVICES.map((s) => (
+                <li key={s} className="flex items-center gap-2">
+                  <span aria-hidden className="h-1 w-1 rounded-full bg-green-primary" />
+                  {s}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="md:col-span-2 lg:col-span-4">
+            <ColumnTitle>Business Contact</ColumnTitle>
+            <ul className="grid gap-4 sm:grid-cols-2">
+              <ContactRow Icon={UserRound} label="Contact">
+                {siteConfig.contact.name}
+              </ContactRow>
+              <ContactRow Icon={Mail} label="Email">
+                <a
+                  href={`mailto:${siteConfig.contact.salesEmail}`}
+                  className="break-all font-mono text-[13px] hover:text-mint-accent"
+                >
+                  {siteConfig.contact.salesEmail}
+                </a>
+              </ContactRow>
+              <ContactRow Icon={Phone} label="Phone">
+                <a
+                  href={siteConfig.contact.phoneHref}
+                  className="font-mono text-[13px] hover:text-mint-accent"
+                >
+                  {siteConfig.contact.phone}
+                </a>
+              </ContactRow>
+              <ContactRow Icon={MapPin} label="Office">
+                <span className="text-[13px] text-white/80">
+                  {[siteConfig.contact.address.line1, siteConfig.contact.address.city]
+                    .filter(Boolean)
+                    .join(", ")}
+                </span>
+              </ContactRow>
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom bar */}
+        <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-5 text-xs text-text-muted sm:flex-row">
           <p>© 2026 PerfAI. All rights reserved.</p>
           <div className="flex items-center gap-5">
             <Link href="/privacy" className="transition-colors hover:text-white">

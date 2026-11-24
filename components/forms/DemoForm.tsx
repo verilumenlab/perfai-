@@ -150,8 +150,12 @@ export function DemoForm() {
       noValidate
       aria-label="Contact PerfAI enquiry form"
     >
-      <div className="pointer-events-none absolute -z-50 h-0 w-0 overflow-hidden opacity-0" aria-hidden="true">
-        <label htmlFor="hp_website_demo">Leave this field blank</label>
+      {/* Anti-spam honeypot: invisible, inert (no focus, no assistive tech) and carries no readable text. */}
+      <div
+        className="pointer-events-none absolute -left-[9999px] top-0 -z-50 h-0 w-0 overflow-hidden opacity-0"
+        aria-hidden="true"
+        inert
+      >
         <input
           id="hp_website_demo"
           type="text"
@@ -395,7 +399,7 @@ export function DemoForm() {
           aria-invalid={!!errors.message}
           aria-describedby={errors.message ? "message-error" : undefined}
           className={`${fieldClass} resize-y`}
-          placeholder="Briefly describe your infrastructure challenges (e.g. chiller plant optimization, peak demand tariffs, BMS integration)."
+          placeholder="Briefly describe your infrastructure challenges (e.g. chiller plant optimisation, peak demand tariffs, BMS integration)."
           {...register("message")}
         />
         {errors.message && (

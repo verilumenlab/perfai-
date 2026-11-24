@@ -41,7 +41,7 @@ export function PartnerSection() {
 
               <div className="mt-8 border-t border-line pt-6">
                 <span className="mb-1 block font-mono text-xs uppercase tracking-wider text-forest">
-                  Direct Inquiries
+                  Direct Enquiries
                 </span>
                 <p className="text-sm leading-relaxed text-ink-muted">
                   For corporate procurement and official business correspondence:

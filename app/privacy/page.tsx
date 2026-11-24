@@ -40,7 +40,7 @@ export default function PrivacyPage() {
             <section>
               <h2 className="text-base font-semibold text-ink mb-2">2. Information Collection (Placeholder)</h2>
               <p>
-                When submitting enquiries through {siteConfig.domain}, information collected is limited to business contact details provided directly by the user (name, work email, organization name, role, phone number, and infrastructure requirements).
+                When submitting enquiries through {siteConfig.domain}, information collected is limited to business contact details provided directly by the user (name, work email, organisation name, role, phone number, and infrastructure requirements).
               </p>
             </section>
 

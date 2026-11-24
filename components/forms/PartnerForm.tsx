@@ -143,8 +143,12 @@ export function PartnerForm() {
       noValidate
       aria-label="Partnership enquiry form"
     >
-      <div className="pointer-events-none absolute -z-50 h-0 w-0 overflow-hidden opacity-0" aria-hidden="true">
-        <label htmlFor="hp_website_partner">Leave this field blank</label>
+      {/* Anti-spam honeypot: invisible, inert (no focus, no assistive tech) and carries no readable text. */}
+      <div
+        className="pointer-events-none absolute -left-[9999px] top-0 -z-50 h-0 w-0 overflow-hidden opacity-0"
+        aria-hidden="true"
+        inert
+      >
         <input
           id="hp_website_partner"
           type="text"
@@ -357,7 +361,7 @@ export function PartnerForm() {
           aria-invalid={!!errors.message}
           aria-describedby={errors.message ? "p_message-error" : undefined}
           className={`${fieldClass} resize-y`}
-          placeholder="Describe your organization and proposed collaboration model (e.g. facility deployment, systems integration, distribution)."
+          placeholder="Describe your organisation and proposed collaboration model (e.g. facility deployment, systems integration, distribution)."
           {...register("message")}
         />
         {errors.message && (
