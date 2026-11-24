@@ -16,7 +16,6 @@ type SceneProps = {
 
 /**
  * Full-bleed hero background video with quiet scroll push-in.
- * Falls back to a static poster when the user prefers reduced motion.
  */
 export function BeachfrontHeroVisual({
   progress,
@@ -60,12 +59,10 @@ export function BeachfrontHeroVisual({
         {/*
           The video always plays: it is muted and looping, so it is background texture rather
           than a distracting animation. "Reduce motion" still stops the camera push-in below.
-          The poster keeps the hero filled while the file loads or if playback is blocked.
         */}
         <video
           ref={videoRef}
           className="absolute left-0 top-0 h-[124%] w-[124%] max-w-none object-cover object-[78%_42%]"
-          poster="/images/hero/hero-composite.webp"
           autoPlay
           muted
           loop

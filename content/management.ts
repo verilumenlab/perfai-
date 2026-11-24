@@ -1,5 +1,5 @@
 /**
- * Management & Operations leadership page content.
+ * MD leadership page content.
  * Personal identity fields marked as placeholders until confirmed.
  */
 
@@ -7,7 +7,7 @@ import { siteConfig } from "@/lib/site-config";
 
 export const managementPage = {
   meta: {
-    title: "Management & Operations",
+    title: "MD",
     description:
       "Meet the leadership behind PerfAI — driving innovation and excellence in Building Management Services.",
   },
@@ -19,13 +19,13 @@ export const managementPage = {
 
   profile: {
     fullName: siteConfig.contact.name,
-    designation: "Management & Operations",
+    designation: "MD",
     /** Professional portrait served from public/images/team/ */
     photo: "/images/team/manager.png",
     photoReady: true,
-    photoAlt: "Professional portrait — Management & Operations, PerfAI",
+    photoAlt: "Professional portrait — MD, PerfAI",
     introduction:
-      "Leading PerfAI’s Management & Operations function with a focus on customer engagement, disciplined delivery and long-term partnerships in Building Management Services.",
+      "As MD, leading PerfAI with a focus on customer engagement, disciplined delivery and long-term partnerships in Building Management Services.",
   },
 
   company: {
@@ -65,7 +65,7 @@ export const managementPage = {
     eyebrow: "About the Person",
     heading: "Role and responsibilities",
     intro:
-      "The Management & Operations lead steers how PerfAI engages customers, scopes opportunities and coordinates delivery with technical partners.",
+      "The MD steers how PerfAI engages customers, scopes opportunities and coordinates delivery with technical partners.",
     responsibilities: [
       {
         title: "Customer engagement",
@@ -93,7 +93,7 @@ export const managementPage = {
   contact: {
     eyebrow: "Connect",
     heading: "Contact & professional links",
-    text: "Reach the Management & Operations desk for partnership discussions, facility briefings or commercial enquiries.",
+    text: "Reach the MD’s office for partnership discussions, facility briefings or commercial enquiries.",
     email: siteConfig.contact.salesEmail,
     /** TODO(leadership): Add official LinkedIn profile URL */
     linkedIn: {
