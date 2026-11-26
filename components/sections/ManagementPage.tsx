@@ -281,16 +281,7 @@ export function ManagementPage() {
                 {c.company.partnership.title}
               </h3>
               <p className="mt-3 max-w-3xl text-[15px] leading-relaxed text-ink/70">
-                {c.company.partnership.text}{" "}
-                <a
-                  href={c.company.partnership.linkHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-semibold text-forest underline-offset-2 hover:underline"
-                >
-                  {c.company.partnership.linkLabel}
-                </a>
-                .
+                {c.company.partnership.text}
               </p>
             </article>
           </FadeIn>

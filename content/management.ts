@@ -54,10 +54,8 @@ export const managementPage = {
       ],
     },
     partnership: {
-      title: "Partnership with Senatria",
-      text: "PerfAI is an authorised technology reseller and business partner of Senatria. We market and coordinate access to Senatria’s Physical AI capabilities for facility customers while remaining clear that product ownership and technology authorship sit with Senatria.",
-      linkLabel: "Senatria",
-      linkHref: "https://senatria.ai",
+      title: "Open for Business Partnerships",
+      text: "PerfAI welcomes business and technology partnerships. We collaborate with technology providers, solution partners, and industry experts to bring innovative Physical AI capabilities to customers through strategic partnerships, technology integration, and coordinated solution delivery.",
     },
   },
 
